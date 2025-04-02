@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import SideNav from "./components/SideNav";
 import Button from "react-bootstrap/Button";
+import './api/axiosDefaults';
+import SignUpForm from "./pages/auth/SignUpForm";
 
 const Home = () => (
   <div>
@@ -29,6 +31,7 @@ function App() {
           <Route path="/tags" component={Tags} />
           <Route path="/shared" component={Shared} />
           <Route path="/profile" component={Profile} />
+          <Route exact path="/signup" render={() =><SignUpForm />} />
           <Route path="*" component={() => <h2>404 Not Found</h2>} />
         </Switch>
       </div>

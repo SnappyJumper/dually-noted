@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Collapse, Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import './SideNav.css';
+import '../styles/SideNav.css';
+
 
 const SideNav = () => {
   const [open, setOpen] = useState(false);
