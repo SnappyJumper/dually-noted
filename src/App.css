@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+/* Add space on the left when on large screens (desktop) */
+@media (min-width: 992px) {
+  .main-content {
+    margin-left: 220px !important;
+  }
+}
