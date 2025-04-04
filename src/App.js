@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import styles from "./App.module.css";
 import SideNav from "./components/SideNav";
 import Button from "react-bootstrap/Button";
 
@@ -21,8 +22,7 @@ function App() {
     <Router>
       <SideNav />
       <div
-        className="main-content ml-lg-220"
-        style={{ marginLeft: "0", padding: "2rem", marginTop: "60px" }}
+        className={styles.main}
       >
         <Switch>
           <Route exact path="/" component={Home} />

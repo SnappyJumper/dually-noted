@@ -1,0 +1,13 @@
+.main {
+    margin-left: 0; 
+    padding: 2rem;
+    margin-top: 60px;
+}
+
+/* Add space on the left when on large screens (desktop) */
+@media (min-width: 992px) {
+    .main {
+      margin-left: 220px !important;
+    }
+  }
+  
