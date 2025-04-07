@@ -10,11 +10,10 @@ const SideNav = () => {
   const [open, setOpen] = useState(false);
   const history = useHistory();
 
-  const user = JSON.parse(localStorage.getItem("user")); // TEMP: Replace with real auth logic
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    history.push("/login");
+    history.push("/logout");
   };
 
   return (

@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styles from "./App.module.css";
 import SideNav from "./components/SideNav";
 import Button from "react-bootstrap/Button";
+import './api/axiosDefaults'
+import SignUpForm from "./pages/auth/SignUpForm";
+import SignInForm from "./pages/auth/SignInForm";
+import SignOutPage from "./pages/auth/SignOut";
 
 const Home = () => (
   <div>
@@ -14,10 +18,11 @@ const Notes = () => <h2>My Notes</h2>;
 const Tags = () => <h2>Tags</h2>;
 const Shared = () => <h2>Shared With Me</h2>;
 const Profile = () => <h2>Profile</h2>;
-const SignUpForm = () => <h2>Sign Up</h2>;
 
 // App.js
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+
   return (
     <Router>
       <SideNav />
@@ -30,7 +35,9 @@ function App() {
           <Route path="/tags" component={Tags} />
           <Route path="/shared" component={Shared} />
           <Route path="/profile" component={Profile} />
-          <Route exact path="/signup" component={SignUpForm} />
+          <Route exact path="/signup" render={() => <SignUpForm />} />
+          <Route path="/login" render={() => <SignInForm />} />
+          <Route path="/logout" render={() => <SignOutPage />} />
           <Route path="*" component={() => <h2>404 Not Found</h2>} />
         </Switch>
       </div>
