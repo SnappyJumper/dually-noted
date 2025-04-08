@@ -8,6 +8,7 @@ import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
 import SignOutPage from "./pages/auth/SignOut";
 import axios from "axios";
+import PrivateRoute from "./components/PrivateRoute";
 
 export const CurrentUserContext = createContext()
 export const SetCurrentUserContext = createContext()
@@ -50,10 +51,10 @@ function App() {
           >
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/notes" component={Notes} />
-              <Route path="/tags" component={Tags} />
-              <Route path="/shared" component={Shared} />
-              <Route path="/profile" component={Profile} />
+              <PrivateRoute path="/notes" component={Notes} />
+              <PrivateRoute path="/tags" component={Tags} />
+              <PrivateRoute path="/shared" component={Shared} />
+              <PrivateRoute path="/profile" component={Profile} />
               <Route exact path="/signup" render={() => <SignUpForm />} />
               <Route path="/login" render={() => <SignInForm />} />
               <Route path="/logout" render={() => <SignOutPage />} />
