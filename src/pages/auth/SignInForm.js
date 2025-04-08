@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { SetCurrentUserContext } from "../../App";
 import { Link, useHistory } from "react-router-dom";
-
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-
 import {
   Form,
   Button,
@@ -17,6 +16,7 @@ import {
 import axios from "axios";
 
 const SignInForm = () => {
+  const setCurrentUser = useContext(SetCurrentUserContext);
   const [signInData, setSignInData] = useState({
     username: "",
     password: "",
@@ -24,13 +24,6 @@ const SignInForm = () => {
   const { username, password } = signInData;
   const [errors, setErrors] = useState({});
   const history = useHistory();
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      history.push("/notes");
-    }
-  }, [history]);
 
   const handleChange = (e) => {
     setSignInData({
@@ -46,6 +39,10 @@ const SignInForm = () => {
       const response = await axios.post("/dj-rest-auth/login/", signInData);
 
       localStorage.setItem("user", JSON.stringify(response.data));
+
+      const { data: userData } = await axios.get("/dj-rest-auth/user/");
+      setCurrentUser(userData);
+
       history.push("/notes");
     } catch (err) {
       setErrors(err.response?.data || { non_field_errors: ["Login failed."] });

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { SetCurrentUserContext } from "../../App";
 import { Link } from "react-router-dom";
-
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
@@ -18,6 +18,8 @@ import axios from "axios";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const SignUpForm = () => {
+  const setCurrentUser = useContext(SetCurrentUserContext);
+
   const [signUpData, setSignUpData] = useState({
     username: "",
     password1: "",
@@ -26,13 +28,6 @@ const SignUpForm = () => {
   const { username, password1, password2 } = signUpData;
   const [errors, setErrors] = useState({});
   const history = useHistory();
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      history.push("/notes");
-    }
-  }, [history]);
 
   const handleChange = (e) => {
     setSignUpData({
@@ -45,11 +40,17 @@ const SignUpForm = () => {
     e.preventDefault();
     try {
       await axios.post("/dj-rest-auth/registration/", signUpData);
+
       const loginResponse = await axios.post("/dj-rest-auth/login/", {
         username,
         password: password1,
       });
+
       localStorage.setItem("user", JSON.stringify(loginResponse.data));
+
+      const { data: userData } = await axios.get("/dj-rest-auth/user/");
+      setCurrentUser(userData);
+
       history.push("/");
     } catch (err) {
       setErrors(err.response?.data);
