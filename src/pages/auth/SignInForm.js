@@ -24,6 +24,7 @@ const SignInForm = () => {
   const { username, password } = signInData;
   const [errors, setErrors] = useState({});
   const history = useHistory();
+  const [status, setStatus] = useState("idle");
 
   const handleChange = (e) => {
     setSignInData({
@@ -35,6 +36,7 @@ const SignInForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus("loading");
     try {
       const response = await axios.post("/dj-rest-auth/login/", signInData);
 
@@ -43,7 +45,10 @@ const SignInForm = () => {
       const { data: userData } = await axios.get("/dj-rest-auth/user/");
       setCurrentUser(userData);
 
-      history.push("/notes");
+      setStatus("success");
+      setTimeout(() => {
+        history.push("/notes");
+      }, 2000);
     } catch (err) {
       setErrors(err.response?.data || { non_field_errors: ["Login failed."] });
     }
@@ -54,6 +59,18 @@ const SignInForm = () => {
       <Col className="my-auto py-2 p-md-2" md={6}>
         <Container className={`${appStyles.Content} p-4`}>
           <h1 className={styles.Header}>sign in</h1>
+
+          {status === "success" && (
+            <Alert variant="success" className="mt-3">
+              Welcome back! Redirecting to your notes...
+            </Alert>
+          )}
+
+          {status === "error" && (
+            <Alert variant="danger" className="mt-3">
+              There was a problem logging you in. Please check your credentials.
+            </Alert>
+          )}
 
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
@@ -93,10 +110,11 @@ const SignInForm = () => {
             ))}
 
             <Button
+              disabled={status === "loading"}
               className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
               type="submit"
             >
-              Sign in
+              {status === "loading" ? "Signing in..." : "Sign in"}
             </Button>
             {errors.non_field_errors?.map((message, idx) => (
               <Alert key={idx} variant="warning" className="mt-3">

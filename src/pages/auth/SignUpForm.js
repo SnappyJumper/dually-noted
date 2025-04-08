@@ -28,6 +28,7 @@ const SignUpForm = () => {
   const { username, password1, password2 } = signUpData;
   const [errors, setErrors] = useState({});
   const history = useHistory();
+  const [status, setStatus] = useState("idle");
 
   const handleChange = (e) => {
     setSignUpData({
@@ -38,6 +39,7 @@ const SignUpForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus("loading");
     try {
       await axios.post("/dj-rest-auth/registration/", signUpData);
 
@@ -51,7 +53,10 @@ const SignUpForm = () => {
       const { data: userData } = await axios.get("/dj-rest-auth/user/");
       setCurrentUser(userData);
 
-      history.push("/");
+      setStatus("success");
+      setTimeout(() => {
+        history.push("/");
+      }, 2000);
     } catch (err) {
       setErrors(err.response?.data);
     }
@@ -62,6 +67,18 @@ const SignUpForm = () => {
       <Col className="my-auto py-2 p-md-2" md={6}>
         <Container className={`${appStyles.Content} p-4 `}>
           <h1 className={styles.Header}>sign up</h1>
+
+          {status === "success" && (
+            <Alert variant="success" className="mt-3">
+              Account created successfully! Redirecting to home...
+            </Alert>
+          )}
+
+          {status === "error" && (
+            <Alert variant="danger" className="mt-3">
+              Signup failed. Please fix the errors below and try again.
+            </Alert>
+          )}
 
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
@@ -116,10 +133,11 @@ const SignUpForm = () => {
             ))}
 
             <Button
+              disabled={status === "loading"}
               className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
               type="submit"
             >
-              Sign up
+              {status === "loading" ? "Signing up..." : "Sign up"}
             </Button>
             {errors.non_field_errors?.map((message, idx) => (
               <Alert key={idx} variant="warning" className="mt-3">

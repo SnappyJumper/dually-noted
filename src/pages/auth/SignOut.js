@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { SetCurrentUserContext } from "../../App";
 
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
@@ -7,7 +8,6 @@ import appStyles from "../../App.module.css";
 
 import {
   Button,
-  Image,
   Col,
   Row,
   Container,
@@ -16,32 +16,56 @@ import {
 import axios from "axios";
 
 const SignOutPage = () => {
-  const [status, setStatus] = useState("loading");
+  const [status, setStatus] = useState("confirm");
   const history = useHistory();
+  const setCurrentUser = useContext(SetCurrentUserContext);
 
-  useEffect(() => {
-    const logout = async () => {
-      try {
-        await axios.post("/dj-rest-auth/logout/");
-        localStorage.removeItem("user");
-        setStatus("success");
+  const handleLogout = async () => {
+    setStatus("loading");
+    try {
+      await axios.post("/dj-rest-auth/logout/");
+      localStorage.removeItem("user");
+      setCurrentUser(null);
+      setStatus("success");
 
-        setTimeout(() => {
-          history.push("/signin");
-        }, 2000);
-      } catch (err) {
-        setStatus("error");
-      }
-    };
+      setTimeout(() => {
+        history.push("/login");
+      }, 2000);
+    } catch (err) {
+      setStatus("error");
+    }
+  };
 
-    logout();
-  }, [history]);
+  const handleCancel = () => {
+    history.push("/notes");
+  };
 
   return (
     <Row className={styles.Row}>
       <Col className="my-auto py-2 p-md-2" md={6}>
         <Container className={`${appStyles.Content} p-4`}>
-          <h1 className={styles.Header}>Logging out...</h1>
+          <h1 className={styles.Header}>Log Out</h1>
+
+          {status === "confirm" && (
+            <>
+              <p>Are you sure you want to log out?</p>
+              <div className="d-flex gap-2">
+                <Button
+                  className={`${btnStyles.Button} ${btnStyles.Bright}`}
+                  onClick={handleLogout}
+                >
+                  Yes, log me out
+                </Button>
+                <Button
+                  className={btnStyles.Button}
+                  variant="secondary"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </>
+          )}
 
           {status === "loading" && (
             <Alert variant="info">Logging you out...</Alert>
@@ -49,7 +73,7 @@ const SignOutPage = () => {
 
           {status === "success" && (
             <Alert variant="success">
-              You’ve been logged out. Redirecting to sign in...
+              You’ve been logged out. Redirecting to Log in...
             </Alert>
           )}
 
@@ -58,12 +82,6 @@ const SignOutPage = () => {
               Something went wrong while logging out. Try again later.
             </Alert>
           )}
-
-          <div className="mt-3">
-            <Link className={btnStyles.Button} to="/signin">
-              Back to Sign In
-            </Link>
-          </div>
         </Container>
       </Col>
 
