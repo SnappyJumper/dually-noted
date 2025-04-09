@@ -8,28 +8,29 @@ const TagsPage = () => {
   const [tags, setTags] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newTagName, setNewTagName] = useState("");
+  const [editTagId, setEditTagId] = useState(null);
+  const [editTagName, setEditTagName] = useState("");
   const history = useHistory();
 
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const { data } = await axios.get("/tags/");
-        setTags(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     fetchTags();
   }, []);
+
+  const fetchTags = async () => {
+    try {
+      const { data } = await axios.get("/tags/");
+      setTags(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleCreateTag = async () => {
     try {
       await axios.post("/tags/", { name: newTagName });
       setNewTagName("");
       setShowModal(false);
-      const { data } = await axios.get("/tags/");
-      setTags(data);
+      fetchTags();
     } catch (err) {
       console.log(err);
     }
@@ -39,6 +40,27 @@ const TagsPage = () => {
     try {
       await axios.delete(`/tags/${id}/`);
       setTags((prev) => prev.filter((tag) => tag.id !== id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleEditClick = (tag) => {
+    setEditTagId(tag.id);
+    setEditTagName(tag.name);
+  };
+
+  const handleEditCancel = () => {
+    setEditTagId(null);
+    setEditTagName("");
+  };
+
+  const handleEditSave = async (id) => {
+    try {
+      await axios.put(`/tags/${id}/`, { name: editTagName });
+      setEditTagId(null);
+      setEditTagName("");
+      fetchTags();
     } catch (err) {
       console.log(err);
     }
@@ -55,20 +77,43 @@ const TagsPage = () => {
 
       <ListGroup>
         {tags.map((tag) => (
-          <ListGroup.Item key={tag.id} className="d-flex justify-content-between align-items-center">
-            <span
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push(`/tags/${tag.id}`)}
-            >
-              #{tag.name}
-            </span>
-            <Button
-              variant="outline-danger"
-              size="sm"
-              onClick={() => handleDeleteTag(tag.id)}
-            >
-              Delete
-            </Button>
+          <ListGroup.Item
+            key={tag.id}
+            className="d-flex justify-content-between align-items-center"
+          >
+            {editTagId === tag.id ? (
+              <div className="d-flex flex-grow-1 align-items-center gap-2">
+                <Form.Control
+                  size="sm"
+                  value={editTagName}
+                  onChange={(e) => setEditTagName(e.target.value)}
+                />
+                <Button size="sm" variant="success" onClick={() => handleEditSave(tag.id)}>
+                  Save
+                </Button>
+                <Button size="sm" variant="secondary" onClick={handleEditCancel}>
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <div
+                className="flex-grow-1"
+                style={{ cursor: "pointer" }}
+                onClick={() => history.push(`/tags/${tag.id}`)}
+              >
+                #{tag.name}
+              </div>
+            )}
+            {editTagId !== tag.id && (
+              <div className="d-flex gap-2">
+                <Button size="sm" variant="outline-primary" onClick={() => handleEditClick(tag)}>
+                  Edit
+                </Button>
+                <Button size="sm" variant="outline-danger" onClick={() => handleDeleteTag(tag.id)}>
+                  Delete
+                </Button>
+              </div>
+            )}
           </ListGroup.Item>
         ))}
       </ListGroup>
