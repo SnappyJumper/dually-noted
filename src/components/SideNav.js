@@ -14,12 +14,7 @@ const SideNav = () => {
   return (
     <>
       {/* Mobile Navbar Header */}
-      <Navbar
-        bg="dark"
-        variant="dark"
-        expand={false}
-        className="d-lg-none px-3"
-      >
+      <Navbar bg="dark" variant="dark" expand={false} className="d-lg-none px-3">
         <Navbar.Brand>
           <Image src={logo} alt="Dually Noted Logo" height="40" />
         </Navbar.Brand>
@@ -47,54 +42,17 @@ const SideNav = () => {
             {/* Private Links */}
             {currentUser && (
               <>
-                <Nav.Link
-                  as={NavLink}
-                  to="/notes"
-                  onClick={() => setOpen(false)}
-                  className={styles.NavLink}
-                  activeClassName={styles.ActiveLink}
-                >
+                <Nav.Link as={NavLink} to="/notes" onClick={() => setOpen(false)} className={styles.NavLink} activeClassName={styles.ActiveLink}>
                   <i className="fas fa-sticky-note mr-2"></i>My Notes
                 </Nav.Link>
-                <Nav.Link
-                  as={NavLink}
-                  to="/tags"
-                  onClick={() => setOpen(false)}
-                  className={styles.NavLink}
-                  activeClassName={styles.ActiveLink}
-                >
+                <Nav.Link as={NavLink} to="/tags" onClick={() => setOpen(false)} className={styles.NavLink} activeClassName={styles.ActiveLink}>
                   <i className="fas fa-tags mr-2"></i>Tags
                 </Nav.Link>
-                <Nav.Link
-                  as={NavLink}
-                  to="/shared"
-                  onClick={() => setOpen(false)}
-                  className={styles.NavLink}
-                  activeClassName={styles.ActiveLink}
-                >
+                <Nav.Link as={NavLink} to="/shared" onClick={() => setOpen(false)} className={styles.NavLink} activeClassName={styles.ActiveLink}>
                   <i className="fas fa-users mr-2"></i>Shared
                 </Nav.Link>
-                <Nav.Link
-                  as={NavLink}
-                  to="/logout"
-                  onClick={() => setOpen(false)}
-                  className={styles.NavLink}
-                >
+                <Nav.Link as={NavLink} to="/logout" onClick={() => setOpen(false)} className={styles.NavLink}>
                   <i className="fas fa-sign-out-alt mr-2"></i>Log Out
-                </Nav.Link>
-                <Nav.Link
-                  as={NavLink}
-                  to="/profile"
-                  onClick={() => setOpen(false)}
-                  className={styles.NavLink}
-                  activeClassName={styles.ActiveLink}
-                >
-                  <Avatar
-                    src={currentUser.profile_picture}
-                    text={currentUser.username}
-                    height={24}
-                  />{" "}
-                  {currentUser.username}
                 </Nav.Link>
               </>
             )}
@@ -102,27 +60,31 @@ const SideNav = () => {
             {/* Public Links */}
             {!currentUser && (
               <>
-                <Nav.Link
-                  as={NavLink}
-                  to="/signup"
-                  onClick={() => setOpen(false)}
-                  className={styles.NavLink}
-                  activeClassName={styles.ActiveLink}
-                >
+                <Nav.Link as={NavLink} to="/signup" onClick={() => setOpen(false)} className={styles.NavLink} activeClassName={styles.ActiveLink}>
                   <i className="fas fa-user-plus mr-2"></i>Sign Up
                 </Nav.Link>
-                <Nav.Link
-                  as={NavLink}
-                  to="/login"
-                  onClick={() => setOpen(false)}
-                  className={styles.NavLink}
-                  activeClassName={styles.ActiveLink}
-                >
+                <Nav.Link as={NavLink} to="/login" onClick={() => setOpen(false)} className={styles.NavLink} activeClassName={styles.ActiveLink}>
                   <i className="fas fa-sign-in-alt mr-2"></i>Log In
                 </Nav.Link>
               </>
             )}
           </Nav>
+
+          {/* Mobile Profile at Bottom */}
+          {currentUser && (
+            <div className="d-flex align-items-center mt-3 px-3 border-top pt-3">
+              <Avatar src={currentUser.profile_picture} height={32} text={currentUser.username} />
+              <Nav.Link
+                as={NavLink}
+                to="/profile"
+                className={`${styles.NavLink} ms-2 mb-0`}
+                onClick={() => setOpen(false)}
+                activeClassName={styles.ActiveLink}
+              >
+                {currentUser.username}
+              </Nav.Link>
+            </div>
+          )}
         </div>
       </Collapse>
 
@@ -131,7 +93,7 @@ const SideNav = () => {
         <Navbar.Brand className="mb-4 text-center">
           <Image src={logo} alt="Dually Noted Logo" height="45" />
         </Navbar.Brand>
-        <Nav className="flex-column">
+        <Nav className="flex-column flex-grow-1">
           {/* Always visible */}
           <Nav.Link
             as={NavLink}
@@ -146,28 +108,13 @@ const SideNav = () => {
           {/* Private Links */}
           {currentUser && (
             <>
-              <Nav.Link
-                as={NavLink}
-                to="/notes"
-                className={styles.NavLink}
-                activeClassName={styles.ActiveLink}
-              >
+              <Nav.Link as={NavLink} to="/notes" className={styles.NavLink} activeClassName={styles.ActiveLink}>
                 <i className="fas fa-sticky-note mr-2"></i>My Notes
               </Nav.Link>
-              <Nav.Link
-                as={NavLink}
-                to="/tags"
-                className={styles.NavLink}
-                activeClassName={styles.ActiveLink}
-              >
+              <Nav.Link as={NavLink} to="/tags" className={styles.NavLink} activeClassName={styles.ActiveLink}>
                 <i className="fas fa-tags mr-2"></i>Tags
               </Nav.Link>
-              <Nav.Link
-                as={NavLink}
-                to="/shared"
-                className={styles.NavLink}
-                activeClassName={styles.ActiveLink}
-              >
+              <Nav.Link as={NavLink} to="/shared" className={styles.NavLink} activeClassName={styles.ActiveLink}>
                 <i className="fas fa-users mr-2"></i>Shared
               </Nav.Link>
               <Nav.Link as={NavLink} to="/logout" className={styles.NavLink}>
@@ -179,40 +126,21 @@ const SideNav = () => {
           {/* Public Links */}
           {!currentUser && (
             <>
-              <Nav.Link
-                as={NavLink}
-                to="/signup"
-                className={styles.NavLink}
-                activeClassName={styles.ActiveLink}
-              >
+              <Nav.Link as={NavLink} to="/signup" className={styles.NavLink} activeClassName={styles.ActiveLink}>
                 <i className="fas fa-user-plus mr-2"></i>Sign Up
               </Nav.Link>
-              <Nav.Link
-                as={NavLink}
-                to="/login"
-                className={styles.NavLink}
-                activeClassName={styles.ActiveLink}
-              >
+              <Nav.Link as={NavLink} to="/login" className={styles.NavLink} activeClassName={styles.ActiveLink}>
                 <i className="fas fa-sign-in-alt mr-2"></i>Log In
               </Nav.Link>
             </>
           )}
         </Nav>
 
-        {/* Profile at the bottom */}
+        {/* Desktop Profile at Bottom */}
         {currentUser && (
-          <div className="d-flex flex-column align-items-center mt-4">
-            <Avatar
-              src={currentUser.profile_picture}
-              text={currentUser.username}
-              height={60}
-            />
-            <Nav.Link
-              as={NavLink}
-              to="/profile"
-              className={styles.NavLink}
-              activeClassName={styles.ActiveLink}
-            >
+          <div className="mt-auto text-center pt-3 border-top">
+            <Avatar src={currentUser.profile_picture} height={60} text={currentUser.username} />
+            <Nav.Link as={NavLink} to="/profile" className={styles.NavLink} activeClassName={styles.ActiveLink}>
               {currentUser.username}
             </Nav.Link>
           </div>
