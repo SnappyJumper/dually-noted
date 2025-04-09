@@ -13,17 +13,12 @@ import NotesPage from "./pages/notes/NotesPage";
 import SharedNotesPage from "./pages/shared/SharedNotesPage";
 import TagsPage from "./pages/tags/TagsPage";
 import ProfilePage from "./pages/profile/ProfilePage";
+import HomePage from "./pages/home/HomePage";
 
 
 export const CurrentUserContext = createContext()
 export const SetCurrentUserContext = createContext()
 
-const Home = () => (
-  <div>
-    <h2>Welcome to Dually Noted</h2>
-    <Button variant="primary">Get Started</Button>
-  </div>
-);
 
 // App.js
 function App() {
@@ -51,7 +46,7 @@ function App() {
             className={styles.main}
           >
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" render={() => <HomePage/>} />
               <PrivateRoute path="/notes" render={() => <NotesPage/>} />
               <PrivateRoute path="/tags" render={() => <TagsPage/>} />
               <PrivateRoute path="/shared" render={() => <SharedNotesPage/>} />
