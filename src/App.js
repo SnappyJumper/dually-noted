@@ -9,6 +9,11 @@ import SignInForm from "./pages/auth/SignInForm";
 import SignOutPage from "./pages/auth/SignOut";
 import axios from "axios";
 import PrivateRoute from "./components/PrivateRoute";
+import NotesPage from "./pages/notes/NotesPage";
+import SharedNotesPage from "./pages/shared/SharedNotesPage";
+import TagsPage from "./pages/tags/TagsPage";
+import ProfilePage from "./pages/profile/ProfilePage";
+
 
 export const CurrentUserContext = createContext()
 export const SetCurrentUserContext = createContext()
@@ -19,10 +24,6 @@ const Home = () => (
     <Button variant="primary">Get Started</Button>
   </div>
 );
-const Notes = () => <h2>My Notes</h2>;
-const Tags = () => <h2>Tags</h2>;
-const Shared = () => <h2>Shared With Me</h2>;
-const Profile = () => <h2>Profile</h2>;
 
 // App.js
 function App() {
@@ -51,10 +52,10 @@ function App() {
           >
             <Switch>
               <Route exact path="/" component={Home} />
-              <PrivateRoute path="/notes" component={Notes} />
-              <PrivateRoute path="/tags" component={Tags} />
-              <PrivateRoute path="/shared" component={Shared} />
-              <PrivateRoute path="/profile" component={Profile} />
+              <PrivateRoute path="/notes" render={() => <NotesPage/>} />
+              <PrivateRoute path="/tags" render={() => <TagsPage/>} />
+              <PrivateRoute path="/shared" render={() => <SharedNotesPage/>} />
+              <PrivateRoute path="/profile" render={() => <ProfilePage/>} />
               <Route exact path="/signup" render={() => <SignUpForm />} />
               <Route path="/login" render={() => <SignInForm />} />
               <Route path="/logout" render={() => <SignOutPage />} />
