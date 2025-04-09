@@ -3,33 +3,37 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import NoteForm from "./NoteForm";
+import TagSelector from "../../components/TagSelector";
 
 const NoteCreatePage = () => {
   const [noteData, setNoteData] = useState({
     title: "",
     content: "",
-    tag_ids: [], 
   });
+  const [selectedTags, setSelectedTags] = useState([]);
   const history = useHistory();
 
   const handleChange = (e) => {
-    setNoteData({ ...noteData, [e.target.name]: e.target.value });
-  };
-
-  const handleTagIdsChange = (newTagIds) => {
-    setNoteData((prevData) => ({
-      ...prevData,
-      tag_ids: newTagIds,
-    }));
+    setNoteData({
+      ...noteData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const tag_ids = selectedTags.map((tag) => tag.value);
+    const payload = {
+      ...noteData,
+      tag_ids,
+    };
+
     try {
-      await axios.post("/notes/", noteData);
+      await axios.post("/notes/", payload);
       history.push("/notes");
     } catch (err) {
-      console.error("Submission Error:", err.response?.data || err);
+      console.log("Submission error:", err);
     }
   };
 
@@ -40,11 +44,11 @@ const NoteCreatePage = () => {
         noteData={noteData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        handleTagIdsChange={handleTagIdsChange}
+        selectedTags={selectedTags}
+        setSelectedTags={setSelectedTags}
       />
     </div>
   );
 };
 
 export default NoteCreatePage;
-

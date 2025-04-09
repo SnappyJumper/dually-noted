@@ -1,13 +1,13 @@
 // src/pages/notes/NoteDetailPage.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
-import Button from "react-bootstrap/Button";
+import { Button } from "react-bootstrap";
 
 const NoteDetailPage = () => {
   const { id } = useParams();
-  const [note, setNote] = useState(null);
   const history = useHistory();
+  const [note, setNote] = useState(null);
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -26,6 +26,21 @@ const NoteDetailPage = () => {
     history.push(`/notes/${id}/edit`);
   };
 
+  const handleBack = () => {
+    history.push("/notes");
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this note?")) {
+      try {
+        await axios.delete(`/notes/${id}/`);
+        history.push("/notes");
+      } catch (err) {
+        console.log("Failed to delete note:", err);
+      }
+    }
+  };
+
   if (!note) return <p>Loading note...</p>;
 
   return (
@@ -33,25 +48,32 @@ const NoteDetailPage = () => {
       <h2>{note.title}</h2>
       <p>{note.content}</p>
 
-      {note.tags.length > 0 && (
-        <p>
+      {note.tags?.length > 0 && (
+        <div className="mb-3">
           <strong>Tags:</strong>{" "}
-          {note.tags.map((tag) => tag.name).join(", ")}
-        </p>
+          {note.tags.map((tag) => (
+            <span key={tag.id} className="badge bg-secondary me-2">
+              {tag.name}
+            </span>
+          ))}
+        </div>
       )}
 
-      <p>
-        <strong>Created:</strong> {note.created_at}
-      </p>
-      <p>
-        <strong>Last Updated:</strong> {note.updated_at}
-      </p>
-
-      {note.is_owner && (
-        <Button variant="primary" onClick={handleEdit}>
-          Edit Note
+      <div className="d-flex gap-2 mt-3">
+        {note.is_owner && (
+          <>
+            <Button variant="warning" onClick={handleEdit}>
+              Edit
+            </Button>
+            <Button variant="danger" onClick={handleDelete}>
+              Delete
+            </Button>
+          </>
+        )}
+        <Button variant="secondary" onClick={handleBack}>
+          Back to Notes
         </Button>
-      )}
+      </div>
     </div>
   );
 };
