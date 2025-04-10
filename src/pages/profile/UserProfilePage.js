@@ -13,20 +13,43 @@ const UserProfilePage = () => {
         const { data } = await axios.get(`/profiles/username/${username}/`);
         setProfile(data);
       } catch (err) {
-        console.error("Failed to load profile:", err);
+        console.error("Error loading profile:", err);
       }
     };
 
     fetchProfile();
   }, [username]);
 
-  if (!profile) return <p>Loading...</p>;
+  if (!profile) return <p>Loading profile...</p>;
 
   return (
     <div>
-      <h2>{profile.user}</h2>
-      <p><strong>Joined:</strong> {new Date(profile.created_at).toDateString()}</p>
-      {profile.bio && <p><strong>Bio:</strong> {profile.bio}</p>}
+      <h2>@{profile.user}</h2>
+
+      {profile.profile_picture && (
+        <img
+          src={profile.profile_picture}
+          alt={`${profile.name}'s profile`}
+          style={{ width: 100, height: 100, borderRadius: "50%" }}
+        />
+      )}
+
+      {profile.name && (
+        <p>
+          <strong>Name:</strong> {profile.name}
+        </p>
+      )}
+
+      {profile.bio && (
+        <p>
+          <strong>Bio:</strong> {profile.bio}
+        </p>
+      )}
+
+      <p>
+        <strong>Joined:</strong>{" "}
+        {new Date(profile.created_at).toLocaleDateString()}
+      </p>
     </div>
   );
 };
