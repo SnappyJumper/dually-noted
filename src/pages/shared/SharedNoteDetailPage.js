@@ -1,9 +1,8 @@
 // src/pages/shared/SharedNoteDetailPage.js
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { Button, Form } from "react-bootstrap";
-
 
 const SharedNoteDetailPage = () => {
   const { id } = useParams(); // ID of the SharedNote
@@ -94,7 +93,12 @@ const SharedNoteDetailPage = () => {
           <h4>{note?.title || "Untitled Note"}</h4>
           <p>{note?.content || "No content available."}</p>
           <p>
-            <strong>Owner:</strong> {note?.user || "Unknown"}
+            <strong>Owner:</strong>{" "}
+            {note?.user ? (
+              <Link to={`/profiles/username/${note.user}`}>{note.user}</Link>
+            ) : (
+              "Unknown"
+            )}
           </p>
         </>
       )}

@@ -30,7 +30,8 @@ const SharedNotesPage = () => {
             </h4>
             <p>{item.content}</p>
             <p>
-              <strong>From:</strong> {item.user}
+              <strong>From:</strong>{" "}
+              <Link to={`/profiles/username/${item.user}`}>{item.user}</Link>
             </p>
 
             <hr />
