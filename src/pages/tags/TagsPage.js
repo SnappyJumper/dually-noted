@@ -1,15 +1,29 @@
 // src/pages/tags/TagsPage.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, ListGroup, Row, Col, Modal, Form } from "react-bootstrap";
+import {
+  Button,
+  ListGroup,
+  Row,
+  Col,
+  Modal,
+  Form,
+  Alert,
+} from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 const TagsPage = () => {
   const [tags, setTags] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [tagToDelete, setTagToDelete] = useState(null);
   const [newTagName, setNewTagName] = useState("");
   const [editTagId, setEditTagId] = useState(null);
   const [editTagName, setEditTagName] = useState("");
+
+  const [alertMsg, setAlertMsg] = useState(null);
+  const [alertVariant, setAlertVariant] = useState("success");
+
   const history = useHistory();
 
   useEffect(() => {
@@ -25,23 +39,42 @@ const TagsPage = () => {
     }
   };
 
+  // Auto-dismiss alert
+  useEffect(() => {
+    if (alertMsg) {
+      const timer = setTimeout(() => setAlertMsg(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMsg]);
+
   const handleCreateTag = async () => {
     try {
       await axios.post("/tags/", { name: newTagName });
       setNewTagName("");
-      setShowModal(false);
+      setShowCreateModal(false);
       fetchTags();
+      setAlertVariant("success");
+      setAlertMsg("Tag created successfully.");
     } catch (err) {
       console.log(err);
+      setAlertVariant("danger");
+      setAlertMsg("Failed to create tag.");
     }
   };
 
-  const handleDeleteTag = async (id) => {
+  const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`/tags/${id}/`);
-      setTags((prev) => prev.filter((tag) => tag.id !== id));
+      await axios.delete(`/tags/${tagToDelete}/`);
+      setTags((prev) => prev.filter((tag) => tag.id !== tagToDelete));
+      setAlertVariant("success");
+      setAlertMsg("Tag deleted successfully.");
     } catch (err) {
       console.log(err);
+      setAlertVariant("danger");
+      setAlertMsg("Failed to delete tag.");
+    } finally {
+      setShowDeleteModal(false);
+      setTagToDelete(null);
     }
   };
 
@@ -61,9 +94,18 @@ const TagsPage = () => {
       setEditTagId(null);
       setEditTagName("");
       fetchTags();
+      setAlertVariant("success");
+      setAlertMsg("Tag updated successfully.");
     } catch (err) {
       console.log(err);
+      setAlertVariant("danger");
+      setAlertMsg("Failed to update tag.");
     }
+  };
+
+  const openDeleteModal = (id) => {
+    setTagToDelete(id);
+    setShowDeleteModal(true);
   };
 
   return (
@@ -71,9 +113,21 @@ const TagsPage = () => {
       <Row className="mb-3">
         <Col><h2>Tags</h2></Col>
         <Col className="text-end">
-          <Button onClick={() => setShowModal(true)}>+ New Tag</Button>
+          <Button onClick={() => setShowCreateModal(true)}>+ New Tag</Button>
         </Col>
       </Row>
+
+      {/* ✅ Success/Error Alert */}
+      {alertMsg && (
+        <Alert
+          className="my-3"
+          variant={alertVariant}
+          dismissible
+          onClose={() => setAlertMsg(null)}
+        >
+          {alertMsg}
+        </Alert>
+      )}
 
       <ListGroup>
         {tags.map((tag) => (
@@ -109,7 +163,7 @@ const TagsPage = () => {
                 <Button size="sm" variant="outline-primary" onClick={() => handleEditClick(tag)}>
                   Edit
                 </Button>
-                <Button size="sm" variant="outline-danger" onClick={() => handleDeleteTag(tag.id)}>
+                <Button size="sm" variant="outline-danger" onClick={() => openDeleteModal(tag.id)}>
                   Delete
                 </Button>
               </div>
@@ -118,7 +172,8 @@ const TagsPage = () => {
         ))}
       </ListGroup>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      {/* ✅ Create Tag Modal */}
+      <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Create New Tag</Modal.Title>
         </Modal.Header>
@@ -130,8 +185,26 @@ const TagsPage = () => {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
+          <Button variant="secondary" onClick={() => setShowCreateModal(false)}>Cancel</Button>
           <Button onClick={handleCreateTag}>Create</Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* ✅ Delete Confirmation Modal */}
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Tag</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this tag? This action cannot be undone.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleConfirmDelete}>
+            Delete
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
