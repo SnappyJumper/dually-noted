@@ -2,7 +2,6 @@ import React, { useState, useEffect, createContext } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styles from "./App.module.css";
 import SideNav from "./components/SideNav";
-import Button from "react-bootstrap/Button";
 import "./api/axiosDefaults";
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
@@ -34,7 +33,7 @@ function App() {
   const handleMount = async () => {
     try {
       const { data } = await axios.get("/dj-rest-auth/user/", {
-        withCredentials: true, // ✅ Required for cookie-based auth
+        withCredentials: true,
       });
       setCurrentUser(data);
     } catch (err) {

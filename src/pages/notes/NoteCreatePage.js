@@ -3,14 +3,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import NoteForm from "./NoteForm";
+import { Alert } from "react-bootstrap";
 
 const NoteCreatePage = () => {
   const [noteData, setNoteData] = useState({ title: "", content: "" });
   const [selectedTags, setSelectedTags] = useState([]);
   const [users, setUsers] = useState([]);
-  // New sharing state:
   const [selectedUser, setSelectedUser] = useState(null);
   const [permission, setPermission] = useState("read");
+  const [alertMsg, setAlertMsg] = useState(null);
+  const [alertVariant, setAlertVariant] = useState("success");
 
   const history = useHistory();
 
@@ -27,6 +29,13 @@ const NoteCreatePage = () => {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    if (alertMsg) {
+      const timer = setTimeout(() => setAlertMsg(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMsg]);
+
   const handleChange = (e) => {
     setNoteData({ ...noteData, [e.target.name]: e.target.value });
   };
@@ -38,8 +47,7 @@ const NoteCreatePage = () => {
 
     try {
       const { data: createdNote } = await axios.post("/notes/", payload);
-      
-      // If a user is selected for sharing, create the shared note record
+
       if (selectedUser) {
         await axios.post("/shared-notes/", {
           note: createdNote.id,
@@ -47,8 +55,16 @@ const NoteCreatePage = () => {
           permission,
         });
       }
-      history.push("/notes");
+
+      setAlertVariant("success");
+      setAlertMsg("Note created successfully!");
+
+      setTimeout(() => {
+        history.push("/notes");
+      }, 1500);
     } catch (err) {
+      setAlertVariant("danger");
+      setAlertMsg("Could not create note. Please try again.");
       console.log("Submission error:", err);
     }
   };
@@ -56,6 +72,16 @@ const NoteCreatePage = () => {
   return (
     <div>
       <h2>Create Note</h2>
+      {alertMsg && (
+        <Alert
+          className="my-3"
+          variant={alertVariant}
+          dismissible
+          onClose={() => setAlertMsg(null)}
+        >
+          {alertMsg}
+        </Alert>
+      )}
       <NoteForm
         noteData={noteData}
         handleChange={handleChange}
