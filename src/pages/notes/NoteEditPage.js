@@ -3,19 +3,30 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useHistory } from "react-router-dom";
 import NoteForm from "./NoteForm";
+import { Alert } from "react-bootstrap"; // ✅ Alert component
 
 const NoteEditPage = () => {
   const [noteData, setNoteData] = useState({ title: "", content: "" });
   const [selectedTags, setSelectedTags] = useState([]);
   const [users, setUsers] = useState([]);
-  // New sharing state:
   const [selectedUser, setSelectedUser] = useState(null);
   const [permission, setPermission] = useState("read");
+
+  const [alertMsg, setAlertMsg] = useState(null);
+  const [alertVariant, setAlertVariant] = useState("success");
 
   const { id } = useParams();
   const history = useHistory();
 
-  // Fetch the note and its tags
+  // Auto-dismiss alert
+  useEffect(() => {
+    if (alertMsg) {
+      const timer = setTimeout(() => setAlertMsg(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMsg]);
+
+  // Fetch note data and user list
   useEffect(() => {
     const fetchNote = async () => {
       try {
@@ -28,6 +39,8 @@ const NoteEditPage = () => {
         setSelectedTags(formattedTags);
       } catch (err) {
         console.log(err);
+        setAlertVariant("danger");
+        setAlertMsg("Could not load the note. Please try again.");
       }
     };
 
@@ -55,6 +68,7 @@ const NoteEditPage = () => {
 
     try {
       await axios.put(`/notes/${id}/`, payload);
+
       if (selectedUser) {
         await axios.post("/shared-notes/", {
           note: id,
@@ -62,22 +76,41 @@ const NoteEditPage = () => {
           permission,
         });
       }
-      history.push("/notes");
+
+      setAlertVariant("success");
+      setAlertMsg("Note updated successfully!");
+
+      setTimeout(() => {
+        history.push("/notes");
+      }, 1500);
     } catch (err) {
       console.log("Edit submission error:", err);
+      setAlertVariant("danger");
+      setAlertMsg("Could not update the note. Please try again.");
     }
   };
 
   return (
     <div>
       <h2>Edit Note</h2>
+
+      {alertMsg && (
+        <Alert
+          className="my-3"
+          variant={alertVariant}
+          dismissible
+          onClose={() => setAlertMsg(null)}
+        >
+          {alertMsg}
+        </Alert>
+      )}
+
       <NoteForm
         noteData={noteData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
-        // Pass share-related props:
         users={users}
         selectedUser={selectedUser}
         setSelectedUser={setSelectedUser}
