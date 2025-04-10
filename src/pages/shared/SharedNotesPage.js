@@ -26,12 +26,13 @@ const SharedNotesPage = () => {
         sharedNotes.map((item) => (
           <div key={item.id}>
             <h4>
-              <Link to={`/shared/${item.id}`}>{item.note.title}</Link>
+              <Link to={`/shared/${item.id}`}>{item.title}</Link>
             </h4>
-            <p>{item.note.content}</p>
+            <p>{item.content}</p>
             <p>
-              <strong>From:</strong> {item.note.user}
+              <strong>From:</strong> {item.user}
             </p>
+
             <hr />
           </div>
         ))
