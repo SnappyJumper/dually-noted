@@ -41,26 +41,40 @@ const SignUpForm = () => {
     e.preventDefault();
     setStatus("loading");
     try {
-      await axios.post("/dj-rest-auth/registration/", signUpData);
-
-      const loginResponse = await axios.post("/dj-rest-auth/login/", {
-        username,
-        password: password1,
+      // Step 1: Register the user
+      await axios.post("/dj-rest-auth/registration/", signUpData, {
+        withCredentials: true,
       });
-
-      localStorage.setItem("user", JSON.stringify(loginResponse.data));
-
-      const { data: userData } = await axios.get("/dj-rest-auth/user/");
+  
+      // Step 2: Log in immediately after registration
+      await axios.post(
+        "/dj-rest-auth/login/",
+        {
+          username,
+          password: password1,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+  
+      // Step 3: Get current user
+      const { data: userData } = await axios.get("/dj-rest-auth/user/", {
+        withCredentials: true,
+      });
+  
       setCurrentUser(userData);
-
       setStatus("success");
+  
       setTimeout(() => {
-        history.push("/");
+        history.push("/notes");
       }, 2000);
     } catch (err) {
-      setErrors(err.response?.data);
+      setErrors(err.response?.data || {});
+      setStatus("error");
     }
   };
+  
 
   return (
     <Row className={styles.Row}>

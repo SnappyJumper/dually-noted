@@ -33,12 +33,15 @@ function App() {
 
   const handleMount = async () => {
     try {
-      const { data } = await axios.get("/dj-rest-auth/user/");
+      const { data } = await axios.get("/dj-rest-auth/user/", {
+        withCredentials: true, // ✅ Required for cookie-based auth
+      });
       setCurrentUser(data);
     } catch (err) {
-      console.log(err);
+      console.log("Auth check failed:", err);
     }
   };
+  
 
   useEffect(() => {
     handleMount();

@@ -38,21 +38,27 @@ const SignInForm = () => {
     e.preventDefault();
     setStatus("loading");
     try {
-      const response = await axios.post("/dj-rest-auth/login/", signInData);
-
-      localStorage.setItem("user", JSON.stringify(response.data));
-
-      const { data: userData } = await axios.get("/dj-rest-auth/user/");
+      // ✅ Login with cookies
+      await axios.post("/dj-rest-auth/login/", signInData, {
+        withCredentials: true,
+      });
+  
+      // ✅ Fetch user after successful login
+      const { data: userData } = await axios.get("/dj-rest-auth/user/", {
+        withCredentials: true,
+      });
+  
       setCurrentUser(userData);
-
       setStatus("success");
       setTimeout(() => {
         history.push("/notes");
       }, 2000);
     } catch (err) {
       setErrors(err.response?.data || { non_field_errors: ["Login failed."] });
+      setStatus("error");
     }
   };
+  
 
   return (
     <Row className={styles.Row}>
