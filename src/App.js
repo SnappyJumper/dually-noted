@@ -18,6 +18,7 @@ import TagNotesPage from "./pages/tags/TagNotesPage";
 import NoteCreatePage from "./pages/notes/NoteCreatePage";
 import NoteEditPage from "./pages/notes/NoteEditPage";
 import NoteDetailPage from "./pages/notes/NoteDetailPage";
+import SharedNoteDetailPage from "./pages/shared/SharedNoteDetailPage";
 
 <PrivateRoute path="/notes/:id" exact component={NoteDetailPage} />
 
@@ -56,6 +57,7 @@ function App() {
               <PrivateRoute path="/notes" render={() => <NotesPage />} />
               <PrivateRoute path="/tags/:id" render={() => <TagNotesPage />} />
               <PrivateRoute path="/tags" render={() => <TagsPage />} />
+              <PrivateRoute path="/shared/:id" render={() => <SharedNoteDetailPage />} />
               <PrivateRoute path="/shared" render={() => <SharedNotesPage />} />
               <PrivateRoute path="/profile" render={() => <ProfilePage />} />
               <Route exact path="/signup" render={() => <SignUpForm />} />

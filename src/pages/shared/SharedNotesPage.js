@@ -1,6 +1,7 @@
 // src/pages/shared/SharedNotesPage.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const SharedNotesPage = () => {
   const [sharedNotes, setSharedNotes] = useState([]);
@@ -24,9 +25,13 @@ const SharedNotesPage = () => {
       {sharedNotes.length ? (
         sharedNotes.map((item) => (
           <div key={item.id}>
-            <h4>{item.note.title}</h4>
+            <h4>
+              <Link to={`/shared/${item.id}`}>{item.note.title}</Link>
+            </h4>
             <p>{item.note.content}</p>
-            <p><strong>From:</strong> {item.note.user}</p>
+            <p>
+              <strong>From:</strong> {item.note.user}
+            </p>
             <hr />
           </div>
         ))
