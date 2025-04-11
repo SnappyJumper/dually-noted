@@ -46,44 +46,38 @@ const NoteCreatePage = () => {
     e.preventDefault();
     const tag_ids = selectedTags.map((tag) => tag.value);
     const payload = { ...noteData, tag_ids };
-
+  
     try {
       const { data: createdNote } = await axios.post("/notes/", payload);
-
+  
       if (selectedUser) {
-        await axios.post("/shared-notes/", {
-          note: createdNote.id,
-          shared_with: selectedUser,
-          permission,
-        });
+        try {
+          await axios.post("/shared-notes/", {
+            note: createdNote.id,
+            shared_with: selectedUser,
+            permission,
+          });
+        } catch (shareErr) {
+          console.warn("Sharing failed:", shareErr);
+          setAlertVariant("warning");
+          setAlertMsg("Note created, but sharing failed.");
+        }
       }
-
+  
+      // Show success + redirect
       setAlertVariant("success");
       setAlertMsg("Note created successfully!");
-      setErrors({});
-
+  
       setTimeout(() => {
         history.push("/notes");
       }, 1500);
     } catch (err) {
-        const errorData = err.response?.data || {};
-      
-        // Set global alert
-        setAlertVariant("danger");
-      
-        if (errorData.shared_with?.length > 0) {
-          setAlertMsg(errorData.shared_with[0]);
-        } else if (errorData.note?.length > 0) {
-          setAlertMsg(errorData.note[0]);
-        } else if (errorData.non_field_errors?.length > 0) {
-          setAlertMsg(errorData.non_field_errors[0]);
-        } else {
-          setAlertMsg("Could not create note. Please check the fields.");
-        }
-      
-        setErrors(errorData);
-      }
+      setAlertVariant("danger");
+      setAlertMsg("Could not create note. Please check the fields.");
+      setErrors(err.response?.data || {});
+    }
   };
+  
 
   return (
     <div>
