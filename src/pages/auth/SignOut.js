@@ -1,7 +1,7 @@
 // src/pages/auth/SignOutPage.js
 
 import React, { useState, useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { SetCurrentUserContext } from "../../App";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
@@ -76,7 +76,7 @@ const SignOutPage = () => {
 
           {status === "success" && (
             <Alert variant="success">
-              You’ve been logged out. Redirecting to Log in...
+              You've been logged out. Redirecting to Log in...
             </Alert>
           )}
 

@@ -2,7 +2,7 @@
 
 import React, { useState, useContext } from "react";
 import { Navbar, Nav, Button, Collapse, Image } from "react-bootstrap";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { CurrentUserContext } from "../App";
 import logo from "../assets/logo.png";
 import styles from "../styles/SideNav.module.css";
@@ -15,7 +15,6 @@ import Avatar from "./Avatar";
  */
 const SideNav = () => {
   const [open, setOpen] = useState(false); // Controls mobile menu collapse state
-  const history = useHistory();
   const currentUser = useContext(CurrentUserContext);
 
   return (
