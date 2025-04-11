@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { CurrentUserContext } from "../../App";
 import { Button } from "react-bootstrap";
+import styles from "../../styles/StickyCard.module.css";
 
 const SharedNotesPage = () => {
   const currentUser = useContext(CurrentUserContext);
@@ -33,7 +34,7 @@ const SharedNotesPage = () => {
       <h2>Shared Notes</h2>
       {sharedNotes.length ? (
         sharedNotes.map((note) => (
-          <div key={note.id}>
+          <div key={note.id} className={styles.StickyNote}>
             <h4>
               <Link to={`/shared/${note.id}`}>{note.title}</Link>
             </h4>

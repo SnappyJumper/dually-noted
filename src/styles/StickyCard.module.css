@@ -1,0 +1,14 @@
+.StickyNote {
+    background-color: var(--note-yellow);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 4px 4px 12px var(--note-shadow);
+    font-family: var(--note-font);
+    color: var(--note-text);
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s ease;
+  }
+  
+  .StickyNote:hover {
+    transform: rotate(-1deg) scale(1.02);
+  }
