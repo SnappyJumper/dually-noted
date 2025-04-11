@@ -1,39 +1,67 @@
 /* src/styles/SideNav.module.css */
 
+:root {
+  --sidebar-bg: #2e3440;
+  --sidebar-hover: #3b4252;
+  --sidebar-text: #d8dee9;
+  --sidebar-active: #81a1c1;
+  --sidebar-radius: 8px;
+}
+
 .Sidebar {
   position: fixed;
   top: 0;
   left: 0;
   width: 220px;
   height: 100vh;
-  background-color: #343a40;
+  background-color: var(--sidebar-bg);
   z-index: 1000;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1.25rem;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
 }
 
 .NavLink {
-  color: #ccc;
+  color: var(--sidebar-text);
   padding: 0.75rem 1rem;
   text-decoration: none;
   display: flex;
   align-items: center;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-radius: var(--sidebar-radius);
 }
 
 .NavLink:hover,
 .NavLink:focus {
-  color: #fff;
-  background-color: #495057;
-  border-radius: 4px;
+  color: white;
+  background-color: var(--sidebar-hover);
 }
 
 .ActiveLink {
-  background-color: #495057;
-  color: #fff !important;
-  font-weight: bold;
-  border-radius: 4px;
+  background-color: var(--sidebar-hover);
+  color: var(--sidebar-active) !important;
+  font-weight: 600;
+  border-left: 4px solid var(--sidebar-active);
+  padding-left: 0.75rem;
 }
 
 .MobileNav {
-  background-color: #343a40;
+  background-color: var(--sidebar-bg);
   padding: 1rem;
+}
+
+/* Logo styling */
+.Logo {
+  max-height: 48px;
+  margin: 0 auto 1.5rem auto;
+  display: block;
+}
+
+.ProfileSection {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #444c5e;
 }
