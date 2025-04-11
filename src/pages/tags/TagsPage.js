@@ -4,8 +4,6 @@ import axios from "axios";
 import {
   Button,
   ListGroup,
-  Row,
-  Col,
   Modal,
   Form,
   Alert,
@@ -130,22 +128,17 @@ const TagsPage = () => {
   };
 
   return (
-    <>
+    <div>
       <h2 className="mb-3">Tags</h2>
 
-      <div className={cardStyles.StickyNoteStatic}>
-        <Row className="mb-3">
-          <Col />
-          <Col className="text-end">
-            <Button
-              className={`${btnStyles.Button} ${btnStyles.Bright}`}
-              onClick={() => setShowCreateModal(true)}
-            >
-              + New Tag
-            </Button>
-          </Col>
-        </Row>
+      <button
+        className={`${btnStyles.Button} ${btnStyles.Blue} mb-4`}
+        onClick={() => setShowCreateModal(true)}
+      >
+        + New Tag
+      </button>
 
+      <div className={cardStyles.StickyNoteStatic}>
         {alertMsg && (
           <Alert
             className="my-3"
@@ -274,7 +267,7 @@ const TagsPage = () => {
           </Alert>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
