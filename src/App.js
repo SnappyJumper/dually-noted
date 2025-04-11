@@ -20,31 +20,32 @@ import NoteDetailPage from "./pages/notes/NoteDetailPage";
 import SharedNoteDetailPage from "./pages/shared/SharedNoteDetailPage";
 import UserProfilePage from "./pages/profile/UserProfilePage";
 
-<PrivateRoute path="/notes/:id" exact component={NoteDetailPage} />
-
-
 export const CurrentUserContext = createContext();
 export const SetCurrentUserContext = createContext();
 
-// App.js
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-
-  const handleMount = async () => {
-    try {
-      const { data } = await axios.get("/dj-rest-auth/user/", {
-        withCredentials: true,
-      });
-      setCurrentUser(data);
-    } catch (err) {
-      console.log("Auth check failed:", err);
-    }
-  };
-  
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
+    const handleMount = async () => {
+      try {
+        const { data } = await axios.get("/dj-rest-auth/user/");
+        setCurrentUser(data);
+      } catch (err) {
+        console.log("Auth check failed:", err);
+        setCurrentUser(null); // Just to be safe
+      } finally {
+        setCheckingAuth(false);
+      }
+    };
+
     handleMount();
   }, []);
+
+  if (checkingAuth) {
+    return <div className="text-center mt-5">Loading...</div>;
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -54,15 +55,15 @@ function App() {
           <div className={styles.main}>
             <Switch>
               <Route exact path="/" render={() => <HomePage />} />
-              <PrivateRoute path="/notes/create" render={() => <NoteCreatePage/>} />
-              <PrivateRoute path="/notes/:id/edit" render={() => <NoteEditPage/>} />
+              <PrivateRoute path="/notes/create" render={() => <NoteCreatePage />} />
+              <PrivateRoute path="/notes/:id/edit" render={() => <NoteEditPage />} />
               <PrivateRoute path="/notes/:id" exact render={() => <NoteDetailPage />} />
               <PrivateRoute path="/notes" render={() => <NotesPage />} />
               <PrivateRoute path="/tags/:id" render={() => <TagNotesPage />} />
               <PrivateRoute path="/tags" render={() => <TagsPage />} />
               <PrivateRoute path="/shared/:id" render={() => <SharedNoteDetailPage />} />
               <PrivateRoute path="/shared" render={() => <SharedNotesPage />} />
-              <Route path="/profiles/username/:username" render={() => <UserProfilePage/>} />
+              <Route path="/profiles/username/:username" render={() => <UserProfilePage />} />
               <PrivateRoute path="/profile" render={() => <ProfilePage />} />
               <Route exact path="/signup" render={() => <SignUpForm />} />
               <Route path="/login" render={() => <SignInForm />} />
