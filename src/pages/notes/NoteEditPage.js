@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useHistory } from "react-router-dom";
 import NoteForm from "./NoteForm";
-import { Alert } from "react-bootstrap"; // ✅ Alert component
+import { Alert } from "react-bootstrap";
 
 const NoteEditPage = () => {
   const [noteData, setNoteData] = useState({ title: "", content: "" });
@@ -14,11 +14,11 @@ const NoteEditPage = () => {
 
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
+  const [errors, setErrors] = useState({});
 
   const { id } = useParams();
   const history = useHistory();
 
-  // Auto-dismiss alert
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -26,7 +26,6 @@ const NoteEditPage = () => {
     }
   }, [alertMsg]);
 
-  // Fetch note data and user list
   useEffect(() => {
     const fetchNote = async () => {
       try {
@@ -59,6 +58,7 @@ const NoteEditPage = () => {
 
   const handleChange = (e) => {
     setNoteData({ ...noteData, [e.target.name]: e.target.value });
+    setErrors({}); // clear errors as user types
   };
 
   const handleSubmit = async (e) => {
@@ -79,6 +79,7 @@ const NoteEditPage = () => {
 
       setAlertVariant("success");
       setAlertMsg("Note updated successfully!");
+      setErrors({});
 
       setTimeout(() => {
         history.push("/notes");
@@ -86,7 +87,8 @@ const NoteEditPage = () => {
     } catch (err) {
       console.log("Edit submission error:", err);
       setAlertVariant("danger");
-      setAlertMsg("Could not update the note. Please try again.");
+      setAlertMsg("Could not update the note. Please check the fields.");
+      setErrors(err.response?.data || {});
     }
   };
 
@@ -103,6 +105,15 @@ const NoteEditPage = () => {
         >
           {alertMsg}
         </Alert>
+      )}
+
+      {/* Validation Error Alerts */}
+      {["title", "content", "non_field_errors"].map((field) =>
+        errors[field]?.map((msg, idx) => (
+          <Alert key={`${field}-${idx}`} variant="warning">
+            {msg}
+          </Alert>
+        ))
       )}
 
       <NoteForm

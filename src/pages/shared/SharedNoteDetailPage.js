@@ -5,7 +5,7 @@ import axios from "axios";
 import { Button, Form, Alert, Modal } from "react-bootstrap";
 
 const SharedNoteDetailPage = () => {
-  const { id } = useParams(); // ID of the SharedNote
+  const { id } = useParams();
   const history = useHistory();
   const [note, setNote] = useState(null);
   const [canEdit, setCanEdit] = useState(false);
@@ -54,7 +54,6 @@ const SharedNoteDetailPage = () => {
       setAlertMsg("Shared note updated successfully.");
       setEditing(false);
 
-      // Update UI to reflect latest note content
       setNote((prev) => ({
         ...prev,
         title: formData.title,
@@ -88,7 +87,6 @@ const SharedNoteDetailPage = () => {
     <div>
       <h2>Shared Note</h2>
 
-      {/* ✅ Alert */}
       {alertMsg && (
         <Alert
           variant={alertVariant}
@@ -156,7 +154,6 @@ const SharedNoteDetailPage = () => {
         </Button>
       </div>
 
-      {/* ✅ Confirmation Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Leave Shared Note</Modal.Title>

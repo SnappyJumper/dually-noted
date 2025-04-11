@@ -11,12 +11,13 @@ const NoteCreatePage = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [permission, setPermission] = useState("read");
+
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
+  const [errors, setErrors] = useState({});
 
   const history = useHistory();
 
-  // Fetch list of users to share with
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -38,6 +39,7 @@ const NoteCreatePage = () => {
 
   const handleChange = (e) => {
     setNoteData({ ...noteData, [e.target.name]: e.target.value });
+    setErrors({}); // clear errors as user types
   };
 
   const handleSubmit = async (e) => {
@@ -58,15 +60,29 @@ const NoteCreatePage = () => {
 
       setAlertVariant("success");
       setAlertMsg("Note created successfully!");
+      setErrors({});
 
       setTimeout(() => {
         history.push("/notes");
       }, 1500);
     } catch (err) {
-      setAlertVariant("danger");
-      setAlertMsg("Could not create note. Please try again.");
-      console.log("Submission error:", err);
-    }
+        const errorData = err.response?.data || {};
+      
+        // Set global alert
+        setAlertVariant("danger");
+      
+        if (errorData.shared_with?.length > 0) {
+          setAlertMsg(errorData.shared_with[0]);
+        } else if (errorData.note?.length > 0) {
+          setAlertMsg(errorData.note[0]);
+        } else if (errorData.non_field_errors?.length > 0) {
+          setAlertMsg(errorData.non_field_errors[0]);
+        } else {
+          setAlertMsg("Could not create note. Please check the fields.");
+        }
+      
+        setErrors(errorData);
+      }
   };
 
   return (
@@ -82,13 +98,21 @@ const NoteCreatePage = () => {
           {alertMsg}
         </Alert>
       )}
+      {/* 🔽 Show validation messages */}
+      {["title", "content", "non_field_errors"].map((field) =>
+        errors[field]?.map((msg, idx) => (
+          <Alert key={`${field}-${idx}`} variant="warning">
+            {msg}
+          </Alert>
+        ))
+      )}
+
       <NoteForm
         noteData={noteData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
-        // Pass share-related props:
         users={users}
         selectedUser={selectedUser}
         setSelectedUser={setSelectedUser}

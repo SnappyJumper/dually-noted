@@ -40,41 +40,44 @@ const SignUpForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
+
+    if (!username.trim() || !password1 || !password2) {
+      setErrors({ non_field_errors: ["All fields are required."] });
+      setStatus("error");
+      return;
+    }
+
+    if (password1 !== password2) {
+      setErrors({ password2: ["Passwords do not match."] });
+      setStatus("error");
+      return;
+    }
+
     try {
-      // Step 1: Register the user
-      await axios.post("/dj-rest-auth/registration/", signUpData, {
-        withCredentials: true,
+      await axios.post("/dj-rest-auth/registration/", signUpData);
+
+      const loginResponse = await axios.post("/dj-rest-auth/login/", {
+        username,
+        password: password1,
       });
-  
-      // Step 2: Log in immediately after registration
-      await axios.post(
-        "/dj-rest-auth/login/",
-        {
-          username,
-          password: password1,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-  
-      // Step 3: Get current user
-      const { data: userData } = await axios.get("/dj-rest-auth/user/", {
-        withCredentials: true,
-      });
-  
+
+      localStorage.setItem("user", JSON.stringify(loginResponse.data));
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Token ${loginResponse.data.key}`;
+
+      const { data: userData } = await axios.get("/dj-rest-auth/user/");
       setCurrentUser(userData);
+
       setStatus("success");
-  
       setTimeout(() => {
-        history.push("/notes");
+        history.push("/");
       }, 2000);
     } catch (err) {
-      setErrors(err.response?.data || {});
+      setErrors(err.response?.data || { non_field_errors: ["Signup failed."] });
       setStatus("error");
     }
   };
-  
 
   return (
     <Row className={styles.Row}>
@@ -161,7 +164,7 @@ const SignUpForm = () => {
           </Form>
         </Container>
         <Container className={`mt-3 ${appStyles.Content}`}>
-          <Link className={styles.Link} to="/signin">
+          <Link className={styles.Link} to="/login">
             Already have an account? <span>Sign in</span>
           </Link>
         </Container>

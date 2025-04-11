@@ -1,3 +1,4 @@
+// src/pages/auth/SignInForm.js
 import React, { useState, useEffect, useContext } from "react";
 import { SetCurrentUserContext } from "../../App";
 import { Link, useHistory } from "react-router-dom";
@@ -7,7 +8,6 @@ import appStyles from "../../App.module.css";
 import {
   Form,
   Button,
-  Image,
   Col,
   Row,
   Container,
@@ -23,8 +23,8 @@ const SignInForm = () => {
   });
   const { username, password } = signInData;
   const [errors, setErrors] = useState({});
-  const history = useHistory();
   const [status, setStatus] = useState("idle");
+  const history = useHistory();
 
   const handleChange = (e) => {
     setSignInData({
@@ -37,22 +37,32 @@ const SignInForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
+  
+    if (!username || !password) {
+      setErrors({ non_field_errors: ["Username and password are required."] });
+      setStatus("error");
+      return;
+    }
+  
     try {
-      // ✅ Login with cookies
-      await axios.post("/dj-rest-auth/login/", signInData, {
-        withCredentials: true,
-      });
+      await axios.post(
+        "/dj-rest-auth/login/",
+        signInData,
+        { headers: { "Content-Type": "application/json" } }
+      );
   
-      // ✅ Fetch user after successful login
-      const { data: userData } = await axios.get("/dj-rest-auth/user/", {
-        withCredentials: true,
-      });
+      setTimeout(async () => {
+        try {
+          const { data: userData } = await axios.get("/dj-rest-auth/user/");
+          setCurrentUser(userData);
+          setStatus("success");
+          history.push("/notes");
+        } catch (err) {
+          console.error("Error fetching user after login", err);
+          setStatus("error");
+        }
+      }, 500);
   
-      setCurrentUser(userData);
-      setStatus("success");
-      setTimeout(() => {
-        history.push("/notes");
-      }, 2000);
     } catch (err) {
       setErrors(err.response?.data || { non_field_errors: ["Login failed."] });
       setStatus("error");

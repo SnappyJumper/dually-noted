@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { CurrentUserContext } from "../../App";
 import Avatar from "../../components/Avatar";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 
 const ProfilePage = () => {
   const currentUser = useContext(CurrentUserContext);
@@ -15,6 +15,9 @@ const ProfilePage = () => {
     profile_picture: null,
   });
 
+  const [alertMsg, setAlertMsg] = useState(null);
+  const [alertVariant, setAlertVariant] = useState("success");
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -25,10 +28,12 @@ const ProfilePage = () => {
         setUpdatedData({
           name: data.name || "",
           bio: data.bio || "",
-          profile_picture: null, // For file uploads
+          profile_picture: null,
         });
       } catch (err) {
         console.log(err);
+        setAlertVariant("danger");
+        setAlertMsg("Failed to load profile.");
       }
     };
 
@@ -36,6 +41,13 @@ const ProfilePage = () => {
       fetchProfile();
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    if (alertMsg) {
+      const timer = setTimeout(() => setAlertMsg(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMsg]);
 
   const handleChange = (e) => {
     setUpdatedData({
@@ -45,9 +57,16 @@ const ProfilePage = () => {
   };
 
   const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && !file.type.startsWith("image/")) {
+      setAlertVariant("danger");
+      setAlertMsg("Please upload a valid image file.");
+      return;
+    }
+
     setUpdatedData({
       ...updatedData,
-      profile_picture: e.target.files[0],
+      profile_picture: file,
     });
   };
 
@@ -66,8 +85,12 @@ const ProfilePage = () => {
       );
       setProfile(data);
       setEditMode(false);
+      setAlertVariant("success");
+      setAlertMsg("Profile updated successfully!");
     } catch (err) {
       console.error(err);
+      setAlertVariant("danger");
+      setAlertMsg("Failed to update profile. Please try again.");
     }
   };
 
@@ -91,7 +114,18 @@ const ProfilePage = () => {
             </Form.Group>
           )}
         </Col>
+
         <Col md={8}>
+          {alertMsg && (
+            <Alert
+              variant={alertVariant}
+              dismissible
+              onClose={() => setAlertMsg(null)}
+            >
+              {alertMsg}
+            </Alert>
+          )}
+
           {editMode ? (
             <>
               <Form.Group className="mb-3">

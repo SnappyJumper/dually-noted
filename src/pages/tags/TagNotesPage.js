@@ -11,10 +11,9 @@ const TagNotesPage = () => {
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
 
-  const [noteToUpdate, setNoteToUpdate] = useState(null); // ID of note
+  const [noteToUpdate, setNoteToUpdate] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  // Auto-dismiss alert
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -78,7 +77,6 @@ const TagNotesPage = () => {
     <div>
       <h2>Notes tagged with #{tag.name}</h2>
 
-      {/* ✅ Alert */}
       {alertMsg && (
         <Alert
           variant={alertVariant}
@@ -109,7 +107,6 @@ const TagNotesPage = () => {
         <p>No notes found for this tag.</p>
       )}
 
-      {/* ✅ Confirmation Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Remove Tag</Modal.Title>

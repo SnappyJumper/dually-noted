@@ -24,6 +24,9 @@ const TagsPage = () => {
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
 
+  const [createErrors, setCreateErrors] = useState([]);
+  const [editErrors, setEditErrors] = useState([]);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -39,7 +42,6 @@ const TagsPage = () => {
     }
   };
 
-  // Auto-dismiss alert
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -48,17 +50,26 @@ const TagsPage = () => {
   }, [alertMsg]);
 
   const handleCreateTag = async () => {
+    const trimmed = newTagName.trim();
+    if (!trimmed) {
+      setCreateErrors(["Tag name cannot be empty."]);
+      return;
+    }
+
     try {
-      await axios.post("/tags/", { name: newTagName });
+      await axios.post("/tags/", { name: trimmed });
       setNewTagName("");
       setShowCreateModal(false);
       fetchTags();
+      setCreateErrors([]);
       setAlertVariant("success");
       setAlertMsg("Tag created successfully.");
     } catch (err) {
       console.log(err);
+      const errorMsg = err.response?.data?.name?.[0] || "Failed to create tag.";
+      setCreateErrors([errorMsg]);
       setAlertVariant("danger");
-      setAlertMsg("Failed to create tag.");
+      setAlertMsg(errorMsg);
     }
   };
 
@@ -81,25 +92,36 @@ const TagsPage = () => {
   const handleEditClick = (tag) => {
     setEditTagId(tag.id);
     setEditTagName(tag.name);
+    setEditErrors([]);
   };
 
   const handleEditCancel = () => {
     setEditTagId(null);
     setEditTagName("");
+    setEditErrors([]);
   };
 
   const handleEditSave = async (id) => {
+    const trimmed = editTagName.trim();
+    if (!trimmed) {
+      setEditErrors(["Tag name cannot be empty."]);
+      return;
+    }
+
     try {
-      await axios.put(`/tags/${id}/`, { name: editTagName });
+      await axios.put(`/tags/${id}/`, { name: trimmed });
       setEditTagId(null);
       setEditTagName("");
       fetchTags();
+      setEditErrors([]);
       setAlertVariant("success");
       setAlertMsg("Tag updated successfully.");
     } catch (err) {
       console.log(err);
+      const errorMsg = err.response?.data?.name?.[0] || "Failed to update tag.";
+      setEditErrors([errorMsg]);
       setAlertVariant("danger");
-      setAlertMsg("Failed to update tag.");
+      setAlertMsg(errorMsg);
     }
   };
 
@@ -117,7 +139,6 @@ const TagsPage = () => {
         </Col>
       </Row>
 
-      {/* ✅ Success/Error Alert */}
       {alertMsg && (
         <Alert
           className="my-3"
@@ -172,7 +193,7 @@ const TagsPage = () => {
         ))}
       </ListGroup>
 
-      {/* ✅ Create Tag Modal */}
+      {/* Create Tag Modal */}
       <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Create New Tag</Modal.Title>
@@ -181,8 +202,16 @@ const TagsPage = () => {
           <Form.Control
             placeholder="Enter tag name"
             value={newTagName}
-            onChange={(e) => setNewTagName(e.target.value)}
+            onChange={(e) => {
+              setNewTagName(e.target.value);
+              setCreateErrors([]);
+            }}
           />
+          {createErrors.map((err, idx) => (
+            <Alert key={idx} variant="warning" className="mt-2">
+              {err}
+            </Alert>
+          ))}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowCreateModal(false)}>Cancel</Button>
@@ -190,7 +219,7 @@ const TagsPage = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* ✅ Delete Confirmation Modal */}
+      {/* Delete Confirmation Modal */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Delete Tag</Modal.Title>
@@ -207,6 +236,15 @@ const TagsPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Edit Errors Display */}
+      {editErrors.length > 0 && (
+        <Alert className="mt-3" variant="warning">
+          {editErrors.map((err, idx) => (
+            <div key={idx}>{err}</div>
+          ))}
+        </Alert>
+      )}
     </div>
   );
 };

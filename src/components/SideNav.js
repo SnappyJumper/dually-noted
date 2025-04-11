@@ -6,6 +6,10 @@ import logo from "../assets/logo.png";
 import styles from "../styles/SideNav.module.css";
 import Avatar from "./Avatar";
 
+/**
+ * JavaScript docstring
+ * 
+ */
 const SideNav = () => {
   const [open, setOpen] = useState(false);
   const history = useHistory();

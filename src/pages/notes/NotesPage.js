@@ -9,8 +9,8 @@ const NotesPage = () => {
   const [notes, setNotes] = useState([]);
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
-  const [noteToDelete, setNoteToDelete] = useState(null); // 👈 selected note for deletion
-  const [showModal, setShowModal] = useState(false); // 👈 modal visibility
+  const [noteToDelete, setNoteToDelete] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const history = useHistory();
 
