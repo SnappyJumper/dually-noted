@@ -53,15 +53,27 @@
   padding: 1rem;
 }
 
-/* Logo styling */
-.Logo {
-  max-height: 48px;
-  margin: 0 auto 1.5rem auto;
-  display: block;
-}
-
 .ProfileSection {
   text-align: center;
   padding-top: 1rem;
   border-top: 1px solid #444c5e;
+}
+
+.Logo {
+  display: block;
+  margin: 0 auto 1.5rem auto;
+}
+
+/*  mobile view */
+@media (max-width: 991px) {
+  .Logo {
+    max-height: 40px;
+  }
+}
+
+/*  desktop view */
+@media (min-width: 992px) {
+  .Logo {
+    max-height: 72px;
+  }
 }
