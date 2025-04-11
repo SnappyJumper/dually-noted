@@ -1,8 +1,9 @@
-// src/pages/shared/SharedNoteDetailPage.js
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
 import axios from "axios";
-import { Button, Form, Alert, Modal } from "react-bootstrap";
+import { Form, Alert, Modal } from "react-bootstrap";
+import styles from "../../styles/StickyCard.module.css";
+import btnStyles from "../../styles/Button.module.css";
 
 const SharedNoteDetailPage = () => {
   const { id } = useParams();
@@ -41,10 +42,7 @@ const SharedNoteDetailPage = () => {
   }, [alertMsg]);
 
   const handleEditToggle = () => setEditing(true);
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const handleChange = (e) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -53,7 +51,6 @@ const SharedNoteDetailPage = () => {
       setAlertVariant("success");
       setAlertMsg("Shared note updated successfully.");
       setEditing(false);
-
       setNote((prev) => ({
         ...prev,
         title: formData.title,
@@ -84,22 +81,18 @@ const SharedNoteDetailPage = () => {
   if (!note) return <p>Loading note...</p>;
 
   return (
-    <div>
-      <h2>Shared Note</h2>
+    <div className={styles.StickyNoteStatic}>
+      <h2 className={styles.title}>Shared Note</h2>
 
       {alertMsg && (
-        <Alert
-          variant={alertVariant}
-          dismissible
-          onClose={() => setAlertMsg(null)}
-        >
+        <Alert variant={alertVariant} dismissible onClose={() => setAlertMsg(null)}>
           {alertMsg}
         </Alert>
       )}
 
       {editing ? (
         <Form onSubmit={handleUpdate}>
-          <Form.Group controlId="title">
+          <Form.Group controlId="title" className="mb-3">
             <Form.Label>Title</Form.Label>
             <Form.Control
               name="title"
@@ -121,15 +114,15 @@ const SharedNoteDetailPage = () => {
             />
           </Form.Group>
 
-          <Button type="submit" variant="primary" className="mt-3">
+          <button type="submit" className={`${btnStyles.Button} ${btnStyles.Blue} mt-3`}>
             Save Changes
-          </Button>
+          </button>
         </Form>
       ) : (
         <>
-          <h4>{note?.title || "Untitled Note"}</h4>
-          <p>{note?.content || "No content available."}</p>
-          <p>
+          <h4 className={styles.title}>{note?.title || "Untitled Note"}</h4>
+          <p className={styles.content}>{note?.content || "No content available."}</p>
+          <p className={styles.meta}>
             <strong>Owner:</strong>{" "}
             {note?.user ? (
               <Link to={`/profiles/username/${note.user}`}>{note.user}</Link>
@@ -140,18 +133,15 @@ const SharedNoteDetailPage = () => {
         </>
       )}
 
-      <div className="mt-4 d-flex gap-2">
+      <div className="mt-4 d-flex gap-2 flex-wrap">
         {canEdit && !editing && (
-          <Button variant="warning" onClick={handleEditToggle}>
+          <button className={`${btnStyles.Button} ${btnStyles.Blue}`} onClick={handleEditToggle}>
             Edit
-          </Button>
+          </button>
         )}
-        <Button variant="outline-danger" onClick={confirmRemove}>
+        <button className={`${btnStyles.Button} ${btnStyles.DangerOutline}`} onClick={confirmRemove}>
           Remove Me From This Note
-        </Button>
-        <Button variant="secondary" onClick={() => history.push("/shared")}>
-          Back to Shared Notes
-        </Button>
+        </button>
       </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
@@ -159,16 +149,15 @@ const SharedNoteDetailPage = () => {
           <Modal.Title>Leave Shared Note</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to remove yourself from this shared note?
-          You will no longer have access to it.
+          Are you sure you want to remove yourself from this shared note? You will no longer have access to it.
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <button className={`${btnStyles.Button} ${btnStyles.Black}`} onClick={() => setShowModal(false)}>
             Cancel
-          </Button>
-          <Button variant="danger" onClick={handleRemoveSelf}>
+          </button>
+          <button className={`${btnStyles.Button} ${btnStyles.Danger}`} onClick={handleRemoveSelf}>
             Remove Me
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </div>

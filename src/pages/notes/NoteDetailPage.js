@@ -1,8 +1,8 @@
-// src/pages/notes/NoteDetailPage.js
-import React, { useEffect, useState, } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import styles from "../../styles/StickyCard.module.css";
+import btnStyles from "../../styles/Button.module.css";
 
 const NoteDetailPage = () => {
   const { id } = useParams();
@@ -22,14 +22,7 @@ const NoteDetailPage = () => {
     fetchNote();
   }, [id]);
 
-  const handleEdit = () => {
-    history.push(`/notes/${id}/edit`);
-  };
-
-  const handleBack = () => {
-    history.push("/notes");
-  };
-
+  const handleEdit = () => history.push(`/notes/${id}/edit`);
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this note?")) {
       try {
@@ -44,9 +37,9 @@ const NoteDetailPage = () => {
   if (!note) return <p>Loading note...</p>;
 
   return (
-    <div>
-      <h2>{note.title}</h2>
-      <p>{note.content}</p>
+    <div className={styles.StickyNoteStatic}>
+      <h2 className={styles.title}>{note.title}</h2>
+      <p className={styles.content}>{note.content}</p>
 
       {note.tags?.length > 0 && (
         <div className="mb-3">
@@ -62,17 +55,14 @@ const NoteDetailPage = () => {
       <div className="d-flex gap-2 mt-3">
         {note.is_owner && (
           <>
-            <Button variant="warning" onClick={handleEdit}>
+            <button className={`${btnStyles.Button} ${btnStyles.Blue}`} onClick={handleEdit}>
               Edit
-            </Button>
-            <Button variant="danger" onClick={handleDelete}>
+            </button>
+            <button className={`${btnStyles.Button} ${btnStyles.Danger}`} onClick={handleDelete}>
               Delete
-            </Button>
+            </button>
           </>
         )}
-        <Button variant="secondary" onClick={handleBack}>
-          Back to Notes
-        </Button>
       </div>
     </div>
   );
