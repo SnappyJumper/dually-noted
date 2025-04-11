@@ -19,6 +19,7 @@ import NoteEditPage from "./pages/notes/NoteEditPage";
 import NoteDetailPage from "./pages/notes/NoteDetailPage";
 import SharedNoteDetailPage from "./pages/shared/SharedNoteDetailPage";
 import UserProfilePage from "./pages/profile/UserProfilePage";
+import NotFoundPage from "./pages/not_found/NotFoundPage";
 
 export const CurrentUserContext = createContext();
 export const SetCurrentUserContext = createContext();
@@ -68,7 +69,7 @@ function App() {
               <Route exact path="/signup" render={() => <SignUpForm />} />
               <Route path="/login" render={() => <SignInForm />} />
               <Route path="/logout" render={() => <SignOutPage />} />
-              <Route path="*" component={() => <h2>404 Not Found</h2>} />
+              <Route path="*" render={() => <NotFoundPage />} />
             </Switch>
           </div>
         </Router>
