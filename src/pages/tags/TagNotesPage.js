@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import { Button, Modal, Alert } from "react-bootstrap";
+import cardStyles from "../../styles/StickyCard.module.css";
+import btnStyles from "../../styles/Button.module.css";
 
 const TagNotesPage = () => {
   const { id } = useParams();
@@ -75,7 +77,7 @@ const TagNotesPage = () => {
 
   return (
     <div>
-      <h2>Notes tagged with #{tag.name}</h2>
+      <h2 className="mb-3">Notes tagged with #{tag.name}</h2>
 
       {alertMsg && (
         <Alert
@@ -90,35 +92,41 @@ const TagNotesPage = () => {
 
       {notes.length > 0 ? (
         notes.map((note) => (
-          <div key={note.id}>
-            <h4><Link to={`/notes/${note.id}`}>{note.title}</Link></h4>
+          <div key={note.id} className={cardStyles.StickyNoteStatic}>
+            <h4 className={cardStyles.title}>
+              <Link to={`/notes/${note.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                {note.title}
+              </Link>
+            </h4>
             <p>{note.content}</p>
             <Button
               variant="danger"
               size="sm"
+              className={`${btnStyles.Button} mt-2`}
               onClick={() => handleRemoveTag(note.id)}
             >
               Remove from Tag
             </Button>
-            <hr />
           </div>
         ))
       ) : (
         <p>No notes found for this tag.</p>
       )}
 
+      {/* Confirmation Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Remove Tag</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to remove this note from the <strong>#{tag.name}</strong> tag?
+          Are you sure you want to remove this note from the{" "}
+          <strong>#{tag.name}</strong> tag?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleConfirmRemove}>
+          <Button variant="danger" className={btnStyles.Button} onClick={handleConfirmRemove}>
             Remove Tag
           </Button>
         </Modal.Footer>

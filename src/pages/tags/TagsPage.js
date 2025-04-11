@@ -11,6 +11,8 @@ import {
   Alert,
 } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import cardStyles from "../../styles/StickyCard.module.css";
+import btnStyles from "../../styles/Button.module.css";
 
 const TagsPage = () => {
   const [tags, setTags] = useState([]);
@@ -65,7 +67,6 @@ const TagsPage = () => {
       setAlertVariant("success");
       setAlertMsg("Tag created successfully.");
     } catch (err) {
-      console.log(err);
       const errorMsg = err.response?.data?.name?.[0] || "Failed to create tag.";
       setCreateErrors([errorMsg]);
       setAlertVariant("danger");
@@ -80,7 +81,6 @@ const TagsPage = () => {
       setAlertVariant("success");
       setAlertMsg("Tag deleted successfully.");
     } catch (err) {
-      console.log(err);
       setAlertVariant("danger");
       setAlertMsg("Failed to delete tag.");
     } finally {
@@ -117,7 +117,6 @@ const TagsPage = () => {
       setAlertVariant("success");
       setAlertMsg("Tag updated successfully.");
     } catch (err) {
-      console.log(err);
       const errorMsg = err.response?.data?.name?.[0] || "Failed to update tag.";
       setEditErrors([errorMsg]);
       setAlertVariant("danger");
@@ -131,121 +130,151 @@ const TagsPage = () => {
   };
 
   return (
-    <div>
-      <Row className="mb-3">
-        <Col><h2>Tags</h2></Col>
-        <Col className="text-end">
-          <Button onClick={() => setShowCreateModal(true)}>+ New Tag</Button>
-        </Col>
-      </Row>
+    <>
+      <h2 className="mb-3">Tags</h2>
 
-      {alertMsg && (
-        <Alert
-          className="my-3"
-          variant={alertVariant}
-          dismissible
-          onClose={() => setAlertMsg(null)}
-        >
-          {alertMsg}
-        </Alert>
-      )}
+      <div className={cardStyles.StickyNoteStatic}>
+        <Row className="mb-3">
+          <Col />
+          <Col className="text-end">
+            <Button
+              className={`${btnStyles.Button} ${btnStyles.Bright}`}
+              onClick={() => setShowCreateModal(true)}
+            >
+              + New Tag
+            </Button>
+          </Col>
+        </Row>
 
-      <ListGroup>
-        {tags.map((tag) => (
-          <ListGroup.Item
-            key={tag.id}
-            className="d-flex justify-content-between align-items-center"
+        {alertMsg && (
+          <Alert
+            className="my-3"
+            variant={alertVariant}
+            dismissible
+            onClose={() => setAlertMsg(null)}
           >
-            {editTagId === tag.id ? (
-              <div className="d-flex flex-grow-1 align-items-center gap-2">
-                <Form.Control
-                  size="sm"
-                  value={editTagName}
-                  onChange={(e) => setEditTagName(e.target.value)}
-                />
-                <Button size="sm" variant="success" onClick={() => handleEditSave(tag.id)}>
-                  Save
-                </Button>
-                <Button size="sm" variant="secondary" onClick={handleEditCancel}>
-                  Cancel
-                </Button>
-              </div>
-            ) : (
-              <div
-                className="flex-grow-1"
-                style={{ cursor: "pointer" }}
-                onClick={() => history.push(`/tags/${tag.id}`)}
-              >
-                #{tag.name}
-              </div>
-            )}
-            {editTagId !== tag.id && (
-              <div className="d-flex gap-2">
-                <Button size="sm" variant="outline-primary" onClick={() => handleEditClick(tag)}>
-                  Edit
-                </Button>
-                <Button size="sm" variant="outline-danger" onClick={() => openDeleteModal(tag.id)}>
-                  Delete
-                </Button>
-              </div>
-            )}
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+            {alertMsg}
+          </Alert>
+        )}
 
-      {/* Create Tag Modal */}
-      <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create New Tag</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Control
-            placeholder="Enter tag name"
-            value={newTagName}
-            onChange={(e) => {
-              setNewTagName(e.target.value);
-              setCreateErrors([]);
-            }}
-          />
-          {createErrors.map((err, idx) => (
-            <Alert key={idx} variant="warning" className="mt-2">
-              {err}
-            </Alert>
+        <ListGroup>
+          {tags.map((tag) => (
+            <ListGroup.Item
+              key={tag.id}
+              className="d-flex justify-content-between align-items-center"
+            >
+              {editTagId === tag.id ? (
+                <div className="d-flex flex-grow-1 align-items-center gap-2">
+                  <Form.Control
+                    size="sm"
+                    value={editTagName}
+                    onChange={(e) => setEditTagName(e.target.value)}
+                  />
+                  <Button
+                    size="sm"
+                    variant="success"
+                    className={btnStyles.Button}
+                    onClick={() => handleEditSave(tag.id)}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className={btnStyles.Button}
+                    onClick={handleEditCancel}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              ) : (
+                <div
+                  className="flex-grow-1 fw-bold"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => history.push(`/tags/${tag.id}`)}
+                >
+                  #{tag.name}
+                </div>
+              )}
+              {editTagId !== tag.id && (
+                <div className="d-flex gap-2">
+                  <Button
+                    size="sm"
+                    className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
+                    onClick={() => handleEditClick(tag)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
+                    onClick={() => openDeleteModal(tag.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              )}
+            </ListGroup.Item>
           ))}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowCreateModal(false)}>Cancel</Button>
-          <Button onClick={handleCreateTag}>Create</Button>
-        </Modal.Footer>
-      </Modal>
+        </ListGroup>
 
-      {/* Delete Confirmation Modal */}
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Tag</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to delete this tag? This action cannot be undone.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleConfirmDelete}>
-            Delete
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        {/* Create Modal */}
+        <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Create New Tag</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Control
+              placeholder="Enter tag name"
+              value={newTagName}
+              onChange={(e) => {
+                setNewTagName(e.target.value);
+                setCreateErrors([]);
+              }}
+            />
+            {createErrors.map((err, idx) => (
+              <Alert key={idx} variant="warning" className="mt-2">
+                {err}
+              </Alert>
+            ))}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
+              Cancel
+            </Button>
+            <Button className={btnStyles.Button} onClick={handleCreateTag}>
+              Create
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
-      {/* Edit Errors Display */}
-      {editErrors.length > 0 && (
-        <Alert className="mt-3" variant="warning">
-          {editErrors.map((err, idx) => (
-            <div key={idx}>{err}</div>
-          ))}
-        </Alert>
-      )}
-    </div>
+        {/* Delete Modal */}
+        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Tag</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to delete this tag? This action cannot be undone.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+              Cancel
+            </Button>
+            <Button className={btnStyles.Button} variant="danger" onClick={handleConfirmDelete}>
+              Delete
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        {editErrors.length > 0 && (
+          <Alert className="mt-3" variant="warning">
+            {editErrors.map((err, idx) => (
+              <div key={idx}>{err}</div>
+            ))}
+          </Alert>
+        )}
+      </div>
+    </>
   );
 };
 

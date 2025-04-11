@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import cardStyles from "../../styles/StickyCard.module.css";
 
 const UserProfilePage = () => {
   const { username } = useParams();
@@ -16,7 +17,6 @@ const UserProfilePage = () => {
         console.error("Error loading profile:", err);
       }
     };
-
     fetchProfile();
   }, [username]);
 
@@ -24,32 +24,21 @@ const UserProfilePage = () => {
 
   return (
     <div>
-      <h2>@{profile.user}</h2>
+      <h2 className="mb-3">@{profile.user}</h2>
 
-      {profile.profile_picture && (
-        <img
-          src={profile.profile_picture}
-          alt={`${profile.name}'s profile`}
-          style={{ width: 100, height: 100, borderRadius: "50%" }}
-        />
-      )}
+      <div className={cardStyles.StickyNoteStatic}>
+        {profile.profile_picture && (
+          <img
+            src={profile.profile_picture}
+            alt={`${profile.name}'s profile`}
+            style={{ width: 100, height: 100, borderRadius: "50%", marginBottom: "1rem" }}
+          />
+        )}
 
-      {profile.name && (
-        <p>
-          <strong>Name:</strong> {profile.name}
-        </p>
-      )}
-
-      {profile.bio && (
-        <p>
-          <strong>Bio:</strong> {profile.bio}
-        </p>
-      )}
-
-      <p>
-        <strong>Joined:</strong>{" "}
-        {new Date(profile.created_at).toLocaleDateString()}
-      </p>
+        <p><strong>Name:</strong> {profile.name || "Not provided"}</p>
+        <p><strong>Bio:</strong> {profile.bio || "Not provided"}</p>
+        <p><strong>Joined:</strong> {new Date(profile.created_at).toLocaleDateString()}</p>
+      </div>
     </div>
   );
 };

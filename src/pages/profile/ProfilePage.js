@@ -4,6 +4,8 @@ import axios from "axios";
 import { CurrentUserContext } from "../../App";
 import Avatar from "../../components/Avatar";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
+import cardStyles from "../../styles/StickyCard.module.css";
+import btnStyles from "../../styles/Button.module.css";
 
 const ProfilePage = () => {
   const currentUser = useContext(CurrentUserContext);
@@ -21,9 +23,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { data } = await axios.get(
-          `/profiles/${currentUser.profile_id}/`
-        );
+        const { data } = await axios.get(`/profiles/${currentUser.profile_id}/`);
         setProfile(data);
         setUpdatedData({
           name: data.name || "",
@@ -50,10 +50,7 @@ const ProfilePage = () => {
   }, [alertMsg]);
 
   const handleChange = (e) => {
-    setUpdatedData({
-      ...updatedData,
-      [e.target.name]: e.target.value,
-    });
+    setUpdatedData({ ...updatedData, [e.target.name]: e.target.value });
   };
 
   const handleFileChange = (e) => {
@@ -63,11 +60,7 @@ const ProfilePage = () => {
       setAlertMsg("Please upload a valid image file.");
       return;
     }
-
-    setUpdatedData({
-      ...updatedData,
-      profile_picture: file,
-    });
+    setUpdatedData({ ...updatedData, profile_picture: file });
   };
 
   const handleSave = async () => {
@@ -79,10 +72,7 @@ const ProfilePage = () => {
     }
 
     try {
-      const { data } = await axios.put(
-        `/profiles/${currentUser.profile_id}/`,
-        formData
-      );
+      const { data } = await axios.put(`/profiles/${currentUser.profile_id}/`, formData);
       setProfile(data);
       setEditMode(false);
       setAlertVariant("success");
@@ -97,86 +87,86 @@ const ProfilePage = () => {
   if (!profile) return <p>Loading profile...</p>;
 
   return (
-    <Container>
-      <Row className="my-4">
-        <Col md={4} className="text-center">
-          <Avatar
-            src={profile.profile_picture}
-            text={profile.user}
-            height={100}
-            canUpload={editMode}
-            onChange={handleFileChange}
-          />
-          {editMode && (
-            <Form.Group controlId="formFile" className="mt-2">
-              <Form.Label>Change Picture</Form.Label>
-              <Form.Control type="file" onChange={handleFileChange} />
-            </Form.Group>
-          )}
-        </Col>
+    <div>
+      <h2 className="mb-3">My Profile</h2>
 
-        <Col md={8}>
-          {alertMsg && (
-            <Alert
-              variant={alertVariant}
-              dismissible
-              onClose={() => setAlertMsg(null)}
-            >
-              {alertMsg}
-            </Alert>
-          )}
-
-          {editMode ? (
-            <>
-              <Form.Group className="mb-3">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  name="name"
-                  value={updatedData.name}
-                  onChange={handleChange}
-                />
+      <div className={cardStyles.StickyNoteStatic}>
+        <Row>
+          <Col md={4} className="text-center">
+            <Avatar
+              src={profile.profile_picture}
+              text={profile.user}
+              height={100}
+              canUpload={editMode}
+              onChange={handleFileChange}
+            />
+            {editMode && (
+              <Form.Group controlId="formFile" className="mt-3">
+                <Form.Label>Change Picture</Form.Label>
+                <Form.Control type="file" onChange={handleFileChange} />
               </Form.Group>
+            )}
+          </Col>
 
-              <Form.Group className="mb-3">
-                <Form.Label>Bio</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  name="bio"
-                  rows={4}
-                  value={updatedData.bio}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-
-              <div className="d-flex gap-2">
-                <Button variant="primary" onClick={handleSave}>
-                  Save
-                </Button>
-                <Button variant="secondary" onClick={() => setEditMode(false)}>
-                  Cancel
-                </Button>
-              </div>
-            </>
-          ) : (
-            <>
-              <h3>{profile.name || "No name provided"}</h3>
-              <p>
-                <strong>Username:</strong> {profile.user}
-              </p>
-              <p>
-                <strong>Bio:</strong> {profile.bio || "No bio provided"}
-              </p>
-              <Button
-                variant="outline-secondary"
-                onClick={() => setEditMode(true)}
+          <Col md={8}>
+            {alertMsg && (
+              <Alert
+                variant={alertVariant}
+                dismissible
+                onClose={() => setAlertMsg(null)}
               >
-                Edit Profile
-              </Button>
-            </>
-          )}
-        </Col>
-      </Row>
-    </Container>
+                {alertMsg}
+              </Alert>
+            )}
+
+            {editMode ? (
+              <>
+                <Form.Group className="mb-3">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    name="name"
+                    value={updatedData.name}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Bio</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    name="bio"
+                    rows={4}
+                    value={updatedData.bio}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+
+                <div className="d-flex gap-2 mt-2">
+                  <button className={`${btnStyles.Button} ${btnStyles.Blue}`} onClick={handleSave}>
+                    Save
+                  </button>
+                  <button className={`${btnStyles.Button} ${btnStyles.BlackOutline}`} onClick={() => setEditMode(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h4>{profile.name || "No name provided"}</h4>
+                <p><strong>Username:</strong> {profile.user}</p>
+                <p><strong>Bio:</strong> {profile.bio || "No bio provided"}</p>
+                <button
+                  className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
+                  onClick={() => setEditMode(true)}
+                >
+                  Edit Profile
+                </button>
+              </>
+            )}
+          </Col>
+        </Row>
+      </div>
+    </div>
   );
 };
 
