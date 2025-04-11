@@ -2,6 +2,7 @@
 import React from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import TagSelector from "../../components/TagSelector";
+import btnStyles from "../../styles/Button.module.css";
 
 const NoteForm = ({
   noteData,
@@ -86,11 +87,18 @@ const NoteForm = ({
         </Col>
       </Row>
 
-      <div className="mt-3 d-flex gap-2">
-        <Button type="submit" variant="primary">
+      <div className="mt-3 d-flex gap-2 flex-wrap">
+        <Button
+          type="submit"
+          className={`${btnStyles.Button} ${btnStyles.Bright}`}
+        >
           Save
         </Button>
-        <Button variant="secondary" onClick={() => window.history.back()}>
+        <Button
+          type="button"
+          className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
+          onClick={() => window.history.back()}
+        >
           Cancel
         </Button>
       </div>

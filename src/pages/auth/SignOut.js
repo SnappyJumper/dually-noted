@@ -1,18 +1,11 @@
+// src/pages/auth/SignOutPage.js
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { SetCurrentUserContext } from "../../App";
-
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-
-import {
-  Button,
-  Col,
-  Row,
-  Container,
-  Alert,
-} from "react-bootstrap";
+import { Button, Col, Row, Container, Alert } from "react-bootstrap";
 import axios from "axios";
 
 const SignOutPage = () => {
@@ -27,10 +20,7 @@ const SignOutPage = () => {
       localStorage.removeItem("user");
       setCurrentUser(null);
       setStatus("success");
-
-      setTimeout(() => {
-        history.push("/login");
-      }, 2000);
+      setTimeout(() => history.push("/login"), 2000);
     } catch (err) {
       setStatus("error");
     }
@@ -49,7 +39,7 @@ const SignOutPage = () => {
           {status === "confirm" && (
             <>
               <p>Are you sure you want to log out?</p>
-              <div className="d-flex gap-2">
+              <div className="d-flex gap-2 flex-wrap mt-3">
                 <Button
                   className={`${btnStyles.Button} ${btnStyles.Bright}`}
                   onClick={handleLogout}
@@ -57,8 +47,7 @@ const SignOutPage = () => {
                   Yes, log me out
                 </Button>
                 <Button
-                  className={btnStyles.Button}
-                  variant="secondary"
+                  className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
                   onClick={handleCancel}
                 >
                   Cancel
@@ -72,23 +61,16 @@ const SignOutPage = () => {
           )}
 
           {status === "success" && (
-            <Alert variant="success">
-              You’ve been logged out. Redirecting to Log in...
-            </Alert>
+            <Alert variant="success">You’ve been logged out. Redirecting to Log in...</Alert>
           )}
 
           {status === "error" && (
-            <Alert variant="danger">
-              Something went wrong while logging out. Try again later.
-            </Alert>
+            <Alert variant="danger">Something went wrong while logging out. Try again later.</Alert>
           )}
         </Container>
       </Col>
 
-      <Col
-        md={6}
-        className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}
-      ></Col>
+      <Col md={6} className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}></Col>
     </Row>
   );
 };

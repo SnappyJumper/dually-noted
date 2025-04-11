@@ -17,40 +17,30 @@ import axios from "axios";
 
 const SignInForm = () => {
   const setCurrentUser = useContext(SetCurrentUserContext);
-  const [signInData, setSignInData] = useState({
-    username: "",
-    password: "",
-  });
+  const [signInData, setSignInData] = useState({ username: "", password: "" });
   const { username, password } = signInData;
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
   const history = useHistory();
 
   const handleChange = (e) => {
-    setSignInData({
-      ...signInData,
-      [e.target.name]: e.target.value,
-    });
+    setSignInData({ ...signInData, [e.target.name]: e.target.value });
     setErrors({});
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
-  
+
     if (!username || !password) {
       setErrors({ non_field_errors: ["Username and password are required."] });
       setStatus("error");
       return;
     }
-  
+
     try {
-      await axios.post(
-        "/dj-rest-auth/login/",
-        signInData,
-        { headers: { "Content-Type": "application/json" } }
-      );
-  
+      await axios.post("/dj-rest-auth/login/", signInData);
+
       setTimeout(async () => {
         try {
           const { data: userData } = await axios.get("/dj-rest-auth/user/");
@@ -62,13 +52,11 @@ const SignInForm = () => {
           setStatus("error");
         }
       }, 500);
-  
     } catch (err) {
       setErrors(err.response?.data || { non_field_errors: ["Login failed."] });
       setStatus("error");
     }
   };
-  
 
   return (
     <Row className={styles.Row}>
@@ -90,7 +78,6 @@ const SignInForm = () => {
 
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
-              <Form.Label className="d-none">Username</Form.Label>
               <Form.Control
                 className={styles.Input}
                 type="text"
@@ -101,14 +88,11 @@ const SignInForm = () => {
                 autoComplete="off"
               />
             </Form.Group>
-            {errors.username?.map((message, idx) => (
-              <Alert key={idx} variant="warning">
-                {message}
-              </Alert>
+            {errors.username?.map((msg, idx) => (
+              <Alert key={idx} variant="warning">{msg}</Alert>
             ))}
 
             <Form.Group controlId="password">
-              <Form.Label className="d-none">Password</Form.Label>
               <Form.Control
                 className={styles.Input}
                 type="password"
@@ -119,26 +103,28 @@ const SignInForm = () => {
                 autoComplete="off"
               />
             </Form.Group>
-            {errors.password?.map((message, idx) => (
-              <Alert key={idx} variant="warning">
-                {message}
-              </Alert>
+            {errors.password?.map((msg, idx) => (
+              <Alert key={idx} variant="warning">{msg}</Alert>
             ))}
 
-            <Button
-              disabled={status === "loading"}
-              className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
-              type="submit"
-            >
-              {status === "loading" ? "Signing in..." : "Sign in"}
-            </Button>
-            {errors.non_field_errors?.map((message, idx) => (
+            <div className="d-flex mt-3">
+              <Button
+                disabled={status === "loading"}
+                className={`${btnStyles.Button} ${btnStyles.Bright} ${btnStyles.Wide}`}
+                type="submit"
+              >
+                {status === "loading" ? "Signing in..." : "Sign in"}
+              </Button>
+            </div>
+
+            {errors.non_field_errors?.map((msg, idx) => (
               <Alert key={idx} variant="warning" className="mt-3">
-                {message}
+                {msg}
               </Alert>
             ))}
           </Form>
         </Container>
+
         <Container className={`mt-3 ${appStyles.Content}`}>
           <Link className={styles.Link} to="/signup">
             Don’t have an account? <span>Sign up</span>
@@ -146,10 +132,7 @@ const SignInForm = () => {
         </Container>
       </Col>
 
-      <Col
-        md={6}
-        className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}
-      ></Col>
+      <Col md={6} className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}></Col>
     </Row>
   );
 };
