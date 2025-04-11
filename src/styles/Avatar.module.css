@@ -1,24 +1,28 @@
 /* src/styles/Avatar.module.css */
+
+/* Styles the avatar image itself */
 .Avatar {
-    border-radius: 50%;
-    margin: 0 8px;
-    object-fit: cover;
+    border-radius: 50%;     
+    margin: 0 8px;          
+    object-fit: cover;      
   }
   
+  /* Wraps the avatar and any interactive icons */
   .Wrapper {
-    position: relative;
-    display: inline-block;
+    position: relative;     
+    display: inline-block;  
   }
   
+  /* Styles the camera/edit icon overlay on the avatar */
   .EditIcon {
-    position: absolute;
+    position: absolute;     
     bottom: 0;
     right: 0;
-    background: white;
-    border-radius: 50%;
+    background: white;      
+    border-radius: 50%;     
     padding: 4px;
     font-size: 14px;
-    color: #333;
-    border: 1px solid #ccc;
+    color: #333;            
+    border: 1px solid #ccc; 
   }
   

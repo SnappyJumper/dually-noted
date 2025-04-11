@@ -1,14 +1,21 @@
+// src/pages/notes/NoteDetailPage.js
+
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import styles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 
+/**
+ * NoteDetailPage displays a single note's details including content and tags.
+ * If the current user is the note's owner, Edit and Delete options are available.
+ */
 const NoteDetailPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Get the note ID from the URL
   const history = useHistory();
   const [note, setNote] = useState(null);
 
+  // Fetch the note from the API on component mount
   useEffect(() => {
     const fetchNote = async () => {
       try {
@@ -22,7 +29,10 @@ const NoteDetailPage = () => {
     fetchNote();
   }, [id]);
 
+  // Redirect to edit page
   const handleEdit = () => history.push(`/notes/${id}/edit`);
+
+  // Handle note deletion with confirmation
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this note?")) {
       try {
@@ -41,6 +51,7 @@ const NoteDetailPage = () => {
       <h2 className={styles.title}>{note.title}</h2>
       <p className={styles.content}>{note.content}</p>
 
+      {/* Display tags if available */}
       {note.tags?.length > 0 && (
         <div className="mb-3">
           <strong>Tags:</strong>{" "}
@@ -52,13 +63,20 @@ const NoteDetailPage = () => {
         </div>
       )}
 
+      {/* Owner-only actions */}
       <div className="d-flex gap-2 mt-3">
         {note.is_owner && (
           <>
-            <button className={`${btnStyles.Button} ${btnStyles.Blue}`} onClick={handleEdit}>
+            <button
+              className={`${btnStyles.Button} ${btnStyles.Blue}`}
+              onClick={handleEdit}
+            >
               Edit
             </button>
-            <button className={`${btnStyles.Button} ${btnStyles.Danger}`} onClick={handleDelete}>
+            <button
+              className={`${btnStyles.Button} ${btnStyles.Danger}`}
+              onClick={handleDelete}
+            >
               Delete
             </button>
           </>

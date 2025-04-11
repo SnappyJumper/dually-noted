@@ -1,4 +1,12 @@
-// src/pages/tags/TagsPage.js
+/**
+ * TagsPage
+ *
+ * Displays a list of all tags, and provides full CRUD functionality:
+ * - Users can create, edit, or delete tags.
+ * - Clicking on a tag navigates to a list of associated notes.
+ * - Success and error states are managed via alerts and modals.
+ */
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -14,16 +22,20 @@ import btnStyles from "../../styles/Button.module.css";
 
 const TagsPage = () => {
   const [tags, setTags] = useState([]);
+
+  // Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  // Form states
   const [tagToDelete, setTagToDelete] = useState(null);
   const [newTagName, setNewTagName] = useState("");
   const [editTagId, setEditTagId] = useState(null);
   const [editTagName, setEditTagName] = useState("");
 
+  // Alert and error handling
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
-
   const [createErrors, setCreateErrors] = useState([]);
   const [editErrors, setEditErrors] = useState([]);
 
@@ -33,6 +45,7 @@ const TagsPage = () => {
     fetchTags();
   }, []);
 
+  // Fetch all tags from API
   const fetchTags = async () => {
     try {
       const { data } = await axios.get("/tags/");
@@ -42,6 +55,7 @@ const TagsPage = () => {
     }
   };
 
+  // Auto-hide alerts after a few seconds
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -49,6 +63,7 @@ const TagsPage = () => {
     }
   }, [alertMsg]);
 
+  // Create new tag
   const handleCreateTag = async () => {
     const trimmed = newTagName.trim();
     if (!trimmed) {
@@ -72,6 +87,7 @@ const TagsPage = () => {
     }
   };
 
+  // Confirm and delete tag
   const handleConfirmDelete = async () => {
     try {
       await axios.delete(`/tags/${tagToDelete}/`);
@@ -87,18 +103,21 @@ const TagsPage = () => {
     }
   };
 
+  // Start editing a tag
   const handleEditClick = (tag) => {
     setEditTagId(tag.id);
     setEditTagName(tag.name);
     setEditErrors([]);
   };
 
+  // Cancel editing a tag
   const handleEditCancel = () => {
     setEditTagId(null);
     setEditTagName("");
     setEditErrors([]);
   };
 
+  // Submit tag edit
   const handleEditSave = async (id) => {
     const trimmed = editTagName.trim();
     if (!trimmed) {

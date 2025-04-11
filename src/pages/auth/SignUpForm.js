@@ -1,3 +1,5 @@
+// src/pages/auth/SignUpForm.js
+
 import React, { useState, useContext } from "react";
 import { SetCurrentUserContext } from "../../App";
 import { Link, useHistory } from "react-router-dom";
@@ -7,6 +9,11 @@ import appStyles from "../../App.module.css";
 import { Form, Button, Col, Row, Container, Alert } from "react-bootstrap";
 import axios from "axios";
 
+/**
+ * SignUpForm handles user registration.
+ * It performs form validation, registration, login,
+ * and user fetch using a retry mechanism for token propagation.
+ */
 const SignUpForm = () => {
   const setCurrentUser = useContext(SetCurrentUserContext);
   const history = useHistory();
@@ -19,7 +26,7 @@ const SignUpForm = () => {
 
   const { username, password1, password2 } = signUpData;
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState("idle"); // Form state: idle | loading | logging_in | success | error
 
   const handleChange = (e) => {
     setSignUpData({
@@ -28,6 +35,10 @@ const SignUpForm = () => {
     });
   };
 
+  /**
+   * Attempts to fetch user data after login using retry logic.
+   * This ensures the token has propagated and avoids race conditions.
+   */
   const fetchUserWithRetry = async (token, retries = 3, delay = 500) => {
     for (let i = 0; i < retries; i++) {
       try {
@@ -51,6 +62,7 @@ const SignUpForm = () => {
     e.preventDefault();
     setStatus("loading");
 
+    // Client-side validation
     if (!username.trim() || !password1 || !password2) {
       setErrors({ non_field_errors: ["All fields are required."] });
       setStatus("error");
@@ -64,12 +76,11 @@ const SignUpForm = () => {
     }
 
     try {
-      // 1. Register
+      // Step 1: Register the user
       await axios.post("/dj-rest-auth/registration/", signUpData);
-
       setStatus("logging_in");
 
-      // 2. Login (now expecting JWT-style response)
+      // Step 2: Log in to get the JWT token
       const loginResponse = await axios.post("/dj-rest-auth/login/", {
         username,
         password: password1,
@@ -78,16 +89,17 @@ const SignUpForm = () => {
       const token = loginResponse.data?.access_token;
       if (!token) throw new Error("No token received from login");
 
-      // 3. Set headers globally for axios
+      // Step 3: Store token and set auth header for future requests
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       localStorage.setItem("user", JSON.stringify(loginResponse.data));
 
-      // 4. Fetch user using bearer token with retry
+      // Step 4: Fetch user details using the token with retry support
       const userData = await fetchUserWithRetry(token, 5, 600);
 
       setCurrentUser(userData);
       setStatus("success");
 
+      // Step 5: Redirect to home after short delay
       setTimeout(() => {
         history.push("/");
       }, 1000);
@@ -120,6 +132,7 @@ const SignUpForm = () => {
             </Alert>
           )}
 
+          {/* Signup Form */}
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Label className="d-none">Username</Form.Label>
@@ -183,6 +196,7 @@ const SignUpForm = () => {
                 ? "Logging in..."
                 : "Sign up"}
             </Button>
+
             {errors.non_field_errors?.map((message, idx) => (
               <Alert key={idx} variant="warning" className="mt-3">
                 {message}
@@ -190,12 +204,14 @@ const SignUpForm = () => {
             ))}
           </Form>
         </Container>
+
         <Container className={`mt-3 ${appStyles.Content}`}>
           <Link className={styles.Link} to="/login">
             Already have an account? <span>Sign in</span>
           </Link>
         </Container>
       </Col>
+
       <Col
         md={6}
         className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}

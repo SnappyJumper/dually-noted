@@ -1,3 +1,5 @@
+// src/components/SideNav.js
+
 import React, { useState, useContext } from "react";
 import { Navbar, Nav, Button, Collapse, Image } from "react-bootstrap";
 import { NavLink, useHistory } from "react-router-dom";
@@ -6,14 +8,19 @@ import logo from "../assets/logo.png";
 import styles from "../styles/SideNav.module.css";
 import Avatar from "./Avatar";
 
+/**
+ * SideNav renders the application's main navigation.
+ * It supports both a responsive mobile navbar and a static desktop sidebar.
+ * Navigation links adapt based on user authentication status.
+ */
 const SideNav = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // Controls mobile menu collapse state
   const history = useHistory();
   const currentUser = useContext(CurrentUserContext);
 
   return (
     <>
-      {/* Mobile Navbar Header */}
+      {/* Mobile Navbar Header (visible on small screens) */}
       <Navbar
         bg="dark"
         variant="dark"
@@ -35,8 +42,8 @@ const SideNav = () => {
       {/* Mobile Collapse Menu */}
       <Collapse in={open} className="d-lg-none">
         <div className={styles.MobileNav}>
-
           <Nav className="flex-column mt-3">
+            {/* Always-visible navigation links */}
             <Nav.Link
               as={NavLink}
               to="/"
@@ -48,6 +55,7 @@ const SideNav = () => {
               <i className="fas fa-home me-2"></i>Home
             </Nav.Link>
 
+            {/* Links visible only when user is authenticated */}
             {currentUser && (
               <>
                 <Nav.Link
@@ -88,6 +96,7 @@ const SideNav = () => {
               </>
             )}
 
+            {/* Links for unauthenticated users */}
             {!currentUser && (
               <>
                 <Nav.Link
@@ -112,6 +121,7 @@ const SideNav = () => {
             )}
           </Nav>
 
+          {/* User avatar and profile link for mobile */}
           {currentUser && (
             <div
               className={`d-flex align-items-center mt-3 px-3 pt-3 border-top ${styles.ProfileSection}`}
@@ -135,7 +145,7 @@ const SideNav = () => {
         </div>
       </Collapse>
 
-      {/* Desktop Sidebar */}
+      {/* Desktop Sidebar (visible on large screens) */}
       <div className={`${styles.Sidebar} d-none d-lg-flex flex-column`}>
         <Navbar.Brand className="text-center">
           <Image src={logo} alt="Dually Noted Logo" className={styles.Logo} />
@@ -210,6 +220,7 @@ const SideNav = () => {
           )}
         </Nav>
 
+        {/* User avatar and profile link for desktop */}
         {currentUser && (
           <div className={`pt-3 px-3 ${styles.ProfileSection}`}>
             <Avatar

@@ -1,10 +1,17 @@
-// src/pages/shared/SharedNotesPage.js
+/**
+ * SharedNotesPage
+ *
+ * Displays a list of notes that have been shared *with* the current user.
+ * Notes that the user owns themselves are excluded to avoid duplication
+ * with the main Notes section.
+ */
+
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { CurrentUserContext } from "../../App";
-import cardStyles from "../../styles/StickyCard.module.css"; // 🟡 Sticky note styling
-import btnStyles from "../../styles/Button.module.css";     // ✅ Custom button styles
+import cardStyles from "../../styles/StickyCard.module.css";
+import btnStyles from "../../styles/Button.module.css";
 
 const SharedNotesPage = () => {
   const currentUser = useContext(CurrentUserContext);
@@ -14,9 +21,12 @@ const SharedNotesPage = () => {
     const fetchSharedNotes = async () => {
       try {
         const { data } = await axios.get("/shared-notes/");
+
+        // Filter out notes created by the current user themselves
         const filtered = data.filter(
           (note) => note.user !== currentUser?.username
         );
+
         setSharedNotes(filtered);
       } catch (err) {
         console.log("Error fetching shared notes:", err);
@@ -35,6 +45,7 @@ const SharedNotesPage = () => {
       {sharedNotes.length ? (
         sharedNotes.map((note) => (
           <div key={note.id} className={cardStyles.StickyNote}>
+            {/* Note title as link to detail page */}
             <h4 className={cardStyles.title}>
               <Link
                 to={`/shared/${note.id}`}
@@ -44,8 +55,10 @@ const SharedNotesPage = () => {
               </Link>
             </h4>
 
+            {/* Note preview content */}
             <p className={cardStyles.content}>{note.content}</p>
 
+            {/* Owner reference with link to profile */}
             <p className={cardStyles.meta}>
               <strong>Owner:</strong>{" "}
               <Link to={`/profiles/username/${note.user}`}>
@@ -53,6 +66,7 @@ const SharedNotesPage = () => {
               </Link>
             </p>
 
+            {/* Call-to-action button */}
             <div className="mt-3">
               <Link
                 to={`/shared/${note.id}`}

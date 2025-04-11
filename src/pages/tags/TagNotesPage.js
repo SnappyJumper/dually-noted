@@ -1,4 +1,11 @@
-// src/pages/tags/TagNotesPage.js
+/**
+ * TagNotesPage
+ *
+ * Displays all notes associated with a specific tag.
+ * Users can also remove the current tag from any note directly from this page.
+ * This helps with organizing notes across different topics.
+ */
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
@@ -7,7 +14,7 @@ import cardStyles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 
 const TagNotesPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Tag ID from URL
   const [tag, setTag] = useState({});
   const [notes, setNotes] = useState([]);
   const [alertMsg, setAlertMsg] = useState(null);
@@ -16,6 +23,7 @@ const TagNotesPage = () => {
   const [noteToUpdate, setNoteToUpdate] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  // Clear alert after a few seconds
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -23,6 +31,7 @@ const TagNotesPage = () => {
     }
   }, [alertMsg]);
 
+  // Load tag and notes associated with it
   useEffect(() => {
     const fetchNotesByTag = async () => {
       try {
@@ -44,13 +53,16 @@ const TagNotesPage = () => {
     fetchNotesByTag();
   }, [id]);
 
+  // Trigger modal to confirm tag removal from note
   const handleRemoveTag = (noteId) => {
     setNoteToUpdate(noteId);
     setShowModal(true);
   };
 
+  // Remove the current tag from the selected note
   const handleConfirmRemove = async () => {
     const note = notes.find(n => n.id === noteToUpdate);
+
     const updatedTagIds = note.tags
       .filter(tag => tag.id !== parseInt(id))
       .map(tag => tag.id);
@@ -62,6 +74,7 @@ const TagNotesPage = () => {
         tag_ids: updatedTagIds,
       });
 
+      // Remove the note from list if it no longer contains the tag
       setNotes(prevNotes => prevNotes.filter(n => n.id !== noteToUpdate));
       setAlertVariant("success");
       setAlertMsg("Tag removed from note successfully.");

@@ -21,6 +21,7 @@ import SharedNoteDetailPage from "./pages/shared/SharedNoteDetailPage";
 import UserProfilePage from "./pages/profile/UserProfilePage";
 import NotFoundPage from "./pages/not_found/NotFoundPage";
 
+// Contexts for tracking and updating the logged-in user
 export const CurrentUserContext = createContext();
 export const SetCurrentUserContext = createContext();
 
@@ -28,6 +29,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
+  // Check if a user is authenticated on initial load
   useEffect(() => {
     const handleMount = async () => {
       try {
@@ -35,7 +37,7 @@ function App() {
         setCurrentUser(data);
       } catch (err) {
         console.log("Auth check failed:", err);
-        setCurrentUser(null); // Just to be safe
+        setCurrentUser(null);
       } finally {
         setCheckingAuth(false);
       }
@@ -55,7 +57,14 @@ function App() {
           <SideNav />
           <div className={styles.main}>
             <Switch>
+              {/* Public routes */}
               <Route exact path="/" render={() => <HomePage />} />
+              <Route exact path="/signup" render={() => <SignUpForm />} />
+              <Route path="/login" render={() => <SignInForm />} />
+              <Route path="/logout" render={() => <SignOutPage />} />
+              <Route path="/profiles/username/:username" render={() => <UserProfilePage />} />
+
+              {/* Protected routes */}
               <PrivateRoute path="/notes/create" render={() => <NoteCreatePage />} />
               <PrivateRoute path="/notes/:id/edit" render={() => <NoteEditPage />} />
               <PrivateRoute path="/notes/:id" exact render={() => <NoteDetailPage />} />
@@ -64,11 +73,9 @@ function App() {
               <PrivateRoute path="/tags" render={() => <TagsPage />} />
               <PrivateRoute path="/shared/:id" render={() => <SharedNoteDetailPage />} />
               <PrivateRoute path="/shared" render={() => <SharedNotesPage />} />
-              <Route path="/profiles/username/:username" render={() => <UserProfilePage />} />
               <PrivateRoute path="/profile" render={() => <ProfilePage />} />
-              <Route exact path="/signup" render={() => <SignUpForm />} />
-              <Route path="/login" render={() => <SignInForm />} />
-              <Route path="/logout" render={() => <SignOutPage />} />
+
+              {/* Catch-all route */}
               <Route path="*" render={() => <NotFoundPage />} />
             </Switch>
           </div>

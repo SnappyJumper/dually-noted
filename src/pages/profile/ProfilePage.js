@@ -1,4 +1,5 @@
 // src/pages/profile/ProfilePage.js
+
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { CurrentUserContext } from "../../App";
@@ -7,10 +8,16 @@ import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import cardStyles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 
+/**
+ * ProfilePage allows a user to view and edit their profile details.
+ * Includes profile picture upload, name, and bio.
+ */
 const ProfilePage = () => {
   const currentUser = useContext(CurrentUserContext);
+
   const [profile, setProfile] = useState(null);
   const [editMode, setEditMode] = useState(false);
+
   const [updatedData, setUpdatedData] = useState({
     name: "",
     bio: "",
@@ -20,6 +27,7 @@ const ProfilePage = () => {
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
 
+  // Fetch current user's profile on mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -42,6 +50,7 @@ const ProfilePage = () => {
     }
   }, [currentUser]);
 
+  // Dismiss alerts after 4 seconds
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -49,10 +58,12 @@ const ProfilePage = () => {
     }
   }, [alertMsg]);
 
+  // Update form state on input change
   const handleChange = (e) => {
     setUpdatedData({ ...updatedData, [e.target.name]: e.target.value });
   };
 
+  // Handle image file upload
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file && !file.type.startsWith("image/")) {
@@ -63,6 +74,7 @@ const ProfilePage = () => {
     setUpdatedData({ ...updatedData, profile_picture: file });
   };
 
+  // Submit profile updates
   const handleSave = async () => {
     const formData = new FormData();
     formData.append("name", updatedData.name);
@@ -92,6 +104,7 @@ const ProfilePage = () => {
 
       <div className={cardStyles.StickyNoteStatic}>
         <Row>
+          {/* Left: Avatar and upload control */}
           <Col md={4} className="text-center">
             <Avatar
               src={profile.profile_picture}
@@ -108,6 +121,7 @@ const ProfilePage = () => {
             )}
           </Col>
 
+          {/* Right: Profile fields */}
           <Col md={8}>
             {alertMsg && (
               <Alert
@@ -145,7 +159,10 @@ const ProfilePage = () => {
                   <button className={`${btnStyles.Button} ${btnStyles.Blue}`} onClick={handleSave}>
                     Save
                   </button>
-                  <button className={`${btnStyles.Button} ${btnStyles.BlackOutline}`} onClick={() => setEditMode(false)}>
+                  <button
+                    className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
+                    onClick={() => setEditMode(false)}
+                  >
                     Cancel
                   </button>
                 </div>

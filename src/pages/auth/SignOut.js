@@ -1,4 +1,5 @@
 // src/pages/auth/SignOutPage.js
+
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { SetCurrentUserContext } from "../../App";
@@ -8,24 +9,35 @@ import appStyles from "../../App.module.css";
 import { Button, Col, Row, Container, Alert } from "react-bootstrap";
 import axios from "axios";
 
+/**
+ * SignOutPage handles the user logout process.
+ * It confirms user intent, sends a logout request to the API,
+ * clears local user data, and redirects to the login page.
+ */
 const SignOutPage = () => {
-  const [status, setStatus] = useState("confirm");
+  const [status, setStatus] = useState("confirm"); // "confirm" | "loading" | "success" | "error"
   const history = useHistory();
   const setCurrentUser = useContext(SetCurrentUserContext);
 
+  // Handles the logout request and redirects on success
   const handleLogout = async () => {
     setStatus("loading");
     try {
       await axios.post("/dj-rest-auth/logout/");
+
+      // Clean up local state and redirect
       localStorage.removeItem("user");
       setCurrentUser(null);
       setStatus("success");
+
+      // Redirect to login page after short delay
       setTimeout(() => history.push("/login"), 2000);
     } catch (err) {
       setStatus("error");
     }
   };
 
+  // Cancels logout and navigates back to notes
   const handleCancel = () => {
     history.push("/notes");
   };
@@ -36,6 +48,7 @@ const SignOutPage = () => {
         <Container className={`${appStyles.Content} p-4`}>
           <h1 className={styles.Header}>Log Out</h1>
 
+          {/* Initial confirmation UI */}
           {status === "confirm" && (
             <>
               <p>Are you sure you want to log out?</p>
@@ -56,20 +69,26 @@ const SignOutPage = () => {
             </>
           )}
 
+          {/* Logout feedback */}
           {status === "loading" && (
             <Alert variant="info">Logging you out...</Alert>
           )}
 
           {status === "success" && (
-            <Alert variant="success">You’ve been logged out. Redirecting to Log in...</Alert>
+            <Alert variant="success">
+              You’ve been logged out. Redirecting to Log in...
+            </Alert>
           )}
 
           {status === "error" && (
-            <Alert variant="danger">Something went wrong while logging out. Try again later.</Alert>
+            <Alert variant="danger">
+              Something went wrong while logging out. Try again later.
+            </Alert>
           )}
         </Container>
       </Col>
 
+      {/* Optional right-side image panel (desktop only) */}
       <Col md={6} className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}></Col>
     </Row>
   );

@@ -1,3 +1,13 @@
+// src/pages/shared/SharedNoteDetailPage.js
+
+/**
+ * SharedNoteDetailPage
+ *
+ * This component displays a shared note, either in read-only mode or editable mode,
+ * depending on the user's permissions. Users can remove themselves from the note
+ * or update its contents if they have edit access.
+ */
+
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
 import axios from "axios";
@@ -6,17 +16,19 @@ import styles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 
 const SharedNoteDetailPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Note ID from the URL
   const history = useHistory();
-  const [note, setNote] = useState(null);
-  const [canEdit, setCanEdit] = useState(false);
-  const [editing, setEditing] = useState(false);
+
+  const [note, setNote] = useState(null); // Shared note data
+  const [canEdit, setCanEdit] = useState(false); // Permission flag
+  const [editing, setEditing] = useState(false); // Editing mode toggle
   const [formData, setFormData] = useState({ title: "", content: "" });
 
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
   const [showModal, setShowModal] = useState(false);
 
+  // Fetch shared note on load
   useEffect(() => {
     const fetchSharedNote = async () => {
       try {
@@ -34,6 +46,7 @@ const SharedNoteDetailPage = () => {
     fetchSharedNote();
   }, [id]);
 
+  // Dismiss alert after delay
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -41,9 +54,15 @@ const SharedNoteDetailPage = () => {
     }
   }, [alertMsg]);
 
+  // Enable editing mode
   const handleEditToggle = () => setEditing(true);
-  const handleChange = (e) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
+  // Track form changes
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  // Submit note updates
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -63,6 +82,7 @@ const SharedNoteDetailPage = () => {
     }
   };
 
+  // User removes themselves from the shared note
   const handleRemoveSelf = async () => {
     try {
       await axios.delete(`/shared-notes/${id}/`);
@@ -84,12 +104,14 @@ const SharedNoteDetailPage = () => {
     <div className={styles.StickyNoteStatic}>
       <h2 className={styles.title}>Shared Note</h2>
 
+      {/* Alert Messages */}
       {alertMsg && (
         <Alert variant={alertVariant} dismissible onClose={() => setAlertMsg(null)}>
           {alertMsg}
         </Alert>
       )}
 
+      {/* Edit Mode */}
       {editing ? (
         <Form onSubmit={handleUpdate}>
           <Form.Group controlId="title" className="mb-3">
@@ -119,6 +141,7 @@ const SharedNoteDetailPage = () => {
           </button>
         </Form>
       ) : (
+        // Read Mode
         <>
           <h4 className={styles.title}>{note?.title || "Untitled Note"}</h4>
           <p className={styles.content}>{note?.content || "No content available."}</p>
@@ -133,6 +156,7 @@ const SharedNoteDetailPage = () => {
         </>
       )}
 
+      {/* Actions */}
       <div className="mt-4 d-flex gap-2 flex-wrap">
         {canEdit && !editing && (
           <button className={`${btnStyles.Button} ${btnStyles.Blue}`} onClick={handleEditToggle}>
@@ -144,6 +168,7 @@ const SharedNoteDetailPage = () => {
         </button>
       </div>
 
+      {/* Modal for confirming removal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Leave Shared Note</Modal.Title>

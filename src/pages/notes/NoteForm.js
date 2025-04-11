@@ -1,9 +1,14 @@
 // src/pages/notes/NoteForm.js
+
 import React from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import TagSelector from "../../components/TagSelector";
 import btnStyles from "../../styles/Button.module.css";
 
+/**
+ * Reusable form for both creating and editing notes.
+ * Includes inputs for title, content, tags, and optional sharing fields.
+ */
 const NoteForm = ({
   noteData,
   handleChange,
@@ -18,6 +23,7 @@ const NoteForm = ({
 }) => {
   return (
     <Form onSubmit={handleSubmit}>
+      {/* Title input */}
       <Form.Group controlId="title">
         <Form.Label>Title</Form.Label>
         <Form.Control
@@ -30,6 +36,7 @@ const NoteForm = ({
         />
       </Form.Group>
 
+      {/* Content input */}
       <Form.Group controlId="content">
         <Form.Label>Content</Form.Label>
         <Form.Control
@@ -43,6 +50,7 @@ const NoteForm = ({
         />
       </Form.Group>
 
+      {/* Tag selector */}
       <Form.Group controlId="tags">
         <Form.Label>Tags</Form.Label>
         <TagSelector
@@ -51,6 +59,7 @@ const NoteForm = ({
         />
       </Form.Group>
 
+      {/* Optional user sharing fields */}
       <Row className="my-3">
         <Col md={8}>
           <Form.Group controlId="sharedWith">
@@ -71,6 +80,7 @@ const NoteForm = ({
             </Form.Control>
           </Form.Group>
         </Col>
+
         <Col md={4}>
           <Form.Group controlId="permission">
             <Form.Label>Permission</Form.Label>
@@ -87,6 +97,7 @@ const NoteForm = ({
         </Col>
       </Row>
 
+      {/* Form action buttons */}
       <div className="mt-3 d-flex gap-2 flex-wrap">
         <Button
           type="submit"

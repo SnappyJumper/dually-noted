@@ -1,4 +1,5 @@
 // src/pages/auth/SignInForm.js
+
 import React, { useState, useEffect, useContext } from "react";
 import { SetCurrentUserContext } from "../../App";
 import { Link, useHistory } from "react-router-dom";
@@ -15,19 +16,28 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 
+/**
+ * SignInForm allows users to log into their accounts.
+ * It submits credentials to the backend, fetches the user profile if successful,
+ * and redirects the user to their notes page.
+ */
 const SignInForm = () => {
   const setCurrentUser = useContext(SetCurrentUserContext);
   const [signInData, setSignInData] = useState({ username: "", password: "" });
   const { username, password } = signInData;
+
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+
   const history = useHistory();
 
+  // Update form state and clear previous errors when input changes
   const handleChange = (e) => {
     setSignInData({ ...signInData, [e.target.name]: e.target.value });
     setErrors({});
   };
 
+  // Submit form credentials to the API
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
@@ -39,19 +49,21 @@ const SignInForm = () => {
     }
 
     try {
+      // Step 1: Authenticate user
       await axios.post("/dj-rest-auth/login/", signInData);
 
+      // Step 2: Fetch authenticated user data
       setTimeout(async () => {
         try {
           const { data: userData } = await axios.get("/dj-rest-auth/user/");
           setCurrentUser(userData);
           setStatus("success");
-          history.push("/notes");
+          history.push("/notes"); // Redirect to notes page
         } catch (err) {
           console.error("Error fetching user after login", err);
           setStatus("error");
         }
-      }, 500);
+      }, 500); // Slight delay for better UX
     } catch (err) {
       setErrors(err.response?.data || { non_field_errors: ["Login failed."] });
       setStatus("error");
@@ -64,6 +76,7 @@ const SignInForm = () => {
         <Container className={`${appStyles.Content} p-4`}>
           <h1 className={styles.Header}>sign in</h1>
 
+          {/* Success and error alerts */}
           {status === "success" && (
             <Alert variant="success" className="mt-3">
               Welcome back! Redirecting to your notes...
@@ -76,6 +89,7 @@ const SignInForm = () => {
             </Alert>
           )}
 
+          {/* Sign-in form */}
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Control
@@ -125,6 +139,7 @@ const SignInForm = () => {
           </Form>
         </Container>
 
+        {/* Link to sign up */}
         <Container className={`mt-3 ${appStyles.Content}`}>
           <Link className={styles.Link} to="/signup">
             Don’t have an account? <span>Sign up</span>
@@ -132,6 +147,7 @@ const SignInForm = () => {
         </Container>
       </Col>
 
+      {/* Right-side image panel (desktop only) */}
       <Col md={6} className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}></Col>
     </Row>
   );

@@ -1,8 +1,20 @@
 // src/components/Avatar.js
+
 import React, { useRef } from "react";
 import styles from "../styles/Avatar.module.css";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
+/**
+ * Avatar component for displaying a user's profile picture.
+ * Optionally allows uploading a new image if `canUpload` is true.
+ *
+ * Props:
+ * - src: string (image URL)
+ * - text: string (alt text fallback)
+ * - height: number (image height in px)
+ * - canUpload: boolean (enables file input if true)
+ * - onChange: function (called when a new file is selected)
+ */
 const Avatar = ({
   src,
   text = "User",
@@ -12,6 +24,7 @@ const Avatar = ({
 }) => {
   const fileInputRef = useRef(null);
 
+  // Trigger file input click if upload is enabled
   const handleClick = () => {
     if (canUpload && fileInputRef.current) {
       fileInputRef.current.click();
@@ -19,7 +32,11 @@ const Avatar = ({
   };
 
   return (
-    <div className={styles.Wrapper} onClick={handleClick} style={{ cursor: canUpload ? "pointer" : "default" }}>
+    <div
+      className={styles.Wrapper}
+      onClick={handleClick}
+      style={{ cursor: canUpload ? "pointer" : "default" }}
+    >
       <img
         className={styles.Avatar}
         src={src}
@@ -27,6 +44,8 @@ const Avatar = ({
         height={height}
         style={{ objectFit: "cover" }}
       />
+
+      {/* Upload icon and hidden file input only shown when canUpload is true */}
       {canUpload && (
         <>
           <OverlayTrigger
@@ -37,6 +56,7 @@ const Avatar = ({
               <i className="fas fa-camera"></i>
             </span>
           </OverlayTrigger>
+
           <input
             ref={fileInputRef}
             type="file"

@@ -1,21 +1,26 @@
 // src/pages/notes/NotesPage.js
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Alert, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import cardStyles from "../../styles/StickyCard.module.css"; // 🟡 Sticky note styles
-import btnStyles from "../../styles/Button.module.css";     // ✅ New button styles
+import cardStyles from "../../styles/StickyCard.module.css";
+import btnStyles from "../../styles/Button.module.css";
 
+/**
+ * NotesPage component displays the user's notes in a sticky note layout.
+ * Users can create, edit, delete, and view their notes from this page.
+ */
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
   const history = useHistory();
 
+  // Automatically dismiss alerts after 4 seconds
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -23,6 +28,7 @@ const NotesPage = () => {
     }
   }, [alertMsg]);
 
+  // Fetch all notes for the current user on component mount
   useEffect(() => {
     const fetchNotes = async () => {
       try {
@@ -37,11 +43,13 @@ const NotesPage = () => {
     fetchNotes();
   }, []);
 
+  // Prompt user before deleting a note
   const confirmDelete = (noteId) => {
     setNoteToDelete(noteId);
     setShowModal(true);
   };
 
+  // Delete the selected note
   const handleDeleteConfirmed = async () => {
     try {
       await axios.delete(`/notes/${noteToDelete}/`);
@@ -62,6 +70,7 @@ const NotesPage = () => {
     <div>
       <h2 className="mb-3">My Notes</h2>
 
+      {/* Notification messages */}
       {alertMsg && (
         <Alert
           className="my-3"
@@ -73,6 +82,7 @@ const NotesPage = () => {
         </Alert>
       )}
 
+      {/* Button to create a new note */}
       <button
         className={`${btnStyles.Button} ${btnStyles.Blue}`}
         onClick={() => history.push("/notes/create")}
@@ -80,11 +90,15 @@ const NotesPage = () => {
         + Add Note
       </button>
 
+      {/* Render notes in sticky-note style */}
       <div className="d-flex flex-column gap-4 mt-4">
         {notes.map((note) => (
           <div key={note.id} className={cardStyles.StickyNote}>
             <div className={cardStyles.title}>
-              <Link to={`/notes/${note.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+              <Link
+                to={`/notes/${note.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
                 {note.title}
               </Link>
             </div>
@@ -111,7 +125,7 @@ const NotesPage = () => {
         ))}
       </div>
 
-      {/* Delete Confirmation Modal */}
+      {/* Modal to confirm note deletion */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>

@@ -1,27 +1,29 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap');
 
 :root {
-    --note-yellow: #fff9c4;
-    --note-orange: #ffe0b2;
-    --note-pink: #fce4ec;
-    --note-blue: #e0f7fa;
-  
-    --note-shadow: rgba(0, 0, 0, 0.15);
-    --note-text: #333;
-    --note-font: 'Patrick Hand', cursive;
-  
-    /* Keep your existing colors too if needed */
-    --sticky-yellow: #FFFCB7;
-    --sticky-orange: #FFD7A0;
-    --sticky-pink: #FFD3D3;
-    --accent-blue: #41CFFF;
-    --text-dark: #2e2e2e;
-    --background: #F5F7F9;
-  
-    --radius: 12px;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+  /* Note background themes */
+  --note-yellow: #fff9c4;
+  --note-orange: #ffe0b2;
+  --note-pink: #fce4ec;
+  --note-blue: #e0f7fa;
+
+  /* Note styling */
+  --note-shadow: rgba(0, 0, 0, 0.15);
+  --note-text: #333;
+  --note-font: 'Patrick Hand', cursive;
+
+  /* Extended palette */
+  --sticky-yellow: #FFFCB7;
+  --sticky-orange: #FFD7A0;
+  --sticky-pink: #FFD3D3;
+  --accent-blue: #41CFFF;
+  --text-dark: #2e2e2e;
+  --background: #F5F7F9;
+
+  /* Layout helpers */
+  --radius: 12px;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
 body {
   font-family: 'Rubik', sans-serif;
@@ -31,20 +33,18 @@ body {
   padding: 0;
 }
 
-
 .main {
-    margin-left: 0; 
-    padding: 2rem 1rem;
-    margin-top: 60px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
+  margin-left: 0;
+  padding: 2rem 1rem;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
-/* Add space on the left when on large screens (desktop) */
+/* Desktop layout offset for sidebar */
 @media (min-width: 992px) {
-    .main {
-      margin-left: 220px !important;
-    }
+  .main {
+    margin-left: 220px !important;
   }
-  
+}

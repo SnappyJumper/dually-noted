@@ -12,7 +12,7 @@
   .StickyNote:hover {
     transform: rotate(-1deg) scale(1.02);
   }
-
+  
   .title {
     font-size: 1.4rem;
     font-weight: 600;
@@ -21,7 +21,7 @@
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     word-break: break-word;
   }
-
+  
   .StickyNoteStatic {
     background-color: var(--note-yellow);
     border-radius: var(--radius);
@@ -31,3 +31,4 @@
     color: var(--note-text);
     margin-bottom: 2rem;
   }
+  
