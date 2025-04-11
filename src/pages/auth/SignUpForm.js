@@ -1,33 +1,24 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { SetCurrentUserContext } from "../../App";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-
-import {
-  Form,
-  Button,
-  Image,
-  Col,
-  Row,
-  Container,
-  Alert,
-} from "react-bootstrap";
+import { Form, Button, Col, Row, Container, Alert } from "react-bootstrap";
 import axios from "axios";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const SignUpForm = () => {
   const setCurrentUser = useContext(SetCurrentUserContext);
+  const history = useHistory();
 
   const [signUpData, setSignUpData] = useState({
     username: "",
     password1: "",
     password2: "",
   });
+
   const { username, password1, password2 } = signUpData;
   const [errors, setErrors] = useState({});
-  const history = useHistory();
   const [status, setStatus] = useState("idle");
 
   const handleChange = (e) => {
@@ -35,6 +26,25 @@ const SignUpForm = () => {
       ...signUpData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const fetchUserWithRetry = async (token, retries = 3, delay = 500) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const { data } = await axios.get("/dj-rest-auth/user/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return data;
+      } catch (err) {
+        if (i < retries - 1) {
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        } else {
+          throw err;
+        }
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -54,27 +64,40 @@ const SignUpForm = () => {
     }
 
     try {
+      // 1. Register
       await axios.post("/dj-rest-auth/registration/", signUpData);
 
+      setStatus("logging_in");
+
+      // 2. Login (now expecting JWT-style response)
       const loginResponse = await axios.post("/dj-rest-auth/login/", {
         username,
         password: password1,
       });
 
+      const token = loginResponse.data?.access_token;
+      if (!token) throw new Error("No token received from login");
+
+      // 3. Set headers globally for axios
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       localStorage.setItem("user", JSON.stringify(loginResponse.data));
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Token ${loginResponse.data.key}`;
 
-      const { data: userData } = await axios.get("/dj-rest-auth/user/");
+      // 4. Fetch user using bearer token with retry
+      const userData = await fetchUserWithRetry(token, 5, 600);
+
       setCurrentUser(userData);
-
       setStatus("success");
+
       setTimeout(() => {
         history.push("/");
-      }, 2000);
+      }, 1000);
     } catch (err) {
-      setErrors(err.response?.data || { non_field_errors: ["Signup failed."] });
+      console.error("Signup/login failed:", err);
+      setErrors(
+        err.response?.data || {
+          non_field_errors: ["Signup failed."],
+        }
+      );
       setStatus("error");
     }
   };
@@ -82,7 +105,7 @@ const SignUpForm = () => {
   return (
     <Row className={styles.Row}>
       <Col className="my-auto py-2 p-md-2" md={6}>
-        <Container className={`${appStyles.Content} p-4 `}>
+        <Container className={`${appStyles.Content} p-4`}>
           <h1 className={styles.Header}>sign up</h1>
 
           {status === "success" && (
@@ -150,11 +173,15 @@ const SignUpForm = () => {
             ))}
 
             <Button
-              disabled={status === "loading"}
+              disabled={status === "loading" || status === "logging_in"}
               className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
               type="submit"
             >
-              {status === "loading" ? "Signing up..." : "Sign up"}
+              {status === "loading"
+                ? "Signing up..."
+                : status === "logging_in"
+                ? "Logging in..."
+                : "Sign up"}
             </Button>
             {errors.non_field_errors?.map((message, idx) => (
               <Alert key={idx} variant="warning" className="mt-3">
