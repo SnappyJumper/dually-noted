@@ -1,69 +1,96 @@
 .Button {
-    font-size: 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
     align-self: center;
-    border-radius: 100px;
-    border-color: transparent;
-    padding: 4px 10px;
-    margin-left: 2px;
-    margin-right: 2px;
-    min-width: 75px;
+    border-radius: 12px;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    margin: 0.25rem;
+    min-width: 100px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
   
   .Button:hover {
-    opacity: 0.8;
-    border-color: transparent;
+    opacity: 1;
+    transform: scale(1.03);
     cursor: pointer;
   }
   
-  .Button:hover:active {
-    background-color: #2142b2 !important;
-  }
-  
   .Button:active {
-    background-color: #2142b2 !important;
+    transform: scale(0.98);
   }
   
   .Button:focus {
-    background-color: #2142b2;
+    outline: 2px solid #2142b2;
+    outline-offset: 2px;
   }
   
+  /* Wide button layout */
   .Wide {
-    padding: 10px 50px;
+    padding: 0.75rem 1.5rem;
     width: 100%;
   }
   
-  .Blue,
-  .BlueOutline:hover,
-  .Bright:hover {
-    background-color: #2142b2;
-    color: #ffffff;
-  }
-  
-  .BlueOutline,
-  .Blue:hover {
-    /* border: 1px solid #2142b2; */
-    background-color: #ffffff;
-    color: #2142b2;
-  }
-  
-  .Black,
-  .BlackOutline:hover {
-    /* background-color: #242a3d;
-    color: white; */
-    background-color: #242a3d;
-    color: aliceblue;
-  }
-  
-  .Black:hover,
-  .BlackOutline {
-    /* background-color: #dadadf;
-    color: #242a3d;
-    border-color: #242a3d; */
-    background-color: aliceblue;
-    color: #242a3d;
-  }
-  
+  /* Bright style (cyan background, blue text) */
   .Bright {
     background-color: #2ed9ff;
     color: #2142b2;
   }
+  
+  .Bright:hover {
+    background-color: #1ac0e4;
+  }
+  
+  /* Solid Blue button */
+  .Blue {
+    background-color: #2142b2;
+    color: white;
+  }
+  
+  .Blue:hover {
+    background-color: #1a3a9e;
+  }
+  
+  /* Outlined Blue button */
+  .BlueOutline {
+    background-color: white;
+    color: #2142b2;
+    border: 2px solid #2142b2;
+  }
+  
+  .BlueOutline:hover {
+    background-color: #eef4ff;
+  }
+  
+  /* Solid Black button */
+  .Black {
+    background-color: #242a3d;
+    color: aliceblue;
+  }
+  
+  .Black:hover {
+    background-color: #1a1f2d;
+  }
+  
+  /* Outlined Black button */
+  .BlackOutline {
+    background-color: aliceblue;
+    color: #242a3d;
+    border: 2px solid #242a3d;
+  }
+  
+  .BlackOutline:hover {
+    background-color: #dadadf;
+  }
+  
+  /* NEW: Red danger button */
+  .Danger {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .Danger:hover {
+    background-color: #d32f2f;
+  }
+  

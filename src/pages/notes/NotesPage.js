@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { Button, Alert, Modal } from "react-bootstrap";
+import { Alert, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import cardStyles from "../../styles/StickyCard.module.css"; // 🟡 Sticky note styles
+import btnStyles from "../../styles/Button.module.css";     // ✅ New button styles
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -14,7 +16,6 @@ const NotesPage = () => {
 
   const history = useHistory();
 
-  // Auto-dismiss alert
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -59,7 +60,7 @@ const NotesPage = () => {
 
   return (
     <div>
-      <h2>My Notes</h2>
+      <h2 className="mb-3">My Notes</h2>
 
       {alertMsg && (
         <Alert
@@ -72,34 +73,45 @@ const NotesPage = () => {
         </Alert>
       )}
 
-      <Button variant="success" onClick={() => history.push("/notes/create")}>
+      <button
+        className={`${btnStyles.Button} ${btnStyles.Blue}`}
+        onClick={() => history.push("/notes/create")}
+      >
         + Add Note
-      </Button>
+      </button>
 
-      <hr />
-      {notes.map((note) => (
-        <div key={note.id}>
-          <h4>
-            <Link to={`/notes/${note.id}`}>{note.title}</Link>
-          </h4>
-          <p>{note.content}</p>
-          <Button
-            variant="primary"
-            onClick={() => history.push(`/notes/${note.id}/edit`)}
-            className="me-2"
-          >
-            Edit
-          </Button>
-          <Button
-            variant="danger"
-            onClick={() => confirmDelete(note.id)}
-          >
-            Delete
-          </Button>
-          <hr />
-        </div>
-      ))}
+      <div className="d-flex flex-column gap-4 mt-4">
+        {notes.map((note) => (
+          <div key={note.id} className={cardStyles.StickyNote}>
+            <div className={cardStyles.title}>
+              <Link to={`/notes/${note.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                {note.title}
+              </Link>
+            </div>
+            <div className={cardStyles.content}>{note.content}</div>
+            <div className={cardStyles.meta}>
+              Created: {new Date(note.created_at).toLocaleDateString()}
+            </div>
 
+            <div className="mt-4 d-flex flex-wrap gap-3">
+              <button
+                className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
+                onClick={() => history.push(`/notes/${note.id}/edit`)}
+              >
+                Edit
+              </button>
+              <button
+                className={`${btnStyles.Button} ${btnStyles.Danger}`}
+                onClick={() => confirmDelete(note.id)}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Delete Confirmation Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
@@ -108,12 +120,18 @@ const NotesPage = () => {
           Are you sure you want to delete this note? This action cannot be undone.
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <button
+            className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
+            onClick={() => setShowModal(false)}
+          >
             Cancel
-          </Button>
-          <Button variant="danger" onClick={handleDeleteConfirmed}>
+          </button>
+          <button
+            className={`${btnStyles.Button} ${btnStyles.Danger}`}
+            onClick={handleDeleteConfirmed}
+          >
             Delete
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </div>
