@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams, useHistory } from "react-router-dom";
 import NoteForm from "./NoteForm";
 import { Alert } from "react-bootstrap";
+import cardStyles from "../../styles/StickyCard.module.css";
 
 const NoteEditPage = () => {
   const [noteData, setNoteData] = useState({ title: "", content: "" });
@@ -58,7 +59,7 @@ const NoteEditPage = () => {
 
   const handleChange = (e) => {
     setNoteData({ ...noteData, [e.target.name]: e.target.value });
-    setErrors({}); // clear errors as user types
+    setErrors({});
   };
 
   const handleSubmit = async (e) => {
@@ -93,8 +94,8 @@ const NoteEditPage = () => {
   };
 
   return (
-    <div>
-      <h2>Edit Note</h2>
+    <div className={cardStyles.StickyNoteStatic}>
+      <h2 className={`${cardStyles.title} mb-4`}>Edit Note</h2>
 
       {alertMsg && (
         <Alert
@@ -107,7 +108,6 @@ const NoteEditPage = () => {
         </Alert>
       )}
 
-      {/* Validation Error Alerts */}
       {["title", "content", "non_field_errors"].map((field) =>
         errors[field]?.map((msg, idx) => (
           <Alert key={`${field}-${idx}`} variant="warning">

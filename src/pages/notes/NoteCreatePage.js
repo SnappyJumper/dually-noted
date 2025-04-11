@@ -4,6 +4,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import NoteForm from "./NoteForm";
 import { Alert } from "react-bootstrap";
+import cardStyles from "../../styles/StickyCard.module.css";
 
 const NoteCreatePage = () => {
   const [noteData, setNoteData] = useState({ title: "", content: "" });
@@ -39,17 +40,17 @@ const NoteCreatePage = () => {
 
   const handleChange = (e) => {
     setNoteData({ ...noteData, [e.target.name]: e.target.value });
-    setErrors({}); // clear errors as user types
+    setErrors({});
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const tag_ids = selectedTags.map((tag) => tag.value);
     const payload = { ...noteData, tag_ids };
-  
+
     try {
       const { data: createdNote } = await axios.post("/notes/", payload);
-  
+
       if (selectedUser) {
         try {
           await axios.post("/shared-notes/", {
@@ -63,11 +64,9 @@ const NoteCreatePage = () => {
           setAlertMsg("Note created, but sharing failed.");
         }
       }
-  
-      // Show success + redirect
+
       setAlertVariant("success");
       setAlertMsg("Note created successfully!");
-  
       setTimeout(() => {
         history.push("/notes");
       }, 1500);
@@ -77,11 +76,11 @@ const NoteCreatePage = () => {
       setErrors(err.response?.data || {});
     }
   };
-  
 
   return (
-    <div>
-      <h2>Create Note</h2>
+    <div className={cardStyles.StickyNoteStatic}>
+      <h2 className={`${cardStyles.title} mb-4`}>Create Note</h2>
+
       {alertMsg && (
         <Alert
           className="my-3"
@@ -92,7 +91,7 @@ const NoteCreatePage = () => {
           {alertMsg}
         </Alert>
       )}
-      {/* 🔽 Show validation messages */}
+
       {["title", "content", "non_field_errors"].map((field) =>
         errors[field]?.map((msg, idx) => (
           <Alert key={`${field}-${idx}`} variant="warning">
