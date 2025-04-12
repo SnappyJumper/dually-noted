@@ -7,8 +7,9 @@
  */
 
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 import { CurrentUserContext } from "../../App";
 import cardStyles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";

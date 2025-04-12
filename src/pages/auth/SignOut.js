@@ -1,13 +1,13 @@
-// src/pages/auth/SignOutPage.js
-
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+
+import { Button, Col, Row, Container, Alert } from "react-bootstrap";
+
 import { SetCurrentUserContext } from "../../App";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-import { Button, Col, Row, Container, Alert } from "react-bootstrap";
-import axios from "axios";
 
 /**
  * SignOutPage handles the user logout process.

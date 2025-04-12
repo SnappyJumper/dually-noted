@@ -1,10 +1,10 @@
-// src/pages/profile/ProfilePage.js
-
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { Form, Row, Col, Alert } from "react-bootstrap";
+
 import { CurrentUserContext } from "../../App";
 import Avatar from "../../components/Avatar";
-import { Form, Row, Col, Alert } from "react-bootstrap";
+
 import cardStyles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 

@@ -1,24 +1,27 @@
 import React, { useState, useEffect, createContext } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import styles from "./App.module.css";
-import SideNav from "./components/SideNav";
+import axios from "axios";
+
 import "./api/axiosDefaults";
+import styles from "./App.module.css";
+
+import SideNav from "./components/SideNav";
+import PrivateRoute from "./components/PrivateRoute";
+
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
 import SignOutPage from "./pages/auth/SignOut";
-import axios from "axios";
-import PrivateRoute from "./components/PrivateRoute";
 import NotesPage from "./pages/notes/NotesPage";
-import SharedNotesPage from "./pages/shared/SharedNotesPage";
-import TagsPage from "./pages/tags/TagsPage";
-import ProfilePage from "./pages/profile/ProfilePage";
-import HomePage from "./pages/home/HomePage";
-import TagNotesPage from "./pages/tags/TagNotesPage";
 import NoteCreatePage from "./pages/notes/NoteCreatePage";
 import NoteEditPage from "./pages/notes/NoteEditPage";
 import NoteDetailPage from "./pages/notes/NoteDetailPage";
+import SharedNotesPage from "./pages/shared/SharedNotesPage";
 import SharedNoteDetailPage from "./pages/shared/SharedNoteDetailPage";
+import TagsPage from "./pages/tags/TagsPage";
+import TagNotesPage from "./pages/tags/TagNotesPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 import UserProfilePage from "./pages/profile/UserProfilePage";
+import HomePage from "./pages/home/HomePage";
 import NotFoundPage from "./pages/not_found/NotFoundPage";
 
 // Contexts for tracking and updating the logged-in user

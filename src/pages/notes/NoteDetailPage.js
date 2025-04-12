@@ -1,15 +1,17 @@
 // src/pages/notes/NoteDetailPage.js
 
-import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import axios from "axios";
-import styles from "../../styles/StickyCard.module.css";
-import btnStyles from "../../styles/Button.module.css";
-
 /**
  * NoteDetailPage displays a single note's details including content and tags.
  * If the current user is the note's owner, Edit and Delete options are available.
  */
+
+import React, { useEffect, useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import axios from "axios";
+
+import styles from "../../styles/StickyCard.module.css";
+import btnStyles from "../../styles/Button.module.css";
+
 const NoteDetailPage = () => {
   const { id } = useParams(); // Get the note ID from the URL
   const history = useHistory();
@@ -47,42 +49,47 @@ const NoteDetailPage = () => {
   if (!note) return <p>Loading note...</p>;
 
   return (
-    <div className={styles.StickyNoteStatic}>
-      <h2 className={styles.title}>{note.title}</h2>
-      <p className={styles.content}>{note.content}</p>
+    <>
+      {/* Section Heading */}
+      <h2 className="mb-3">Note</h2>
 
-      {/* Display tags if available */}
-      {note.tags?.length > 0 && (
-        <div className="mb-3">
-          <strong>Tags:</strong>{" "}
-          {note.tags.map((tag) => (
-            <span key={tag.id} className="badge bg-secondary me-2">
-              {tag.name}
-            </span>
-          ))}
-        </div>
-      )}
+      <div className={styles.StickyNoteStatic}>
+        <h2 className={styles.title}>{note.title}</h2>
+        <p className={styles.content}>{note.content}</p>
 
-      {/* Owner-only actions */}
-      <div className="d-flex gap-2 mt-3">
-        {note.is_owner && (
-          <>
-            <button
-              className={`${btnStyles.Button} ${btnStyles.Blue}`}
-              onClick={handleEdit}
-            >
-              Edit
-            </button>
-            <button
-              className={`${btnStyles.Button} ${btnStyles.Danger}`}
-              onClick={handleDelete}
-            >
-              Delete
-            </button>
-          </>
+        {/* Display tags if available */}
+        {note.tags?.length > 0 && (
+          <div className="mb-3">
+            <strong>Tags:</strong>{" "}
+            {note.tags.map((tag) => (
+              <span key={tag.id} className="badge bg-secondary me-2">
+                {tag.name}
+              </span>
+            ))}
+          </div>
         )}
+
+        {/* Owner-only actions */}
+        <div className="d-flex gap-2 mt-3">
+          {note.is_owner && (
+            <>
+              <button
+                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                onClick={handleEdit}
+              >
+                Edit
+              </button>
+              <button
+                className={`${btnStyles.Button} ${btnStyles.Danger}`}
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

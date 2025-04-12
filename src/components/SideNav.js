@@ -1,8 +1,7 @@
-// src/components/SideNav.js
-
 import React, { useState, useContext } from "react";
 import { Navbar, Nav, Button, Collapse, Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+
 import { CurrentUserContext } from "../App";
 import logo from "../assets/logo.png";
 import styles from "../styles/SideNav.module.css";

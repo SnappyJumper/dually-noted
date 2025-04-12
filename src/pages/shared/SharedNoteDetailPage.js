@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { Form, Alert, Modal } from "react-bootstrap";
+
 import styles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 
@@ -101,71 +102,94 @@ const SharedNoteDetailPage = () => {
   if (!note) return <p>Loading note...</p>;
 
   return (
-    <div className={styles.StickyNoteStatic}>
-      <h2 className={styles.title}>Shared Note</h2>
+    <>
+      {/* Page Heading */}
+      <h2 className="mb-3">Shared Note</h2>
 
-      {/* Alert Messages */}
-      {alertMsg && (
-        <Alert variant={alertVariant} dismissible onClose={() => setAlertMsg(null)}>
-          {alertMsg}
-        </Alert>
-      )}
-
-      {/* Edit Mode */}
-      {editing ? (
-        <Form onSubmit={handleUpdate}>
-          <Form.Group controlId="title" className="mb-3">
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group controlId="content">
-            <Form.Label>Content</Form.Label>
-            <Form.Control
-              as="textarea"
-              name="content"
-              value={formData.content}
-              onChange={handleChange}
-              rows={6}
-              required
-            />
-          </Form.Group>
-
-          <button type="submit" className={`${btnStyles.Button} ${btnStyles.Blue} mt-3`}>
-            Save Changes
-          </button>
-        </Form>
-      ) : (
-        // Read Mode
-        <>
-          <h4 className={styles.title}>{note?.title || "Untitled Note"}</h4>
-          <p className={styles.content}>{note?.content || "No content available."}</p>
-          <p className={styles.meta}>
-            <strong>Owner:</strong>{" "}
-            {note?.user ? (
-              <Link to={`/profiles/username/${note.user}`}>{note.user}</Link>
-            ) : (
-              "Unknown"
-            )}
-          </p>
-        </>
-      )}
-
-      {/* Actions */}
-      <div className="mt-4 d-flex gap-2 flex-wrap">
-        {canEdit && !editing && (
-          <button className={`${btnStyles.Button} ${btnStyles.Blue}`} onClick={handleEditToggle}>
-            Edit
-          </button>
+      {/* Sticky Note Card */}
+      <div className={styles.StickyNoteStatic}>
+        {/* Alert Messages */}
+        {alertMsg && (
+          <Alert
+            variant={alertVariant}
+            dismissible
+            onClose={() => setAlertMsg(null)}
+          >
+            {alertMsg}
+          </Alert>
         )}
-        <button className={`${btnStyles.Button} ${btnStyles.DangerOutline}`} onClick={confirmRemove}>
-          Remove Me From This Note
-        </button>
+
+        {/* Edit Mode */}
+        {editing ? (
+          <Form onSubmit={handleUpdate}>
+            <Form.Group controlId="title" className="mb-3">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="content">
+              <Form.Label>Content</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="content"
+                value={formData.content}
+                onChange={handleChange}
+                rows={6}
+                required
+              />
+            </Form.Group>
+
+            <button
+              type="submit"
+              className={`${btnStyles.Button} ${btnStyles.Blue} mt-3`}
+            >
+              Save Changes
+            </button>
+          </Form>
+        ) : (
+          // Read Mode
+          <>
+            <h4 className={styles.title}>
+              {note?.title || "Untitled Note"}
+            </h4>
+            <p className={styles.content}>
+              {note?.content || "No content available."}
+            </p>
+            <p className={styles.meta}>
+              <strong>Owner:</strong>{" "}
+              {note?.user ? (
+                <Link to={`/profiles/username/${note.user}`}>
+                  {note.user}
+                </Link>
+              ) : (
+                "Unknown"
+              )}
+            </p>
+          </>
+        )}
+
+        {/* Actions */}
+        <div className="mt-4 d-flex gap-2 flex-wrap">
+          {canEdit && !editing && (
+            <button
+              className={`${btnStyles.Button} ${btnStyles.Blue}`}
+              onClick={handleEditToggle}
+            >
+              Edit
+            </button>
+          )}
+          <button
+            className={`${btnStyles.Button} ${btnStyles.DangerOutline}`}
+            onClick={confirmRemove}
+          >
+            Remove Me From This Note
+          </button>
+        </div>
       </div>
 
       {/* Modal for confirming removal */}
@@ -174,18 +198,25 @@ const SharedNoteDetailPage = () => {
           <Modal.Title>Leave Shared Note</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to remove yourself from this shared note? You will no longer have access to it.
+          Are you sure you want to remove yourself from this shared note? You
+          will no longer have access to it.
         </Modal.Body>
         <Modal.Footer>
-          <button className={`${btnStyles.Button} ${btnStyles.Black}`} onClick={() => setShowModal(false)}>
+          <button
+            className={`${btnStyles.Button} ${btnStyles.Black}`}
+            onClick={() => setShowModal(false)}
+          >
             Cancel
           </button>
-          <button className={`${btnStyles.Button} ${btnStyles.Danger}`} onClick={handleRemoveSelf}>
+          <button
+            className={`${btnStyles.Button} ${btnStyles.Danger}`}
+            onClick={handleRemoveSelf}
+          >
             Remove Me
           </button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 

@@ -9,14 +9,10 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Button,
-  ListGroup,
-  Modal,
-  Form,
-  Alert,
-} from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+
+import { Button, ListGroup, Modal, Form, Alert } from "react-bootstrap";
+
 import cardStyles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 

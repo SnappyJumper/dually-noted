@@ -1,10 +1,8 @@
-// src/pages/notes/NotesPage.js
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Alert, Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
+
 import cardStyles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 

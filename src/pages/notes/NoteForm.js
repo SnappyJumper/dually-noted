@@ -1,7 +1,6 @@
-// src/pages/notes/NoteForm.js
-
 import React from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
+
 import TagSelector from "../../components/TagSelector";
 import btnStyles from "../../styles/Button.module.css";
 

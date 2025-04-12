@@ -1,5 +1,3 @@
-// src/components/TagSelector.js
-
 import React, { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import axios from "axios";

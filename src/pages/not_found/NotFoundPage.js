@@ -1,8 +1,7 @@
-// src/pages/NotFoundPage.js
-
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Container } from "react-bootstrap";
+
 import sad from "../../assets/sad.png";
 import cardStyles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";

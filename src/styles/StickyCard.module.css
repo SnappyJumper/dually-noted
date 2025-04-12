@@ -1,3 +1,4 @@
+/* Interactive sticky note card with hover effect */
 .StickyNote {
     background-color: var(--note-yellow);
     border-radius: 12px;
@@ -13,6 +14,7 @@
     transform: rotate(-1deg) scale(1.02);
   }
   
+  /* Sticky note title styling */
   .title {
     font-size: 1.4rem;
     font-weight: 600;
@@ -22,6 +24,7 @@
     word-break: break-word;
   }
   
+  /* Static sticky note (non-hoverable) for detail pages */
   .StickyNoteStatic {
     background-color: var(--note-yellow);
     border-radius: var(--radius);

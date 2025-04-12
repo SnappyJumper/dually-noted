@@ -7,9 +7,11 @@
  */
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+
 import { Button, Modal, Alert } from "react-bootstrap";
+
 import cardStyles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 

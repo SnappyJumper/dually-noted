@@ -1,8 +1,7 @@
-// src/components/Avatar.js
-
 import React, { useRef } from "react";
-import styles from "../styles/Avatar.module.css";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+
+import styles from "../styles/Avatar.module.css";
 
 /**
  * Avatar component for displaying a user's profile picture.

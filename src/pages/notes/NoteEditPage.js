@@ -1,17 +1,20 @@
 // src/pages/notes/NoteEditPage.js
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams, useHistory } from "react-router-dom";
-import NoteForm from "./NoteForm";
-import { Alert } from "react-bootstrap";
-import cardStyles from "../../styles/StickyCard.module.css";
-
 /**
  * NoteEditPage allows users to edit an existing note.
  * Fetches the note's current content and tags, allows editing,
  * and optionally re-shares the note with another user.
  */
+
+import React, { useState, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import axios from "axios";
+
+import { Alert } from "react-bootstrap";
+
+import NoteForm from "./NoteForm";
+import cardStyles from "../../styles/StickyCard.module.css";
+
 const NoteEditPage = () => {
   const [noteData, setNoteData] = useState({ title: "", content: "" });
   const [selectedTags, setSelectedTags] = useState([]);
@@ -107,44 +110,47 @@ const NoteEditPage = () => {
   };
 
   return (
-    <div className={cardStyles.StickyNoteStatic}>
-      <h2 className={`${cardStyles.title} mb-4`}>Edit Note</h2>
+    <>
+      {/* Page Heading */}
+      <h2 className="mb-3">Edit Note</h2>
 
-      {/* Alert message */}
-      {alertMsg && (
-        <Alert
-          className="my-3"
-          variant={alertVariant}
-          dismissible
-          onClose={() => setAlertMsg(null)}
-        >
-          {alertMsg}
-        </Alert>
-      )}
-
-      {/* Display form field errors */}
-      {["title", "content", "non_field_errors"].map((field) =>
-        errors[field]?.map((msg, idx) => (
-          <Alert key={`${field}-${idx}`} variant="warning">
-            {msg}
+      <div className={cardStyles.StickyNoteStatic}>
+        {/* Alert message */}
+        {alertMsg && (
+          <Alert
+            className="my-3"
+            variant={alertVariant}
+            dismissible
+            onClose={() => setAlertMsg(null)}
+          >
+            {alertMsg}
           </Alert>
-        ))
-      )}
+        )}
 
-      {/* Render reusable note form */}
-      <NoteForm
-        noteData={noteData}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-        users={users}
-        selectedUser={selectedUser}
-        setSelectedUser={setSelectedUser}
-        permission={permission}
-        setPermission={setPermission}
-      />
-    </div>
+        {/* Display form field errors */}
+        {["title", "content", "non_field_errors"].map((field) =>
+          errors[field]?.map((msg, idx) => (
+            <Alert key={`${field}-${idx}`} variant="warning">
+              {msg}
+            </Alert>
+          ))
+        )}
+
+        {/* Render reusable note form */}
+        <NoteForm
+          noteData={noteData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+          users={users}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          permission={permission}
+          setPermission={setPermission}
+        />
+      </div>
+    </>
   );
 };
 

@@ -1,11 +1,7 @@
-// src/pages/auth/SignInForm.js
-
 import React, { useState, useContext } from "react";
-import { SetCurrentUserContext } from "../../App";
 import { Link, useHistory } from "react-router-dom";
-import styles from "../../styles/SignInUpForm.module.css";
-import btnStyles from "../../styles/Button.module.css";
-import appStyles from "../../App.module.css";
+import axios from "axios";
+
 import {
   Form,
   Button,
@@ -14,7 +10,11 @@ import {
   Container,
   Alert,
 } from "react-bootstrap";
-import axios from "axios";
+
+import { SetCurrentUserContext } from "../../App";
+import styles from "../../styles/SignInUpForm.module.css";
+import btnStyles from "../../styles/Button.module.css";
+import appStyles from "../../App.module.css";
 
 /**
  * SignInForm allows users to log into their accounts.
@@ -74,7 +74,7 @@ const SignInForm = () => {
     <Row className={styles.Row}>
       <Col className="my-auto py-2 p-md-2" md={6}>
         <Container className={`${appStyles.Content} p-4`}>
-          <h1 className={styles.Header}>sign in</h1>
+          <h1 className={styles.Header}>Sign in</h1>
 
           {/* Success and error alerts */}
           {status === "success" && (
