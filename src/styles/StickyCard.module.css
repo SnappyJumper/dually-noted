@@ -1,37 +1,30 @@
-/* Interactive sticky note card with hover effect */
 .StickyNote {
-    background-color: var(--note-yellow);
+    background-color: #fff9c4;
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 4px 4px 12px var(--note-shadow);
-    font-family: var(--note-font);
-    color: var(--note-text);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15);
+    font-family: 'Patrick Hand', cursive;
+    color: #333;
     margin-bottom: 1.5rem;
     transition: transform 0.2s ease;
   }
   
-  .StickyNote:hover {
-    transform: rotate(-1deg) scale(1.02);
-  }
-  
-  /* Sticky note title styling */
   .title {
     font-size: 1.4rem;
     font-weight: 600;
     color: #2142b2;
     margin-bottom: 0.5rem;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    word-break: break-word;
+    overflow-wrap: break-word;
   }
   
-  /* Static sticky note (non-hoverable) for detail pages */
   .StickyNoteStatic {
-    background-color: var(--note-yellow);
-    border-radius: var(--radius);
+    background-color: #fff9c4;
+    border-radius: 12px;
     padding: 2rem;
-    box-shadow: var(--shadow);
-    font-family: var(--note-font);
-    color: var(--note-text);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Patrick Hand', cursive;
+    color: #333;
     margin-bottom: 2rem;
   }
   
