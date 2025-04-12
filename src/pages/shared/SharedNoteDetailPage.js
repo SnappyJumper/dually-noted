@@ -1,13 +1,5 @@
 // src/pages/shared/SharedNoteDetailPage.js
 
-/**
- * SharedNoteDetailPage
- *
- * This component displays a shared note, either in read-only mode or editable mode,
- * depending on the user's permissions. Users can remove themselves from the note
- * or update its contents if they have edit access.
- */
-
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
 import axios from "axios";
@@ -17,19 +9,18 @@ import styles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
 
 const SharedNoteDetailPage = () => {
-  const { id } = useParams(); // Note ID from the URL
+  const { id } = useParams();
   const history = useHistory();
 
-  const [note, setNote] = useState(null); // Shared note data
-  const [canEdit, setCanEdit] = useState(false); // Permission flag
-  const [editing, setEditing] = useState(false); // Editing mode toggle
+  const [note, setNote] = useState(null);
+  const [canEdit, setCanEdit] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({ title: "", content: "" });
 
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
   const [showModal, setShowModal] = useState(false);
 
-  // Fetch shared note on load
   useEffect(() => {
     const fetchSharedNote = async () => {
       try {
@@ -47,7 +38,6 @@ const SharedNoteDetailPage = () => {
     fetchSharedNote();
   }, [id]);
 
-  // Dismiss alert after delay
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -55,15 +45,12 @@ const SharedNoteDetailPage = () => {
     }
   }, [alertMsg]);
 
-  // Enable editing mode
   const handleEditToggle = () => setEditing(true);
 
-  // Track form changes
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Submit note updates
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -83,7 +70,6 @@ const SharedNoteDetailPage = () => {
     }
   };
 
-  // User removes themselves from the shared note
   const handleRemoveSelf = async () => {
     try {
       await axios.delete(`/shared-notes/${id}/`);
@@ -103,12 +89,9 @@ const SharedNoteDetailPage = () => {
 
   return (
     <>
-      {/* Page Heading */}
       <h2 className="mb-3">Shared Note</h2>
 
-      {/* Sticky Note Card */}
       <div className={styles.StickyNoteStatic}>
-        {/* Alert Messages */}
         {alertMsg && (
           <Alert
             variant={alertVariant}
@@ -119,7 +102,6 @@ const SharedNoteDetailPage = () => {
           </Alert>
         )}
 
-        {/* Edit Mode */}
         {editing ? (
           <Form onSubmit={handleUpdate}>
             <Form.Group controlId="title" className="mb-3">
@@ -147,12 +129,12 @@ const SharedNoteDetailPage = () => {
             <button
               type="submit"
               className={`${btnStyles.Button} ${btnStyles.Blue} mt-3`}
+              aria-label="Save changes to this shared note"
             >
               Save Changes
             </button>
           </Form>
         ) : (
-          // Read Mode
           <>
             <h4 className={styles.title}>
               {note?.title || "Untitled Note"}
@@ -173,12 +155,12 @@ const SharedNoteDetailPage = () => {
           </>
         )}
 
-        {/* Actions */}
         <div className="mt-4 d-flex gap-2 flex-wrap">
           {canEdit && !editing && (
             <button
               className={`${btnStyles.Button} ${btnStyles.Blue}`}
               onClick={handleEditToggle}
+              aria-label="Edit this shared note"
             >
               Edit
             </button>
@@ -186,13 +168,13 @@ const SharedNoteDetailPage = () => {
           <button
             className={`${btnStyles.Button} ${btnStyles.DangerOutline}`}
             onClick={confirmRemove}
+            aria-label="Remove yourself from this shared note"
           >
             Remove Me From This Note
           </button>
         </div>
       </div>
 
-      {/* Modal for confirming removal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Leave Shared Note</Modal.Title>
@@ -205,12 +187,14 @@ const SharedNoteDetailPage = () => {
           <button
             className={`${btnStyles.Button} ${btnStyles.Black}`}
             onClick={() => setShowModal(false)}
+            aria-label="Cancel removal from shared note"
           >
             Cancel
           </button>
           <button
             className={`${btnStyles.Button} ${btnStyles.Danger}`}
             onClick={handleRemoveSelf}
+            aria-label="Confirm removal from shared note"
           >
             Remove Me
           </button>

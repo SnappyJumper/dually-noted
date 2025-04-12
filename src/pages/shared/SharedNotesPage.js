@@ -72,6 +72,7 @@ const SharedNotesPage = () => {
               <Link
                 to={`/shared/${note.id}`}
                 className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                aria-label={`View shared note titled ${note.title}`}
               >
                 View
               </Link>

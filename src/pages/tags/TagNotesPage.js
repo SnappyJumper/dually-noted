@@ -109,7 +109,10 @@ const TagNotesPage = () => {
         notes.map((note) => (
           <div key={note.id} className={cardStyles.StickyNoteStatic}>
             <h4 className={cardStyles.title}>
-              <Link to={`/notes/${note.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+              <Link
+                to={`/notes/${note.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
                 {note.title}
               </Link>
             </h4>
@@ -119,6 +122,7 @@ const TagNotesPage = () => {
               size="sm"
               className={`${btnStyles.Button} mt-2`}
               onClick={() => handleRemoveTag(note.id)}
+              aria-label={`Remove tag ${tag.name} from note titled ${note.title}`}
             >
               Remove from Tag
             </Button>
@@ -138,10 +142,19 @@ const TagNotesPage = () => {
           <strong>#{tag.name}</strong> tag?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button
+            variant="secondary"
+            onClick={() => setShowModal(false)}
+            aria-label="Cancel tag removal"
+          >
             Cancel
           </Button>
-          <Button variant="danger" className={btnStyles.Button} onClick={handleConfirmRemove}>
+          <Button
+            variant="danger"
+            className={btnStyles.Button}
+            onClick={handleConfirmRemove}
+            aria-label="Confirm tag removal from note"
+          >
             Remove Tag
           </Button>
         </Modal.Footer>

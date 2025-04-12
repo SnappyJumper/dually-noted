@@ -101,6 +101,7 @@ const NoteForm = ({
         <Button
           type="submit"
           className={`${btnStyles.Button} ${btnStyles.Bright}`}
+          aria-label="Save note"
         >
           Save
         </Button>
@@ -108,6 +109,7 @@ const NoteForm = ({
           type="button"
           className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
           onClick={() => window.history.back()}
+          aria-label="Cancel and go back"
         >
           Cancel
         </Button>

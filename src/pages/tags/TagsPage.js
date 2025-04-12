@@ -99,21 +99,18 @@ const TagsPage = () => {
     }
   };
 
-  // Start editing a tag
   const handleEditClick = (tag) => {
     setEditTagId(tag.id);
     setEditTagName(tag.name);
     setEditErrors([]);
   };
 
-  // Cancel editing a tag
   const handleEditCancel = () => {
     setEditTagId(null);
     setEditTagName("");
     setEditErrors([]);
   };
 
-  // Submit tag edit
   const handleEditSave = async (id) => {
     const trimmed = editTagName.trim();
     if (!trimmed) {
@@ -149,6 +146,7 @@ const TagsPage = () => {
       <button
         className={`${btnStyles.Button} ${btnStyles.Blue} mb-4`}
         onClick={() => setShowCreateModal(true)}
+        aria-label="Create a new tag"
       >
         + New Tag
       </button>
@@ -177,12 +175,14 @@ const TagsPage = () => {
                     size="sm"
                     value={editTagName}
                     onChange={(e) => setEditTagName(e.target.value)}
+                    aria-label={`Edit tag name for ${tag.name}`}
                   />
                   <Button
                     size="sm"
                     variant="success"
                     className={btnStyles.Button}
                     onClick={() => handleEditSave(tag.id)}
+                    aria-label={`Save changes to tag ${tag.name}`}
                   >
                     Save
                   </Button>
@@ -191,6 +191,7 @@ const TagsPage = () => {
                     variant="secondary"
                     className={btnStyles.Button}
                     onClick={handleEditCancel}
+                    aria-label="Cancel tag editing"
                   >
                     Cancel
                   </Button>
@@ -200,6 +201,7 @@ const TagsPage = () => {
                   className="flex-grow-1 fw-bold"
                   style={{ cursor: "pointer" }}
                   onClick={() => history.push(`/tags/${tag.id}`)}
+                  aria-label={`View notes tagged with ${tag.name}`}
                 >
                   #{tag.name}
                 </div>
@@ -210,6 +212,7 @@ const TagsPage = () => {
                     size="sm"
                     className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
                     onClick={() => handleEditClick(tag)}
+                    aria-label={`Edit tag ${tag.name}`}
                   >
                     Edit
                   </Button>
@@ -217,6 +220,7 @@ const TagsPage = () => {
                     size="sm"
                     className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
                     onClick={() => openDeleteModal(tag.id)}
+                    aria-label={`Delete tag ${tag.name}`}
                   >
                     Delete
                   </Button>
@@ -239,6 +243,7 @@ const TagsPage = () => {
                 setNewTagName(e.target.value);
                 setCreateErrors([]);
               }}
+              aria-label="New tag name input"
             />
             {createErrors.map((err, idx) => (
               <Alert key={idx} variant="warning" className="mt-2">
@@ -247,10 +252,18 @@ const TagsPage = () => {
             ))}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowCreateModal(false)}
+              aria-label="Cancel creating new tag"
+            >
               Cancel
             </Button>
-            <Button className={btnStyles.Button} onClick={handleCreateTag}>
+            <Button
+              className={btnStyles.Button}
+              onClick={handleCreateTag}
+              aria-label="Confirm create tag"
+            >
               Create
             </Button>
           </Modal.Footer>
@@ -265,10 +278,19 @@ const TagsPage = () => {
             Are you sure you want to delete this tag? This action cannot be undone.
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+              aria-label="Cancel tag deletion"
+            >
               Cancel
             </Button>
-            <Button className={btnStyles.Button} variant="danger" onClick={handleConfirmDelete}>
+            <Button
+              className={btnStyles.Button}
+              variant="danger"
+              onClick={handleConfirmDelete}
+              aria-label="Confirm delete tag"
+            >
               Delete
             </Button>
           </Modal.Footer>

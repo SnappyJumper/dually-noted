@@ -76,12 +76,14 @@ const NoteDetailPage = () => {
               <button
                 className={`${btnStyles.Button} ${btnStyles.Blue}`}
                 onClick={handleEdit}
+                aria-label="Edit this note"
               >
                 Edit
               </button>
               <button
                 className={`${btnStyles.Button} ${btnStyles.Danger}`}
                 onClick={handleDelete}
+                aria-label="Delete this note"
               >
                 Delete
               </button>

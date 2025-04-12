@@ -35,10 +35,6 @@ const SignUpForm = () => {
     });
   };
 
-  /**
-   * Attempts to fetch user data after login using retry logic.
-   * This ensures the token has propagated and avoids race conditions.
-   */
   const fetchUserWithRetry = async (token, retries = 3, delay = 500) => {
     for (let i = 0; i < retries; i++) {
       try {
@@ -62,7 +58,6 @@ const SignUpForm = () => {
     e.preventDefault();
     setStatus("loading");
 
-    // Client-side validation
     if (!username.trim() || !password1 || !password2) {
       setErrors({ non_field_errors: ["All fields are required."] });
       setStatus("error");
@@ -76,11 +71,9 @@ const SignUpForm = () => {
     }
 
     try {
-      // Step 1: Register the user
       await axios.post("/dj-rest-auth/registration/", signUpData);
       setStatus("logging_in");
 
-      // Step 2: Log in to get the JWT token
       const loginResponse = await axios.post("/dj-rest-auth/login/", {
         username,
         password: password1,
@@ -89,17 +82,13 @@ const SignUpForm = () => {
       const token = loginResponse.data?.access_token;
       if (!token) throw new Error("No token received from login");
 
-      // Step 3: Store token and set auth header for future requests
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       localStorage.setItem("user", JSON.stringify(loginResponse.data));
 
-      // Step 4: Fetch user details using the token with retry support
       const userData = await fetchUserWithRetry(token, 5, 600);
-
       setCurrentUser(userData);
       setStatus("success");
 
-      // Step 5: Redirect to home after short delay
       setTimeout(() => {
         history.push("/");
       }, 1000);
@@ -132,7 +121,6 @@ const SignUpForm = () => {
             </Alert>
           )}
 
-          {/* Signup Form */}
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Label className="d-none">Username</Form.Label>
@@ -189,6 +177,7 @@ const SignUpForm = () => {
               disabled={status === "loading" || status === "logging_in"}
               className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
               type="submit"
+              aria-label="Submit sign up form"
             >
               {status === "loading"
                 ? "Signing up..."

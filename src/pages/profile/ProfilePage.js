@@ -156,12 +156,17 @@ const ProfilePage = () => {
                 </Form.Group>
 
                 <div className="d-flex gap-2 mt-2">
-                  <button className={`${btnStyles.Button} ${btnStyles.Blue}`} onClick={handleSave}>
+                  <button
+                    className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                    onClick={handleSave}
+                    aria-label="Save profile changes"
+                  >
                     Save
                   </button>
                   <button
                     className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
                     onClick={() => setEditMode(false)}
+                    aria-label="Cancel profile editing"
                   >
                     Cancel
                   </button>
@@ -175,6 +180,7 @@ const ProfilePage = () => {
                 <button
                   className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
                   onClick={() => setEditMode(true)}
+                  aria-label="Edit profile"
                 >
                   Edit Profile
                 </button>

@@ -84,6 +84,7 @@ const NotesPage = () => {
       <button
         className={`${btnStyles.Button} ${btnStyles.Blue}`}
         onClick={() => history.push("/notes/create")}
+        aria-label="Create a new note"
       >
         + Add Note
       </button>
@@ -109,12 +110,14 @@ const NotesPage = () => {
               <button
                 className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
                 onClick={() => history.push(`/notes/${note.id}/edit`)}
+                aria-label={`Edit note titled ${note.title}`}
               >
                 Edit
               </button>
               <button
                 className={`${btnStyles.Button} ${btnStyles.Danger}`}
                 onClick={() => confirmDelete(note.id)}
+                aria-label={`Delete note titled ${note.title}`}
               >
                 Delete
               </button>
@@ -135,12 +138,14 @@ const NotesPage = () => {
           <button
             className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
             onClick={() => setShowModal(false)}
+            aria-label="Cancel deletion"
           >
             Cancel
           </button>
           <button
             className={`${btnStyles.Button} ${btnStyles.Danger}`}
             onClick={handleDeleteConfirmed}
+            aria-label="Confirm note deletion"
           >
             Delete
           </button>

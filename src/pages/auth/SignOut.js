@@ -19,25 +19,20 @@ const SignOutPage = () => {
   const history = useHistory();
   const setCurrentUser = useContext(SetCurrentUserContext);
 
-  // Handles the logout request and redirects on success
   const handleLogout = async () => {
     setStatus("loading");
     try {
       await axios.post("/dj-rest-auth/logout/");
-
-      // Clean up local state and redirect
       localStorage.removeItem("user");
       setCurrentUser(null);
       setStatus("success");
 
-      // Redirect to login page after short delay
       setTimeout(() => history.push("/login"), 2000);
     } catch (err) {
       setStatus("error");
     }
   };
 
-  // Cancels logout and navigates back to notes
   const handleCancel = () => {
     history.push("/notes");
   };
@@ -48,7 +43,6 @@ const SignOutPage = () => {
         <Container className={`${appStyles.Content} p-4`}>
           <h1 className={styles.Header}>Log Out</h1>
 
-          {/* Initial confirmation UI */}
           {status === "confirm" && (
             <>
               <p>Are you sure you want to log out?</p>
@@ -56,12 +50,14 @@ const SignOutPage = () => {
                 <Button
                   className={`${btnStyles.Button} ${btnStyles.Bright}`}
                   onClick={handleLogout}
+                  aria-label="Confirm logout"
                 >
                   Yes, log me out
                 </Button>
                 <Button
                   className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
                   onClick={handleCancel}
+                  aria-label="Cancel logout and return to notes"
                 >
                   Cancel
                 </Button>
@@ -69,7 +65,6 @@ const SignOutPage = () => {
             </>
           )}
 
-          {/* Logout feedback */}
           {status === "loading" && (
             <Alert variant="info">Logging you out...</Alert>
           )}
@@ -88,7 +83,6 @@ const SignOutPage = () => {
         </Container>
       </Col>
 
-      {/* Optional right-side image panel (desktop only) */}
       <Col md={6} className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}></Col>
     </Row>
   );

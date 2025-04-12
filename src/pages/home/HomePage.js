@@ -52,6 +52,7 @@ const HomePage = () => {
       <Button
         className={`${btnStyles.Button} ${btnStyles.Blue} mt-4`}
         onClick={() => history.push("/signup")}
+        aria-label="Get started by signing up"
       >
         Get Started
       </Button>

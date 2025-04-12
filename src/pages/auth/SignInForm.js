@@ -31,13 +31,11 @@ const SignInForm = () => {
 
   const history = useHistory();
 
-  // Update form state and clear previous errors when input changes
   const handleChange = (e) => {
     setSignInData({ ...signInData, [e.target.name]: e.target.value });
     setErrors({});
   };
 
-  // Submit form credentials to the API
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
@@ -49,21 +47,19 @@ const SignInForm = () => {
     }
 
     try {
-      // Step 1: Authenticate user
       await axios.post("/dj-rest-auth/login/", signInData);
 
-      // Step 2: Fetch authenticated user data
       setTimeout(async () => {
         try {
           const { data: userData } = await axios.get("/dj-rest-auth/user/");
           setCurrentUser(userData);
           setStatus("success");
-          history.push("/notes"); // Redirect to notes page
+          history.push("/notes");
         } catch (err) {
           console.error("Error fetching user after login", err);
           setStatus("error");
         }
-      }, 500); // Slight delay for better UX
+      }, 500);
     } catch (err) {
       setErrors(err.response?.data || { non_field_errors: ["Login failed."] });
       setStatus("error");
@@ -76,7 +72,6 @@ const SignInForm = () => {
         <Container className={`${appStyles.Content} p-4`}>
           <h1 className={styles.Header}>Sign in</h1>
 
-          {/* Success and error alerts */}
           {status === "success" && (
             <Alert variant="success" className="mt-3">
               Welcome back! Redirecting to your notes...
@@ -89,7 +84,6 @@ const SignInForm = () => {
             </Alert>
           )}
 
-          {/* Sign-in form */}
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Control
@@ -126,6 +120,7 @@ const SignInForm = () => {
                 disabled={status === "loading"}
                 className={`${btnStyles.Button} ${btnStyles.Bright} ${btnStyles.Wide}`}
                 type="submit"
+                aria-label="Submit login form"
               >
                 {status === "loading" ? "Signing in..." : "Sign in"}
               </Button>
@@ -139,7 +134,6 @@ const SignInForm = () => {
           </Form>
         </Container>
 
-        {/* Link to sign up */}
         <Container className={`mt-3 ${appStyles.Content}`}>
           <Link className={styles.Link} to="/signup">
             Don’t have an account? <span>Sign up</span>
@@ -147,7 +141,6 @@ const SignInForm = () => {
         </Container>
       </Col>
 
-      {/* Right-side image panel (desktop only) */}
       <Col md={6} className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}></Col>
     </Row>
   );

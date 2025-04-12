@@ -26,13 +26,13 @@ const SideNav = () => {
         className="d-lg-none px-3 py-2"
       >
         <Navbar.Brand className="d-flex align-items-center">
-          <Image
-            src={logo}
-            alt="Dually Noted Logo"
-            className={styles.Logo}
-          />
+          <Image src={logo} alt="Dually Noted Logo" className={styles.Logo} />
         </Navbar.Brand>
-        <Button variant="outline-light" onClick={() => setOpen(!open)}>
+        <Button
+          variant="outline-light"
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle mobile navigation menu"
+        >
           ☰
         </Button>
       </Navbar>
@@ -41,7 +41,6 @@ const SideNav = () => {
       <Collapse in={open} className="d-lg-none">
         <div className={styles.MobileNav}>
           <Nav className="flex-column mt-3">
-            {/* Always-visible navigation links */}
             <Nav.Link
               as={NavLink}
               to="/"
@@ -49,11 +48,11 @@ const SideNav = () => {
               onClick={() => setOpen(false)}
               className={styles.NavLink}
               activeClassName={styles.ActiveLink}
+              aria-label="Navigate to Home"
             >
               <i className="fas fa-home me-2"></i>Home
             </Nav.Link>
 
-            {/* Links visible only when user is authenticated */}
             {currentUser && (
               <>
                 <Nav.Link
@@ -62,6 +61,7 @@ const SideNav = () => {
                   onClick={() => setOpen(false)}
                   className={styles.NavLink}
                   activeClassName={styles.ActiveLink}
+                  aria-label="Navigate to My Notes"
                 >
                   <i className="fas fa-sticky-note me-2"></i>My Notes
                 </Nav.Link>
@@ -71,6 +71,7 @@ const SideNav = () => {
                   onClick={() => setOpen(false)}
                   className={styles.NavLink}
                   activeClassName={styles.ActiveLink}
+                  aria-label="Navigate to Tags"
                 >
                   <i className="fas fa-tags me-2"></i>Tags
                 </Nav.Link>
@@ -80,6 +81,7 @@ const SideNav = () => {
                   onClick={() => setOpen(false)}
                   className={styles.NavLink}
                   activeClassName={styles.ActiveLink}
+                  aria-label="Navigate to Shared Notes"
                 >
                   <i className="fas fa-users me-2"></i>Shared
                 </Nav.Link>
@@ -88,13 +90,13 @@ const SideNav = () => {
                   to="/logout"
                   onClick={() => setOpen(false)}
                   className={styles.NavLink}
+                  aria-label="Log out"
                 >
                   <i className="fas fa-sign-out-alt me-2"></i>Log Out
                 </Nav.Link>
               </>
             )}
 
-            {/* Links for unauthenticated users */}
             {!currentUser && (
               <>
                 <Nav.Link
@@ -103,6 +105,7 @@ const SideNav = () => {
                   onClick={() => setOpen(false)}
                   className={styles.NavLink}
                   activeClassName={styles.ActiveLink}
+                  aria-label="Navigate to Sign Up"
                 >
                   <i className="fas fa-user-plus me-2"></i>Sign Up
                 </Nav.Link>
@@ -112,6 +115,7 @@ const SideNav = () => {
                   onClick={() => setOpen(false)}
                   className={styles.NavLink}
                   activeClassName={styles.ActiveLink}
+                  aria-label="Navigate to Log In"
                 >
                   <i className="fas fa-sign-in-alt me-2"></i>Log In
                 </Nav.Link>
@@ -119,7 +123,6 @@ const SideNav = () => {
             )}
           </Nav>
 
-          {/* User avatar and profile link for mobile */}
           {currentUser && (
             <div
               className={`d-flex align-items-center mt-3 px-3 pt-3 border-top ${styles.ProfileSection}`}
@@ -135,6 +138,7 @@ const SideNav = () => {
                 className={`${styles.NavLink} ms-2 mb-0`}
                 onClick={() => setOpen(false)}
                 activeClassName={styles.ActiveLink}
+                aria-label="Go to your profile"
               >
                 {currentUser.username}
               </Nav.Link>
@@ -156,6 +160,7 @@ const SideNav = () => {
             exact
             className={styles.NavLink}
             activeClassName={styles.ActiveLink}
+            aria-label="Navigate to Home"
           >
             <i className="fas fa-home me-2"></i>Home
           </Nav.Link>
@@ -167,6 +172,7 @@ const SideNav = () => {
                 to="/notes"
                 className={styles.NavLink}
                 activeClassName={styles.ActiveLink}
+                aria-label="Navigate to My Notes"
               >
                 <i className="fas fa-sticky-note me-2"></i>My Notes
               </Nav.Link>
@@ -175,6 +181,7 @@ const SideNav = () => {
                 to="/tags"
                 className={styles.NavLink}
                 activeClassName={styles.ActiveLink}
+                aria-label="Navigate to Tags"
               >
                 <i className="fas fa-tags me-2"></i>Tags
               </Nav.Link>
@@ -183,6 +190,7 @@ const SideNav = () => {
                 to="/shared"
                 className={styles.NavLink}
                 activeClassName={styles.ActiveLink}
+                aria-label="Navigate to Shared Notes"
               >
                 <i className="fas fa-users me-2"></i>Shared
               </Nav.Link>
@@ -190,6 +198,7 @@ const SideNav = () => {
                 as={NavLink}
                 to="/logout"
                 className={styles.NavLink}
+                aria-label="Log out"
               >
                 <i className="fas fa-sign-out-alt me-2"></i>Log Out
               </Nav.Link>
@@ -203,6 +212,7 @@ const SideNav = () => {
                 to="/signup"
                 className={styles.NavLink}
                 activeClassName={styles.ActiveLink}
+                aria-label="Navigate to Sign Up"
               >
                 <i className="fas fa-user-plus me-2"></i>Sign Up
               </Nav.Link>
@@ -211,6 +221,7 @@ const SideNav = () => {
                 to="/login"
                 className={styles.NavLink}
                 activeClassName={styles.ActiveLink}
+                aria-label="Navigate to Log In"
               >
                 <i className="fas fa-sign-in-alt me-2"></i>Log In
               </Nav.Link>
@@ -218,7 +229,6 @@ const SideNav = () => {
           )}
         </Nav>
 
-        {/* User avatar and profile link for desktop */}
         {currentUser && (
           <div className={`pt-3 px-3 ${styles.ProfileSection}`}>
             <Avatar
@@ -231,6 +241,7 @@ const SideNav = () => {
               to="/profile"
               className={styles.NavLink}
               activeClassName={styles.ActiveLink}
+              aria-label="Go to your profile"
             >
               {currentUser.username}
             </Nav.Link>

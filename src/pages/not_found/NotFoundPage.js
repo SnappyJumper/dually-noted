@@ -47,6 +47,7 @@ const NotFoundPage = () => {
       <Button
         className={`${btnStyles.Button} ${btnStyles.Blue} mt-4`}
         onClick={() => history.push("/")}
+        aria-label="Return to the homepage"
       >
         Back to Safety 🏠
       </Button>
