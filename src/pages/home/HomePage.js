@@ -34,13 +34,27 @@ const HomePage = () => {
         <h4 className={cardStyles.title}>Hey there!</h4>
         <p>
           Welcome to your cozy little corner of the internet for note-taking,
-          organizing, and sharing thoughts without judgment!
+          organizing, and sharing thoughts!
         </p>
         <p>
-          Whether you're jotting down a genius idea at 2am, building a study
-          library, or just need to share notes with a buddy — we've got you
-          covered. Use tags to stay organized, share notes with friends, and
-          edit anytime. It's simple, snappy, and all yours.
+          Take notes, stay organized, and collaborate effortlessly with Dually Noted 
+        </p>
+        <p>
+          - a powerful yet intuitive note-taking app designed to streamline your thoughts and ideas.
+        </p>
+        <p>
+          - Create & Manage Notes - Write, edit, and organize your notes with ease.
+        </p>
+        <p>
+          - Tag & Filter - Categorize notes with custom tags for quick access.
+        </p>
+        <p>
+          - Seamless Collaboration - Share notes with others and set permissions for viewing or editing.
+        </p>
+        <p>
+        - Intuitive & Fast - A clean, distraction-free interface 
+        Whether you're brainstorming, organizing tasks, or collaborating on projects, 
+        Dually Noted keeps your ideas at your fingertips. Start taking smarter notes today!
         </p>
         <p>
           So grab a virtual sticky note and start writing — your brain will
