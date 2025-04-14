@@ -1,12 +1,3 @@
-/**
- * TagsPage
- *
- * Displays a list of all tags, and provides full CRUD functionality:
- * - Users can create, edit, or delete tags.
- * - Clicking on a tag navigates to a list of associated notes.
- * - Success and error states are managed via alerts and modals.
- */
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -15,21 +6,19 @@ import { Button, ListGroup, Modal, Form, Alert } from "react-bootstrap";
 
 import cardStyles from "../../styles/StickyCard.module.css";
 import btnStyles from "../../styles/Button.module.css";
+import styles from "../../styles/Tags.module.css"; // New styles for tag responsiveness
 
 const TagsPage = () => {
   const [tags, setTags] = useState([]);
 
-  // Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  // Form states
   const [tagToDelete, setTagToDelete] = useState(null);
   const [newTagName, setNewTagName] = useState("");
   const [editTagId, setEditTagId] = useState(null);
   const [editTagName, setEditTagName] = useState("");
 
-  // Alert and error handling
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertVariant, setAlertVariant] = useState("success");
   const [createErrors, setCreateErrors] = useState([]);
@@ -41,7 +30,6 @@ const TagsPage = () => {
     fetchTags();
   }, []);
 
-  // Fetch all tags from API
   const fetchTags = async () => {
     try {
       const { data } = await axios.get("/tags/");
@@ -51,7 +39,6 @@ const TagsPage = () => {
     }
   };
 
-  // Auto-hide alerts after a few seconds
   useEffect(() => {
     if (alertMsg) {
       const timer = setTimeout(() => setAlertMsg(null), 4000);
@@ -59,7 +46,6 @@ const TagsPage = () => {
     }
   }, [alertMsg]);
 
-  // Create new tag
   const handleCreateTag = async () => {
     const trimmed = newTagName.trim();
     if (!trimmed) {
@@ -83,7 +69,6 @@ const TagsPage = () => {
     }
   };
 
-  // Confirm and delete tag
   const handleConfirmDelete = async () => {
     try {
       await axios.delete(`/tags/${tagToDelete}/`);
@@ -167,64 +152,66 @@ const TagsPage = () => {
           {tags.map((tag) => (
             <ListGroup.Item
               key={tag.id}
-              className="d-flex justify-content-between align-items-center"
+              className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center"
             >
               {editTagId === tag.id ? (
-                <div className="d-flex flex-grow-1 align-items-center gap-2">
+                <div className="d-flex flex-column flex-sm-row gap-2 w-100">
                   <Form.Control
                     size="sm"
                     value={editTagName}
                     onChange={(e) => setEditTagName(e.target.value)}
                     aria-label={`Edit tag name for ${tag.name}`}
                   />
-                  <Button
-                    size="sm"
-                    variant="success"
-                    className={btnStyles.Button}
-                    onClick={() => handleEditSave(tag.id)}
-                    aria-label={`Save changes to tag ${tag.name}`}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    className={btnStyles.Button}
-                    onClick={handleEditCancel}
-                    aria-label="Cancel tag editing"
-                  >
-                    Cancel
-                  </Button>
+                  <div className={`d-flex flex-wrap gap-2 ${styles.TagButtonGroup}`}>
+                    <Button
+                      size="sm"
+                      variant="success"
+                      className={btnStyles.Button}
+                      onClick={() => handleEditSave(tag.id)}
+                      aria-label={`Save changes to tag ${tag.name}`}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className={btnStyles.Button}
+                      onClick={handleEditCancel}
+                      aria-label="Cancel tag editing"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
                 </div>
               ) : (
-                <div
-                  className="flex-grow-1 fw-bold"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => history.push(`/tags/${tag.id}`)}
-                  aria-label={`View notes tagged with ${tag.name}`}
-                >
-                  #{tag.name}
-                </div>
-              )}
-              {editTagId !== tag.id && (
-                <div className="d-flex gap-2">
-                  <Button
-                    size="sm"
-                    className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
-                    onClick={() => handleEditClick(tag)}
-                    aria-label={`Edit tag ${tag.name}`}
+                <>
+                  <div
+                    className="flex-grow-1 fw-bold text-break"
+                    style={{ cursor: "pointer", wordBreak: "break-word" }}
+                    onClick={() => history.push(`/tags/${tag.id}`)}
+                    aria-label={`View notes tagged with ${tag.name}`}
                   >
-                    Edit
-                  </Button>
-                  <Button
-                    size="sm"
-                    className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
-                    onClick={() => openDeleteModal(tag.id)}
-                    aria-label={`Delete tag ${tag.name}`}
-                  >
-                    Delete
-                  </Button>
-                </div>
+                    #{tag.name}
+                  </div>
+                  <div className={`d-flex flex-wrap gap-2 mt-2 mt-sm-0 ${styles.TagButtonGroup}`}>
+                    <Button
+                      size="sm"
+                      className={`${btnStyles.Button} ${btnStyles.BlueOutline}`}
+                      onClick={() => handleEditClick(tag)}
+                      aria-label={`Edit tag ${tag.name}`}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
+                      onClick={() => openDeleteModal(tag.id)}
+                      aria-label={`Delete tag ${tag.name}`}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </>
               )}
             </ListGroup.Item>
           ))}

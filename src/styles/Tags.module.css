@@ -1,0 +1,16 @@
+.TagButtonGroup button {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+  }
+  
+  @media (max-width: 576px) {
+    .TagButtonGroup {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .TagButtonGroup button {
+      width: 100%;
+    }
+  }
+  

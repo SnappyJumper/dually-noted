@@ -1,22 +1,7 @@
 :root {
-  /* Note background themes */
-  --note-yellow: #fff9c4;
-  --note-orange: #ffe0b2;
-  --note-pink: #fce4ec;
-  --note-blue: #e0f7fa;
-
-  /* Note styling */
-  --note-shadow: rgba(0, 0, 0, 0.15);
-  --note-text: #333;
-  --note-font: 'Patrick Hand', cursive;
-
-  /* Extended palette */
-  --sticky-yellow: #FFFCB7;
-  --sticky-orange: #FFD7A0;
-  --sticky-pink: #FFD3D3;
-  --accent-blue: #41CFFF;
+  /* Colours */
   --text-dark: #2e2e2e;
-  --background: #F5F7F9; /* NB: This is the background color for the entire app */
+  --background: #F5F7F9;
 
   /* Layout helpers */
   --radius: 12px;
