@@ -1,8 +1,15 @@
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import axios from "axios";
+import axios from 'axios';
 
-import { Form, Button, Col, Row, Container, Alert } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Col,
+  Row,
+  Container,
+  Alert,
+} from "react-bootstrap";
 
 import { SetCurrentUserContext } from "../../App";
 import styles from "../../styles/SignInUpForm.module.css";

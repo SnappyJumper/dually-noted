@@ -16,7 +16,7 @@
   --sticky-pink: #FFD3D3;
   --accent-blue: #41CFFF;
   --text-dark: #2e2e2e;
-  --background: #F5F7F9;
+  --background: #F5F7F9; /* NB: This is the background color for the entire app */
 
   /* Layout helpers */
   --radius: 12px;
