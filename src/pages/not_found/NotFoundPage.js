@@ -49,7 +49,7 @@ const NotFoundPage = () => {
         onClick={() => history.push("/")}
         aria-label="Return to the homepage"
       >
-        Back to Safety 🏠
+        Back to Safety
       </Button>
     </Container>
   );

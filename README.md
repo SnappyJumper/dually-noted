@@ -117,6 +117,15 @@ During the design process I drew my flow diagrams for the site which I have incl
 
 ## Design Choices
 
+- ### Typography
+
+For the Main site I used two fonts from [Google Fonts](https://fonts.google.com/):
+
+- [Rubik](https://fonts.google.com/specimen/Rubik) - For the main text throughout the site
+- [Patrick Hand](https://fonts.google.com/specimen/Patrick+Hand) - For the note related content
+
+I chose these fonts for Rubiks easy to read structure and Patrick Hand because I felt it suites the tone of the site. 
+
 - ### Colour Scheme 
 
 The colour scheme I settled on was an Anti-flash White(#F5F7F9) for the background and all text outside the Navbar a shade of Jet(#2e2e2e). Gunmetal(#2e3440) for the navigation bar and its text a shade of Lavender(#d8dee9). All notes and containers in the project had a Lemon Chiffon(#fff9c4) background and their subtitle text was colored Violet Blue(#2142b2). The various buttons were given different colours depending on their purpose with the more dangerous given a Vermillion(#f44336) and the more accepting buttons a Violet Blue(#2142b2) or just a white with the same boarder.
@@ -133,7 +142,7 @@ As mentioned earlier in the [User Stories](#user-stories) section I used GitHub 
 
 You can view my kanban [here](https://github.com/users/SnappyJumper/projects/4/views/1)
 
-## Permissions
+# Permissions
 
 Permissions had to be added for protection of private data, so that unauthorised access could not be obtained.
 
@@ -181,7 +190,7 @@ When creating a note a user can choose to share it with another user. If they do
 - Read - A Read permission gives the user who the Note has been shared with Read Only access, they can't edit or delete the Note but they can still remove themselves from being a shared User.
 - Edit - An Edit permission allows the shared user full access to edit and delete the note should they wish and like the Read access the user can remove themselves from the Shared Note.
 
-## Existing Features
+# Existing Features
 
 - ### Friendly Home Page
 
@@ -379,4 +388,213 @@ The 404 Page comes up when the domain entered is invalid. From here a user can:
 - Navigate safely back to the Home page
 
 - 404 Page: <br> ![404 Page](src/assets/documentation/screenshots/not_found.png)
+
+[Back to top](#table-of-contents)
+
+# Future Features
+
+In the future I would like to incorporate the following:
+
+- A search bar for easy note navigation
+- Introducing Rich Text to notes utilising [Summernote](https://summernote.org/) or something similar
+- Allowing Users to share with more than one user at a time
+- Adding comments to notes to improve collaboration
+
+# Technologies Used
+
+## Languages
+
+- [JavaScript](https://www.javascript.com/) - A web development programming language
+- [HTML5](https://en.wikipedia.org/wiki/HTML5) - A markup language used to structure web pages
+- [CSS3](https://en.wikipedia.org/wiki/CSS) - A style sheet language used to add styles to the web pages
+
+## Libraries and Frameworks
+
+- [React](https://reactjs.org/) - Front end JavaScript library for creating advanced user interfaces
+- [Bootstrap](https://getbootstrap.com/) - CSS Framework for the development of responsive websites
+- [Google Fonts](https://fonts.google.com/) - A library of fonts for use in website design
+
+## NPM Packages / Dependancies
+
+- [axios](https://www.npmjs.com/package/axios) - Promise-based HTTP client for making API requests in the browser or Node.js
+- [jwt-decode](https://jwt.io/) - Decodes JSON Web Tokens (JWT) without verifying the signature
+- [react-bootstrap](https://react-bootstrap.github.io/) - React components built using Bootstrap for responsive UI
+- [react-dom](https://reactjs.org/docs/react-dom.html) - Provides DOM-specific methods for React apps (e.g., rendering to the DOM)
+- [react-infinite-scroll-component](https://www.npmjs.com/package/react-infinite-scroll-component) -  Enables infinite scrolling behavior in React apps
+- [react-router-dom](https://www.npmjs.com/package/react-router-dom) - Declarative routing for React web applications
+- [react-scripts](https://www.npmjs.com/package/react-scripts) - Scripts and configuration used by Create React App
+- [react-select](https://react-select.com/home) - A flexible and customizable dropdown/select component for React
+- [web-vitals](https://web.dev/vitals/) - Measures essential performance metrics for web apps (like Core Web Vitals)
+
+## Other Tools
+
+- [Favicon](https://favicon.io/) - To generate favicon
+- [VSCode](https://code.visualstudio.com/) - To create and edit the site
+- [GitHub](https://github.com/) - To hodt and deploy my repositorys
+- [GitBash](<https://en.wikipedia.org/wiki/Bash_(Unix_shell)>) - terminal used for pushing changes to GitHub
+- [Google Chrome DevTools](https://developer.chrome.com/docs/devtools/) - Used to debug and ctest page responsiveness
+- [Balsamic](https://balsamiq.com/) - sed to generate wireframes
+- [Heroku](https://dashboard.heroku.com) - Used for deploying the repository
+- [eslint](https://eslint.org/) - Used for validation
+- [Chat GPT](https://openai.com/chatgpt/overview/) - AI used to assist with questions, code commenting and debugging
+- [Stack Overflow](https://stackoverflow.com/questions) - Used to ask questions and debugging
+
+[Back to top](#table-of-contents)
+
+# Testing
+
+- ## Code Validation
+
+I used eslint for JavaScript code validation
+
+- ## Lighthoue testing
+
+Happy with lighthouse testing for the moment will work on best practices results in future
+
+- Home: <br> ![Home Lighthouse](src/assets/documentation/lighthouse_validation/home_lighthouse.png)
+- My Notes: <br> ![My Notes Lighthouse](src/assets/documentation/lighthouse_validation/my_notes_lighthouse.png)
+- Tags: <br> ![Tags Lighthouse](src/assets/documentation/lighthouse_validation/tags_lighthouse.png)
+- Shared: <br> ![Shared Lighthouse](src/assets/documentation/lighthouse_validation/shared_lighthouse.png)
+- Profile: <br> ![Profile Lighthouse](src/assets/documentation/lighthouse_validation/my_profile_lighthouse.png)
+- Edit Note: <br> ![Edit Note Lighthouse](src/assets/documentation/lighthouse_validation/edit_note_lighthouse.png)
+- Create Note: <br> ![Create Note Lighthouse](src/assets/documentation/lighthouse_validation/create_note_lighthouse.png)
+- Shared Note Detail: <br> ![Shared Note Detail Lighthouse](src/assets/documentation/lighthouse_validation/shared_note_detail_lighthouse.png)
+- Log In: <br> ![Log In Lighthouse](src/assets/documentation/lighthouse_validation/sign_in_lighthouse.png)
+- Sign Up: <br> ![Sign Up Lighthouse](src/assets/documentation/lighthouse_validation/sign_up_lighthouse.png)
+- Edit Profile: <br> ![Edit Profile Lighthouse](src/assets/documentation/lighthouse_validation/edit_profile_lighthouse.png)
+- Log Out: <br> ![Log Out Lighthouse](src/assets/documentation/lighthouse_validation/log_out_lighthouse.png)
+- Other Profile: <br> ![Other Lighthouse](src/assets/documentation/lighthouse_validation/other_profile_lighthouse.png)
+
+- ## Responsiveness Testing
+
+Ive tested the site out on a few devices.
+
+Device | Pass/Fail
+--- | ---
+iPhone SE | Pass
+OnePlus 10T | Pass
+Samsung Galaxy S8 | Pass
+IPad Mini | Pass
+Mac Book Pro 13inch | Pass
+Acer Aspire | Pass 
+
+- ## Manual Testing 
+
+| Page/Feature | Action | Expected Result | Pass/Fail |
+| --- | ------ | ---------- | --------- |
+| Home | Clicked on Get Started Button | Navigates to Sign Up Page | Pass |
+| Sign Up | Signed Up with correct details | Success, logs in and directs to My Notes | Pass |
+| Sign Up | Password too short | Rejection warning, note with reason | Pass |
+| Sign Up | Passwords don't match | Rejection warning, note with reason | Pass|
+| Sign Up | Leaving blank fields | Rejection warning, note with reason | Pass |
+| Sign Up | Clicking on "Already have acc..." link | Redirects you to log in | Pass |
+| Log In  | Correct credentials | Success, logs in and directs to My Notes | Pass |
+| Log in  | In-correct credentails | Rejection warning, note with reason | Pass |
+| Log in  | Blank Fields | Rejection, note with reason| Pass |
+| Log In  | Clicking on "Dont have an acc..." link | Redirects you to Sign Up | Pass |
+| Log Out | Clicking on "Yes, log me out" | Logs out the user and, redirects to Log In | Pass
+| Log Out | Clicking on "Cancel" button | Doesn't log user out and redirects to My Notes Instead | Pass
+| My Notes | Clicking on "+ Add Note" button | Brings user to the Create Note Page | Pass
+| My Notes | Clicking on the title of a Note | Brings user to the Detailed Note Page | Pass 
+| My Notes | Clicking on the "Edit" button on a Note | Brings user to the Edit Note Page with the form prefilled with the Notes data | Pass |
+| My Notes | Clicking "Delete" Button on a Note | Brings up a pop up confirming request to delete | Pass |
+| My Notes | Clicking the "Delete" button on the deletion confirmation pop up | Deletes the Note with a confirmation | Pass |
+| My Notes | Clicking the "Cancel" button on the deletion confirmation pop up | Aborts deletion and closes the pop up | Pass |
+| Create/Edit Note | Filling out or editing the title and content fields but leaving tags, shared and permission unselected | Success, note to confirm addition and redirected to My Notes | Pass |
+| Create/Edit Notes | Leaving Title or Contents blank and trying to submit the form | Failure, prompted to fill in blank fields | Pass |
+| Create/Edit Notes | Fill in a tag name that exists in the data base and adding | On submit tag will be assigned | Pass |
+| Create/Edit Notes | Fill in a tag nme that does not exist but not selecting "Create" option | Tag will dissapear as soon as you click out | Pass |
+| Create/Edit Notes | Fill in a tag name that does not exist but clicking the "Create" option | Tag is created in database and assigned to the Note on submit | Pass |
+| Create/Edit Notes | Selecting a name from the Share with user dropdown and submitting the form | Form submits and Note now appears in the users My notes and the shared with users Shared | Pass |
+| Create/Edit | Leaving the Permissions dropdown untouched after selecting a user to share with | Defaults to Read Permission on submit | Pass |
+| Create/Edit | Trying to select permission before selecting a user | Can't do as greyed out | Pass |
+| Create/Edit | Clicking the "Cancel button" | Abandons the creation/Edit and redirects user to My Notes | Pass |
+| Note Detail | Clicking on "Edit" button | Redirects user to Edit Note page with the content prefilled | Pass |
+| Note Detail | Clicking on "Delete" button | Brings up a prompt asking does the user wish to continue | Pass |
+| Note Detail | Clicking on the "Delete" option in the deletion confirmation pop up | Successful deletion and confirmation | Pass |
+| Note Detail | Clicking on "Cancel" option in the deletion confirmation pop up | Deletion is aborted | Pass |
+| Tags | Clicking on "+ New Tag" button | displays the new tag pop up window | Pass |
+| Tags | Clicking on "Create" button on new tag pop up window without filling in a name | rejection warning and prompted to fill in field, No tag created | Pass
+| Tags | Entering a Tag name and clicking "Create" | Tag created with name that was added | Pass |
+| Tags | Clicking "Cancel" button on new tag pop up window | Abandons tag creation and closes pop up | Pass |
+| Tags | Clicking into a Tags name | Directs User to the tags detail page | Pass |
+| Tags | Clicking the "Edit" button in a Tag | replaces the Tags name with a form field where the tags name can be edited | Pass |
+| Tags | Leaving the tags name empty in the edit tag field and saving | Rejected request, tag name can't be blank | Pass |
+| Tags | Entering a new name into the tag edit field and saving | Tag name is changed | Pass |
+| Tags | Pressing the "Cancel" button in the tag edit field | Tag editing abandoned and no changes are made | Pass |
+| Tags | Clicking the "Delete" button in a tag | Brings up the tag deletion pop up confirmation | Pass |
+| Tags | Clicking the "Delete" option on the tag deletion pop up confirmation | Deletes Tag with a confirmation message | Pass |
+| Tags | Clicking the "Cancel" option on the tag deletion pop up confirmation | Abandons the deletion and closes the pop up | Pass |
+| Tag Detail | Clicking on the "Remove from Tag" button | Brings up the remove tag pop up confirmation | Pass |
+| Tag Detail | Clicking on the "Remove Tag" button in the remove tag pop up confirmation | Removes the note from the tag and it dissapears from the tag detail | Pass |
+| Tag Detail | Clicking "Cancel" button on the remove tag pop up confirmation | Abandons tag removal and closes the cinfirmation pop up | Pass |
+| Tag Detail | Clicking on the title of a note | Redirects the user to the note detail page of that particular note | Pass |
+| Shared Notes | Clicking on the title or the "View" button of a shared note | Opens up the detail page for that shared note | Pass |
+| Shared Notes | Clicking on the username of the owner of the shared note | Directs the user to a read only display of that users profile | Pass |
+| Shared Note Detail | Clicking on the username of the owner of the shared note | Directs user to a read only display of that users profile | Pass |
+| Shared Note Detail | Clicking on the "Edit" button (When user has edit permissions) | User is redirected to Edit Shared Note page | Pass |
+| Shared Note Detail | Clicking on "Remove Me From This Note Button" | The leave shared note pop up confirmation appears | Pass |
+| Shared Note Detail | Clicking on the "Remove Me" option in the leave shared note pop up confirmation | User is removed from shared note and action is confirmed | Pass |
+| Shared Note Detail | Clicking on the "Cancel" button in the leave shared note pop up confirmation | Abandons the leaving of the shared note and closes the popup | Pass |
+| Shared Note Edit | Empty the form fields and try to submit | Fail to submit, prompted to fill fields | Pass |
+| Shared Note Edit | Edit the form correctly and submit | Shared note is updated and user is informed of the change | Pass |
+| Shared Note Edit | Clicking on "Remove Me From This Note Button" | The leave shared note pop up confirmation appears | Pass |
+| Shared Note Edit | Clicking on the "Remove Me" option in the leave shared note pop up confirmation | User is removed from shared note and action is confirmed | Pass |
+| Shared Note Edit | Clicking on the "Cancel" button in the leave shared note pop up confirmation | Abandons the leaving of the shared note and closes the popup | Pass |
+| My Profile | Clicking on the "Edit Profile" button | Redirects user to the edit profile page | Pass |
+| Edit Profile | Clicking on the "Choose File" button | Opens up a pop up where the usercan select a photo | Pass |
+| Edit Profile | When photo is selected and "Open button is pressed" | New photo is uploaded | Pass |
+| Edit Profile | The Name or Bio fields are left blank on submission | Submission accepted, having these fields filled out is a user preference | Pass |
+| Edit Profile | Editing the contents of the form and saving | Successful edit and confirmation is given the profile updates with whatever image, name or bio you edited | Pass |
+| Edit Profile | Clicking the "Cancel button" | Abandons the edit and bring user back to the profile page | Pass |
+| Nav Bar | Clicking on the "Home" link | Directs the user to the Home page | Pass |
+| Nav Bar | Clicking on the "My Notes" link | Directs the user to My Notes page | Pass |
+| Nav Bar | Clicking on the "Tags" link | Directs the user to the Tags page | Pass |
+| Nav Bar | Clicking on the "Shared" link | Directs the user to the Shared page | Pass |
+| Nav Bar | Clicking on the "Log Out" link | Directs the user to the Shared page | Pass |
+| Nav Bar | Clicking on the "Sign Up" link | Directs the user to the Sign Up page | Pass |
+| Nav Bar | Clicking on the "Log In" link | Directs the user to the Log In page | Pass |
+| Nav Bar | Clicking on the users name at the bottom of the Nav Bar | Directs the user to their Profile page | Pass |
+| Nav Bar | When user is not authenticated | The only navlinks available are "Home", "Sign In" and "Sign Up" | Pass |
+| Nav Bar | When user is authenticated | The Navlinks "Home", "My Notes", "Tags", "Shared", "Log Out" and "Profile" are available | Pass |
+| 404 Page | When a user enters an invalid domain | The 404 Page displays | Pass |
+| 404 Page | When a user clicks the "Back to Safety" button | The user is directed back to the Home page | Pass |
+
+- ## Browser Compatibility
+
+- The above tests were completed using the following browsers:
+  - Google Chrome
+  - Firefox
+  - Safari
+  - Microsoft Edge
+
+[Back to top](#table-of-contents)
+
+- ## Bugs Fixed
+
+ ### Issue with users being unable to remove to remove themselves from a Shared Note if they only have Read Permission
+
+  - During development I came across a bug that wouldn't allow users to remove themselves from a Shared Note if the owner had only given them read permission.
+
+  - The issue lied in the permissions on the back end and after successfully adjusting the code there I fixed the bug.
+
+ ### Login and sign up issues
+
+  - During development I noticed that the Log in and Sign up pages were Telling me that authentication was failing and not forwarding me to the My Notes page. But when I refreshed the page I found I was logged in.
+
+  - The issue was to do with the token authentication and the validation. There was not enough time given between the token assignment and the validation of the form. So the login credentials would be validated and rejected before a token was recieved. The issue was fixed by delaying the validation until the token was recieved.
+
+# Deployment to Heroku
+
+This project was deployed using [Heroku](https://www.heroku.com). The following is the process:
+
+To start you need to create a new repository on [GitHub](https://github.com/).
+
+- Go to [GitHub](https://github.com/)
+- Create a new repository but don't use a template
+
+Once youve created the 
+
+
+
 
