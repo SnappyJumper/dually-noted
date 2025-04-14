@@ -19,6 +19,7 @@ The back end README.md can be viewed [here](https://github.com/SnappyJumper/dual
   - [Project Goals](#project-goals)
   - [User Stories](#user-stories)
   - [Wireframes](#wireframes)
+  - [Flow Diagrams](#flow-diagrams)
   - [Design Choices](#design-choices)
   - [Typography](#typography)
   - [Colour Scheme](#colour-scheme)
@@ -92,5 +93,27 @@ Home | ![Desktop Home](src/assets/documentation/wireframes/desktop_home.png) | !
 Login | ![Desktop Login](src/assets/documentation/wireframes/desktop_login.png) | ![Mobile Login](src/assets/documentation/wireframes/mobile_login.png)
 Sign Up | ![Desktop SignUp](src/assets/documentation/wireframes/desktop_signup.png) | ![Mobile Signup](src/assets/documentation/wireframes/mobile_signup.png)
 My Notes | ![Desktop My Notes](src/assets/documentation/wireframes/desktop_notes.png) | ![Mobile My Notes](src/assets/documentation/wireframes/mobile_notes.png)
+Note Detail | ![Desktop Note Detail](src/assets/documentation/wireframes/desktop_note_detail.png) | ![Mobile Note Detail](src/assets/documentation/wireframes/mobile_note_detail.png)
+Create/Edit Note | ![Desktop Create/Edit Note](src/assets/documentation/wireframes/dektop_new_edit_note.png) | ![Mobile Create/Edit Note](src/assets/documentation/wireframes/mobile_new_edit_note.png)
 Shared | ![Desktop Shared](src/assets/documentation/wireframes/desktop_shared.png) | ![Mobile Shared](src/assets/documentation/wireframes/mobile_shared.png)
-Tags | ![]()
+Tags | ![Desktop Tags](src/assets/documentation/wireframes/desktop_tags.png) | ![Mobile Tags](src/assets/documentation/wireframes/mobile_tags.png)
+Add Tag Popup | ![Desktop and Mobile Popup](src/assets/documentation/wireframes/desktop_mobile_tag.png) | Same as desktop
+Profile | ![Desktop Profile](src/assets/documentation/wireframes/desktop_profile.png) | ![Mobile Profile](src/assets/documentation/wireframes/mobile_profile.png)
+Edit Profile | ![Desktop Edit Profile](src/assets/documentation/wireframes/desktop_edit_profile.png) | ![Mobile Edit Profile](src/assets/documentation/wireframes/mobile_edit_profile.png)
+Mobile Navbar Extended | N/A | ![Mobile Navbar Extended](src/assets/documentation/wireframes/mobile_navbar.png)
+
+[Back to top](#table-of-contents)
+
+## Flow Diagrams
+
+During the design process I drew my flow diagrams for the site which I have included below.
+
+- Upper Level ![Flow Diagram 1](src/assets/documentation/graph/home.jpeg)
+- Notes Level ![Flow Diagram 2](src/assets/documentation/graph/notes.jpeg)
+- Tags Level ![Flow Diagram 3](src/assets/documentation/graph/tags.jpeg)
+- Shared Level ![Flow Diagram 4](src/assets/documentation/graph/shared.jpeg)
+- Profile Level ![Flow Diagram 5](src/assets/documentation/graph/profile.jpeg)
+
+## Design Choices
+
+- ### Colour Scheme 
