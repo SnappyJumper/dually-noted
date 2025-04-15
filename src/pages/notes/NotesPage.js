@@ -33,7 +33,7 @@ const NotesPage = () => {
         const { data } = await axios.get("/notes/");
         setNotes(data);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setAlertVariant("danger");
         setAlertMsg("Failed to load notes.");
       }
@@ -55,7 +55,7 @@ const NotesPage = () => {
       setAlertVariant("success");
       setAlertMsg("Note deleted successfully.");
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setAlertVariant("danger");
       setAlertMsg("Failed to delete the note.");
     } finally {

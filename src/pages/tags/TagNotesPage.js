@@ -46,7 +46,7 @@ const TagNotesPage = () => {
         );
         setNotes(filtered);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setAlertVariant("danger");
         setAlertMsg("Failed to load notes for this tag.");
       }

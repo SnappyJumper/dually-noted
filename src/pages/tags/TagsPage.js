@@ -35,7 +35,7 @@ const TagsPage = () => {
       const { data } = await axios.get("/tags/");
       setTags(data);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

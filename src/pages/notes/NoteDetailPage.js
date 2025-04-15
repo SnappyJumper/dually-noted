@@ -28,7 +28,7 @@ const NoteDetailPage = () => {
         const { data } = await axios.get(`/notes/${id}/`);
         setNote(data);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 

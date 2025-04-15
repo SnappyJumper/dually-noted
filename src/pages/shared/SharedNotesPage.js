@@ -30,7 +30,7 @@ const SharedNotesPage = () => {
 
         setSharedNotes(filtered);
       } catch (err) {
-        console.log("Error fetching shared notes:", err);
+        // console.log("Error fetching shared notes:", err);
       }
     };
 

@@ -51,7 +51,7 @@ const NoteEditPage = () => {
         }));
         setSelectedTags(formattedTags);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setAlertVariant("danger");
         setAlertMsg("Could not load the note. Please try again.");
       }
@@ -62,7 +62,7 @@ const NoteEditPage = () => {
         const { data } = await axios.get("/profiles/");
         setUsers(data);
       } catch (err) {
-        console.log("User fetch error", err);
+        // console.log("User fetch error", err);
       }
     };
 
@@ -102,7 +102,7 @@ const NoteEditPage = () => {
         history.push("/notes");
       }, 1500);
     } catch (err) {
-      console.log("Edit submission error:", err);
+      // console.log("Edit submission error:", err);
       setAlertVariant("danger");
       setAlertMsg("Could not update the note. Please check the fields.");
       setErrors(err.response?.data || {});

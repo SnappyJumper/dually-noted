@@ -39,7 +39,7 @@ const NoteCreatePage = () => {
         const { data } = await axios.get("/profiles/");
         setUsers(data);
       } catch (err) {
-        console.log("User fetch error", err);
+        // console.log("User fetch error", err);
       }
     };
     fetchUsers();

@@ -39,7 +39,7 @@ const ProfilePage = () => {
           profile_picture: null,
         });
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setAlertVariant("danger");
         setAlertMsg("Failed to load profile.");
       }

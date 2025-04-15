@@ -39,7 +39,7 @@ function App() {
         const { data } = await axios.get("/dj-rest-auth/user/");
         setCurrentUser(data);
       } catch (err) {
-        console.log("Auth check failed:", err);
+        // console.log("Auth check failed:", err);
         setCurrentUser(null);
       } finally {
         setCheckingAuth(false);
